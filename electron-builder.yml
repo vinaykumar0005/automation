@@ -1,0 +1,17 @@
+appId: com.yourcompany.automationsuite
+productName: Automation Suite
+files:
+  - build/**/*
+  - package.json
+asarUnpack:
+  - '**/node_modules/playwright-core/**'
+extraResources:
+  - from: node_modules/playwright/.local-browsers
+    to: playwright-browsers
+mac:
+  target: dmg
+  category: public.app-category.developer-tools
+win:
+  target: nsis
+linux:
+  target: AppImage

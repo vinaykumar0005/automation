@@ -1,0 +1,68 @@
+[
+  {
+    "id": "profile-1",
+    "name": "YouTube View Booster",
+    "description": "Profile to increase YouTube views and watch time with anti-detection features",
+    "baseUrl": "https://www.youtube.com",
+    "status": "idle",
+    "createdAt": 1723900800000,
+    "updatedAt": 1723900800000,
+    "lastRunAt": null,
+    "lastRestartAt": null,
+    "runCount": 0,
+    "restartCount": 0,
+    "scheduleEnabled": false,
+    "scheduleIntervalMs": null,
+    "retryCount": 3,
+    "retryDelayMs": 1000,
+    "resumeOnRestart": true,
+    "lastError": null,
+    "steps": [
+      {
+        "id": "step-1",
+        "type": "loopVideo",
+        "title": "Loop YouTube Video",
+        "payload": {
+          "url": "https://youtu.be/HG9ADPh1gQM?si=ovKdwakgeABKGJ9h",
+          "maxLoops": 0,
+          "loopDelayMs": 2000,
+          "enableHumanBehavior": true,
+          "setVideoQuality": "240",
+          "clearSessionFirst": true,
+          "useYouTubeLoopUrl": true
+        }
+      }
+    ],
+    "history": []
+  },
+  {
+    "id": "e3c27762-f332-4cad-ae32-d3a65984712e",
+    "name": "RT",
+    "description": "RT",
+    "baseUrl": "https://youtu.be/HG9ADPh1gQM?si=ovKdwakgeABKGJ9h",
+    "status": "idle",
+    "createdAt": 1787337753377,
+    "updatedAt": 1787337753377,
+    "runCount": 0,
+    "restartCount": 0,
+    "scheduleEnabled": false,
+    "scheduleIntervalMs": 60000,
+    "retryCount": 1,
+    "retryDelayMs": 2000,
+    "resumeOnRestart": true,
+    "steps": [
+      {
+        "id": "1cc05f2c-f303-4643-b40b-6203f427113b",
+        "type": "navigate",
+        "title": "Navigate",
+        "payload": {
+          "url": "https://example.comhttps://youtu.be/HG9ADPh1gQM?si=ovKdwakgeABKGJ9h",
+          "waitUntil": "domcontentloaded",
+          "clearSessionFirst": true,
+          "handleYouTubeConsent": true
+        }
+      }
+    ],
+    "history": []
+  }
+]

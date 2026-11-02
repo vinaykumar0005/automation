@@ -1,0 +1,437 @@
+2026-08-05T23:47:39.047Z [info] PluginManager initialized with 0 plugins
+2026-08-05T23:49:10.370Z [info] Loaded 113 proxies from proxies.txt
+2026-08-05T23:50:33.853Z [info] PluginManager disposed
+2026-08-06T18:28:24.241Z [info] PluginManager initialized with 0 plugins
+2026-08-06T18:29:35.015Z [info] Loaded 113 proxies from proxies.txt
+2026-08-06T18:47:54.961Z [info] PluginManager disposed
+2026-08-06T18:51:08.320Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-06T18:51:08.624Z [info] PluginManager initialized with 1 plugins
+2026-08-06T18:58:53.936Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-06T18:58:53.944Z [info] PluginManager initialized with 1 plugins
+2026-08-06T19:03:51.886Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-06T19:03:51.895Z [info] PluginManager initialized with 1 plugins
+2026-08-06T19:07:32.262Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-06T19:07:32.271Z [info] PluginManager initialized with 1 plugins
+2026-08-06T19:08:48.803Z [info] Loaded 113 proxies from proxies.txt
+2026-08-07T01:48:31.066Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-07T01:48:31.071Z [info] PluginManager initialized with 1 plugins
+2026-08-07T02:05:36.140Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-07T02:05:37.124Z [info] PluginManager initialized with 1 plugins
+2026-08-07T16:37:26.263Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-07T16:37:27.975Z [info] PluginManager initialized with 1 plugins
+2026-08-07T16:39:22.507Z [info] Loaded 113 proxies from proxies.txt
+2026-08-07T16:41:54.870Z [info] PluginManager disposed
+2026-08-07T16:42:48.537Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-07T16:42:48.547Z [info] PluginManager initialized with 1 plugins
+2026-08-07T16:44:50.666Z [info] Loaded 113 proxies from proxies.txt
+2026-08-07T16:45:14.235Z [error] UnhandledRejection ERR_CONNECTION_REFUSED (-102) loading 'http://localhost:5173/'
+Error: ERR_CONNECTION_REFUSED (-102) loading 'http://localhost:5173/'
+    at rejectAndCleanup (node:electron/js2c/browser_init:2:90161)
+    at WebContents.finishListener (node:electron/js2c/browser_init:2:90323)
+    at WebContents.emit (node:events:509:28)
+2026-08-07T16:52:20.859Z [info] PluginManager disposed
+2026-08-07T18:08:40.396Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-07T18:08:40.804Z [info] PluginManager initialized with 1 plugins
+2026-08-07T18:08:44.603Z [info] proxies.txt not found - starting with no proxies
+2026-08-07T18:20:05.997Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-07T18:20:06.654Z [info] PluginManager initialized with 1 plugins
+2026-08-07T18:20:10.784Z [info] proxies.txt not found - starting with no proxies
+2026-08-07T18:23:03.347Z [info] PluginManager disposed
+2026-08-07T18:23:48.386Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-07T18:23:48.422Z [info] PluginManager initialized with 1 plugins
+2026-08-07T18:25:07.214Z [info] Loaded 113 proxies from proxies.txt
+2026-08-07T18:48:06.032Z [info] PluginManager disposed
+2026-08-07T20:19:57.918Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-07T20:19:57.927Z [info] PluginManager initialized with 1 plugins
+2026-08-07T20:20:01.048Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-08T13:00:47.872Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-08T13:00:47.887Z [info] PluginManager initialized with 1 plugins
+2026-08-08T13:00:50.309Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-08T13:05:51.092Z [info] PluginManager disposed
+2026-08-08T13:06:20.150Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-08T13:06:20.166Z [info] PluginManager initialized with 1 plugins
+2026-08-08T13:06:21.571Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-08T13:31:27.445Z [info] PluginManager disposed
+2026-08-08T19:13:54.326Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-08T19:13:54.346Z [info] PluginManager initialized with 1 plugins
+2026-08-08T19:13:59.156Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-08T19:36:30.836Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-08T19:36:30.853Z [info] PluginManager initialized with 1 plugins
+2026-08-08T19:36:35.397Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-08T19:47:31.380Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-08T19:47:31.400Z [info] PluginManager initialized with 1 plugins
+2026-08-08T19:47:35.594Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-08T20:02:23.376Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-08T20:02:23.451Z [info] PluginManager initialized with 1 plugins
+2026-08-08T20:02:26.312Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-08T20:11:42.590Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-08T20:11:42.598Z [info] PluginManager initialized with 1 plugins
+2026-08-08T20:11:44.723Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-08T20:21:50.043Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-08T20:21:50.053Z [info] PluginManager initialized with 1 plugins
+2026-08-08T20:21:52.981Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-09T00:29:05.918Z [info] PluginManager disposed
+2026-08-09T00:29:05.929Z [info] PluginManager disposed
+2026-08-09T00:29:06.646Z [info] PluginManager disposed
+2026-08-09T00:29:53.453Z [info] PluginManager disposed
+2026-08-09T00:29:55.780Z [info] PluginManager disposed
+2026-08-09T00:29:57.333Z [info] PluginManager disposed
+2026-08-09T00:32:04.951Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-09T00:32:04.962Z [info] PluginManager initialized with 1 plugins
+2026-08-09T00:32:08.024Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-09T00:32:36.980Z [error] UnhandledRejection ERR_FAILED (-2) loading 'http://localhost:5173'
+Error: ERR_FAILED (-2) loading 'http://localhost:5173'
+    at rejectAndCleanup (node:electron/js2c/browser_init:2:90161)
+    at finishListener (node:electron/js2c/browser_init:2:90323)
+    at WebContents.stopLoadingListener (node:electron/js2c/browser_init:2:90710)
+    at WebContents.emit (node:events:509:28)
+2026-08-09T00:39:04.371Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-09T00:39:04.385Z [info] PluginManager initialized with 1 plugins
+2026-08-09T00:39:06.705Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-09T00:41:29.212Z [info] PluginManager disposed
+2026-08-09T01:00:53.030Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-09T01:00:53.268Z [info] PluginManager initialized with 1 plugins
+2026-08-09T01:00:55.042Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-09T01:16:08.387Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-09T01:16:08.402Z [info] PluginManager initialized with 1 plugins
+2026-08-09T01:16:12.607Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-09T01:27:07.044Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-09T01:27:07.058Z [info] PluginManager initialized with 1 plugins
+2026-08-09T01:27:10.825Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-09T04:12:57.563Z [info] PluginManager disposed
+2026-08-09T04:12:58.510Z [info] PluginManager disposed
+2026-08-09T04:12:59.822Z [info] PluginManager disposed
+2026-08-09T04:48:05.199Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-09T04:48:05.954Z [info] PluginManager initialized with 1 plugins
+2026-08-09T04:48:09.754Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-09T05:28:31.509Z [info] PluginManager disposed
+2026-08-09T06:36:16.446Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-09T06:36:16.753Z [info] PluginManager initialized with 1 plugins
+2026-08-09T06:36:22.470Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-09T07:36:10.204Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-09T07:36:10.968Z [info] PluginManager initialized with 1 plugins
+2026-08-09T07:36:15.226Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-09T09:25:32.842Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-09T09:25:32.864Z [info] PluginManager initialized with 1 plugins
+2026-08-09T09:25:35.420Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-09T10:19:47.381Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-09T10:19:47.654Z [info] PluginManager initialized with 1 plugins
+2026-08-09T10:19:50.461Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-09T10:29:19.494Z [info] PluginManager disposed
+2026-08-09T10:30:51.970Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-09T10:30:52.001Z [info] PluginManager initialized with 1 plugins
+2026-08-09T10:30:53.090Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-09T11:09:31.413Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-09T11:09:31.444Z [info] PluginManager initialized with 1 plugins
+2026-08-09T11:09:32.600Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-11T19:03:40.219Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-11T19:03:40.232Z [info] PluginManager initialized with 1 plugins
+2026-08-11T19:03:42.460Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-11T19:29:42.951Z [info] PluginManager disposed
+2026-08-12T18:45:42.133Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-12T18:45:42.167Z [info] PluginManager initialized with 1 plugins
+2026-08-12T18:45:45.493Z [info] Loaded 46 proxies from proxies.txt (validating in background)
+2026-08-12T18:54:38.215Z [info] PluginManager disposed
+2026-08-12T18:55:07.684Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-12T18:55:07.698Z [info] PluginManager initialized with 1 plugins
+2026-08-12T18:55:10.015Z [info] Loaded 46 proxies from proxies.txt (validating in background)
+2026-08-12T18:59:07.055Z [info] PluginManager disposed
+2026-08-12T19:21:13.233Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-12T19:21:13.241Z [info] PluginManager initialized with 1 plugins
+2026-08-12T19:21:14.977Z [info] Loaded 46 proxies from proxies.txt (validating in background)
+2026-08-12T19:24:39.580Z [info] PluginManager disposed
+2026-08-13T00:14:20.547Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-13T00:14:20.565Z [info] PluginManager initialized with 1 plugins
+2026-08-13T00:14:21.286Z [info] Loaded 46 proxies from proxies.txt (validating in background)
+2026-08-13T00:21:01.540Z [info] PluginManager disposed
+2026-08-13T00:21:31.828Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-13T00:21:31.848Z [info] PluginManager initialized with 1 plugins
+2026-08-13T00:21:32.534Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-13T00:28:51.306Z [info] PluginManager disposed
+2026-08-13T01:16:46.650Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-13T01:16:46.681Z [info] PluginManager initialized with 1 plugins
+2026-08-13T01:17:02.730Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-13T02:24:54.865Z [info] PluginManager disposed
+2026-08-13T19:06:26.758Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-13T19:06:26.772Z [info] PluginManager initialized with 1 plugins
+2026-08-13T19:06:28.023Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-13T19:09:19.341Z [info] PluginManager disposed
+2026-08-13T19:09:46.469Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-13T19:09:46.475Z [info] PluginManager initialized with 1 plugins
+2026-08-13T19:09:47.160Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-13T19:44:49.979Z [info] PluginManager disposed
+2026-08-13T19:48:20.539Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-13T19:48:20.558Z [info] PluginManager initialized with 1 plugins
+2026-08-13T19:48:22.624Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-15T19:46:07.638Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-15T19:46:07.647Z [info] PluginManager initialized with 1 plugins
+2026-08-15T19:46:09.884Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-16T02:04:17.086Z [info] PluginManager disposed
+2026-08-17T20:16:35.922Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-17T20:24:23.027Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-17T20:26:36.941Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-18T13:27:06.253Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-18T17:39:29.253Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-18T18:05:44.115Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-18T18:19:19.065Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-18T18:19:19.069Z [info] PluginManager initialized with 1 plugins
+2026-08-18T18:23:54.823Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-18T18:50:38.976Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-18T18:50:38.980Z [info] PluginManager initialized with 1 plugins
+2026-08-18T18:55:01.347Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-18T19:08:58.881Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-18T19:08:58.886Z [info] PluginManager initialized with 1 plugins
+2026-08-18T19:13:30.789Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-19T19:21:40.961Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-19T19:21:41.711Z [info] PluginManager initialized with 1 plugins
+2026-08-19T19:26:11.612Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-20T18:14:00.130Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-20T18:14:00.601Z [info] PluginManager initialized with 1 plugins
+2026-08-20T18:18:29.508Z [info] Loaded 113 proxies from proxies.txt (validating in background)
+2026-08-20T18:43:56.227Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-20T18:43:56.230Z [info] PluginManager initialized with 1 plugins
+2026-08-20T18:43:56.367Z [info] Loaded 10 proxies from proxies.txt (validating in background)
+2026-08-20T18:53:43.111Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-20T18:53:43.115Z [info] PluginManager initialized with 1 plugins
+2026-08-20T18:53:43.118Z [info] Loaded 10 proxies from proxies.txt (validating in background)
+2026-08-20T18:57:58.556Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-20T18:57:58.561Z [info] PluginManager initialized with 1 plugins
+2026-08-20T18:57:58.566Z [info] Loaded 10 proxies from proxies.txt (validating in background)
+2026-08-20T19:00:50.667Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-20T19:00:50.671Z [info] PluginManager initialized with 1 plugins
+2026-08-20T19:00:50.676Z [info] Loaded 10 proxies from proxies.txt (validating in background)
+2026-08-20T19:02:04.549Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-20T19:02:04.553Z [info] PluginManager initialized with 1 plugins
+2026-08-20T19:02:04.635Z [info] Loaded 10 proxies from proxies.txt (validating in background)
+2026-08-20T19:04:52.682Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-20T19:04:52.687Z [info] PluginManager initialized with 1 plugins
+2026-08-20T19:04:52.693Z [info] Loaded 10 proxies from proxies.txt (validating in background)
+2026-08-20T19:10:54.222Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-20T19:10:54.227Z [info] PluginManager initialized with 1 plugins
+2026-08-20T19:10:54.231Z [info] Loaded 10 proxies from proxies.txt (validating in background)
+2026-08-20T19:19:07.218Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-20T19:19:07.221Z [info] PluginManager initialized with 1 plugins
+2026-08-20T19:19:07.224Z [info] Loaded 10 proxies from proxies.txt (validating in background)
+2026-08-20T19:47:20.855Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-20T19:47:20.858Z [info] PluginManager initialized with 1 plugins
+2026-08-20T19:47:21.439Z [info] Loaded 10 proxies from proxies.txt (validating in background)
+2026-08-20T19:51:59.280Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-20T19:51:59.283Z [info] PluginManager initialized with 1 plugins
+2026-08-20T19:51:59.287Z [info] Loaded 10 proxies from proxies.txt (validating in background)
+2026-08-20T20:23:21.747Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-20T20:23:23.035Z [info] PluginManager initialized with 1 plugins
+2026-08-20T20:23:23.682Z [info] Loaded 10 proxies from proxies.txt (validating in background)
+2026-08-21T01:32:52.019Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-21T01:32:52.023Z [info] PluginManager initialized with 1 plugins
+2026-08-21T01:32:52.028Z [info] Loaded 10 proxies from proxies.txt (validating in background)
+2026-08-21T01:35:38.534Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-21T01:35:38.538Z [info] PluginManager initialized with 1 plugins
+2026-08-21T01:35:38.543Z [info] Loaded 10 proxies from proxies.txt (validating in background)
+2026-08-21T12:40:17.427Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-21T12:40:18.293Z [info] PluginManager initialized with 1 plugins
+2026-08-21T12:40:18.576Z [info] Loaded 10 proxies from proxies.txt (validating in background)
+2026-08-21T12:40:39.746Z [error] UnhandledRejection ERR_FAILED (-2) loading 'http://localhost:5173'
+Error: ERR_FAILED (-2) loading 'http://localhost:5173'
+    at rejectAndCleanup (node:electron/js2c/browser_init:2:90161)
+    at finishListener (node:electron/js2c/browser_init:2:90323)
+    at WebContents.stopLoadingListener (node:electron/js2c/browser_init:2:90710)
+    at WebContents.emit (node:events:509:28)
+2026-08-21T17:33:03.566Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-21T17:33:04.475Z [info] PluginManager initialized with 1 plugins
+2026-08-21T17:33:05.040Z [info] Loaded 10 proxies from proxies.txt (validating in background)
+2026-08-21T18:01:13.588Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-21T18:01:13.668Z [info] PluginManager initialized with 1 plugins
+2026-08-21T18:01:13.671Z [info] Loaded 2 proxies from proxies.txt (validating in background)
+2026-08-21T18:01:56.412Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-21T18:01:56.415Z [info] PluginManager initialized with 1 plugins
+2026-08-21T18:01:56.419Z [info] Loaded 1 proxies from proxies.txt (validating in background)
+2026-08-22T19:59:33.196Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-22T19:59:33.323Z [info] PluginManager initialized with 1 plugins
+2026-08-22T19:59:33.427Z [info] Loaded 1 proxies from proxies.txt (validating in background)
+2026-08-24T17:09:39.803Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-24T17:09:39.904Z [info] PluginManager initialized with 1 plugins
+2026-08-24T17:09:39.936Z [info] Loaded 1 proxies from proxies.txt (validating in background)
+2026-08-24T18:51:12.474Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-24T18:51:13.395Z [info] PluginManager initialized with 1 plugins
+2026-08-24T18:51:13.494Z [info] Loaded 1 proxies from proxies.txt (validating in background)
+2026-08-25T17:16:05.149Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-25T17:16:05.221Z [info] PluginManager initialized with 1 plugins
+2026-08-25T17:16:05.378Z [info] Loaded 1 proxies from proxies.txt (validating in background)
+2026-08-25T19:22:25.422Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-25T19:22:26.209Z [info] PluginManager initialized with 1 plugins
+2026-08-25T19:22:26.475Z [info] Loaded 1 proxies from proxies.txt (validating in background)
+2026-08-28T15:59:32.495Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-28T15:59:33.432Z [info] PluginManager initialized with 1 plugins
+2026-08-28T15:59:33.709Z [info] Loaded 1 proxies from proxies.txt (validating in background)
+2026-08-28T16:41:17.834Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-28T16:41:17.839Z [info] PluginManager initialized with 1 plugins
+2026-08-28T16:41:17.887Z [info] Loaded 1 proxies from proxies.txt (validating in background)
+2026-08-30T16:51:26.487Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-30T16:51:26.490Z [info] PluginManager initialized with 1 plugins
+2026-08-30T16:51:26.493Z [info] Loaded 1 proxies from proxies.txt (validating in background)
+2026-08-30T17:52:24.192Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-30T17:52:24.197Z [info] PluginManager initialized with 1 plugins
+2026-08-30T17:52:24.201Z [info] Loaded 1 proxies from proxies.txt (validating in background)
+2026-08-31T17:21:48.007Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-31T17:21:48.011Z [info] PluginManager initialized with 1 plugins
+2026-08-31T17:21:48.226Z [info] Loaded 1 proxies from proxies.txt (validating in background)
+2026-08-31T17:27:00.363Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-31T17:27:00.367Z [info] PluginManager initialized with 1 plugins
+2026-08-31T17:27:00.371Z [info] Loaded 1 proxies from proxies.txt (validating in background)
+2026-08-31T18:24:41.593Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-31T18:24:41.598Z [info] PluginManager initialized with 1 plugins
+2026-08-31T18:24:41.603Z [info] Loaded 1 proxies from proxies.txt (validating in background)
+2026-08-31T18:27:46.804Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-31T18:27:46.808Z [info] PluginManager initialized with 1 plugins
+2026-08-31T18:27:46.813Z [info] Loaded 1 proxies from proxies.txt (validating in background)
+2026-08-31T18:42:48.287Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-08-31T18:42:48.291Z [info] PluginManager initialized with 1 plugins
+2026-08-31T18:42:48.296Z [info] Loaded 1 proxies from proxies.txt (validating in background)
+2026-09-03T17:38:04.547Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-09-03T17:38:04.549Z [info] PluginManager initialized with 1 plugins
+2026-09-03T17:38:04.552Z [info] Loaded 1 proxies from proxies.txt (validating in background)
+2026-09-03T18:15:00.149Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-09-03T18:15:00.153Z [info] PluginManager initialized with 1 plugins
+2026-09-03T18:15:00.156Z [info] Loaded 1 proxies from proxies.txt (validating in background)
+2026-09-10T18:29:00.404Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-09-10T18:29:00.461Z [info] PluginManager initialized with 1 plugins
+2026-09-10T18:29:00.531Z [info] proxies.txt not found - starting with no proxies
+2026-09-10T18:38:48.838Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-09-10T18:38:48.844Z [info] PluginManager initialized with 1 plugins
+2026-09-10T18:38:48.846Z [info] proxies.txt not found - starting with no proxies
+2026-09-13T15:15:09.858Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-09-13T15:15:11.727Z [info] PluginManager initialized with 1 plugins
+2026-09-13T15:15:12.221Z [info] Loaded 1 proxies from proxies.txt (validating in background)
+2026-09-13T15:16:20.980Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-09-13T15:16:22.222Z [info] PluginManager initialized with 1 plugins
+2026-09-13T15:16:24.731Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-09-13T15:16:24.746Z [info] PluginManager initialized with 1 plugins
+2026-09-13T15:16:22.785Z [info] proxies.txt not found - starting with no proxies
+2026-09-13T15:16:46.287Z [info] Loading file:
+2026-09-13T15:16:24.758Z [info] proxies.txt not found - starting with no proxies
+2026-09-13T15:16:46.287Z [info] Loading file:
+2026-09-13T15:16:29.469Z [info] Loading from dev server:
+2026-09-13T15:17:20.265Z [info] Window is ready to show
+2026-09-13T15:17:20.265Z [info] Window is ready to show
+2026-09-13T15:17:20.532Z [info] Window was shown
+2026-09-13T15:17:20.532Z [info] Window was shown
+2026-09-13T15:38:07.474Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-09-13T15:38:07.478Z [info] PluginManager initialized with 1 plugins
+2026-09-13T15:38:07.479Z [info] proxies.txt not found - starting with no proxies
+2026-09-13T15:38:07.569Z [info] Loading file:
+2026-09-13T15:38:22.615Z [info] Window is ready to show
+2026-09-13T15:38:22.636Z [info] Window was shown
+2026-09-13T15:39:48.708Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-09-13T15:39:48.711Z [info] PluginManager initialized with 1 plugins
+2026-09-13T15:39:48.715Z [info] Loaded 1 proxies from proxies.txt (validating in background)
+2026-09-13T15:39:48.823Z [info] Loading from dev server:
+2026-09-13T15:40:09.235Z [info] Window is ready to show
+2026-09-13T15:40:09.441Z [info] Window was shown
+2026-09-13T15:48:25.257Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-09-13T15:48:25.260Z [info] PluginManager initialized with 1 plugins
+2026-09-13T15:48:25.277Z [info] Loaded 1 proxies from proxies.txt (validating in background)
+2026-09-13T15:48:25.376Z [info] Loading test file:
+2026-09-13T15:48:44.911Z [error] Failed to load:
+2026-09-13T15:48:45.418Z [info] Frame finished loading
+2026-09-13T15:48:45.450Z [error] UnhandledRejection ERR_FILE_NOT_FOUND (-6) loading 'file:///F:/automation/modified-automation-app%20v1.2%20fcc/build/test.html'
+Error: ERR_FILE_NOT_FOUND (-6) loading 'file:///F:/automation/modified-automation-app%20v1.2%20fcc/build/test.html'
+    at rejectAndCleanup (node:electron/js2c/browser_init:2:90161)
+    at WebContents.finishListener (node:electron/js2c/browser_init:2:90323)
+    at WebContents.emit (node:events:509:28)
+2026-09-13T15:48:45.452Z [info] Window is ready to show
+2026-09-13T15:48:45.469Z [info] Window was shown
+2026-09-13T15:54:36.646Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-09-13T15:54:36.649Z [info] PluginManager initialized with 1 plugins
+2026-09-13T15:54:36.651Z [info] proxies.txt not found - starting with no proxies
+2026-09-13T16:12:02.859Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-09-13T16:12:02.862Z [info] PluginManager initialized with 1 plugins
+2026-09-13T16:12:02.864Z [info] proxies.txt not found - starting with no proxies
+2026-09-13T16:17:48.275Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-09-13T16:17:48.278Z [info] PluginManager initialized with 1 plugins
+2026-09-13T16:17:48.279Z [info] proxies.txt not found - starting with no proxies
+2026-09-13T16:18:39.623Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-09-13T16:18:39.626Z [info] PluginManager initialized with 1 plugins
+2026-09-13T16:18:39.627Z [info] proxies.txt not found - starting with no proxies
+2026-09-13T16:20:30.803Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-09-13T16:20:30.806Z [info] PluginManager initialized with 1 plugins
+2026-09-13T16:20:30.808Z [info] proxies.txt not found - starting with no proxies
+2026-09-13T16:33:29.974Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-09-13T16:33:29.977Z [info] PluginManager initialized with 1 plugins
+2026-09-13T16:33:29.978Z [info] proxies.txt not found - starting with no proxies
+2026-09-13T16:33:46.717Z [info] Main frame finished loading
+2026-09-13T16:35:58.280Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-09-13T16:35:58.283Z [info] PluginManager initialized with 1 plugins
+2026-09-13T16:35:58.285Z [info] proxies.txt not found - starting with no proxies
+2026-09-13T16:35:58.992Z [info] Main frame finished loading
+2026-09-13T16:43:30.112Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-09-13T16:43:30.115Z [info] PluginManager initialized with 1 plugins
+2026-09-13T16:43:30.116Z [info] proxies.txt not found - starting with no proxies
+2026-09-13T16:44:03.727Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-09-13T16:44:03.730Z [info] PluginManager initialized with 1 plugins
+2026-09-13T16:44:03.731Z [info] proxies.txt not found - starting with no proxies
+2026-09-13T16:44:18.792Z [info] Main frame finished loading
+2026-09-13T16:45:23.119Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-09-13T16:45:23.122Z [info] PluginManager initialized with 1 plugins
+2026-09-13T16:45:23.124Z [info] proxies.txt not found - starting with no proxies
+2026-09-13T16:45:38.248Z [info] Main frame finished loading
+2026-09-13T16:54:26.375Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-09-13T16:54:26.378Z [info] PluginManager initialized with 1 plugins
+2026-09-13T16:54:26.380Z [info] proxies.txt not found - starting with no proxies
+2026-09-13T16:54:26.381Z [info] Creating BrowserWindow
+2026-09-13T16:54:26.473Z [info] BrowserWindow created
+2026-09-13T16:54:26.484Z [info] Loading URL or file
+2026-09-13T16:54:41.587Z [info] Main frame finished loading
+2026-09-13T16:54:41.588Z [info] Loaded local index.html
+2026-09-13T16:54:41.730Z [info] Window is ready to show
+2026-09-13T16:54:41.731Z [info] Window was shown
+2026-09-13T16:56:18.582Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-09-13T16:56:18.585Z [info] PluginManager initialized with 1 plugins
+2026-09-13T16:56:18.586Z [info] proxies.txt not found - starting with no proxies
+2026-09-13T16:56:18.587Z [info] Creating BrowserWindow
+2026-09-13T16:56:18.659Z [info] BrowserWindow created
+2026-09-13T16:56:18.669Z [info] Loading URL or file
+2026-09-13T16:56:33.647Z [info] Main frame finished loading
+2026-09-13T16:56:33.648Z [info] Loaded local index.html
+2026-09-13T16:56:33.648Z [info] Window is ready to show
+2026-09-13T16:56:33.650Z [info] Window was shown
+2026-09-13T16:59:45.900Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-09-13T16:59:45.903Z [info] PluginManager initialized with 1 plugins
+2026-09-13T16:59:45.905Z [info] proxies.txt not found - starting with no proxies
+2026-09-13T16:59:45.905Z [info] Creating BrowserWindow
+2026-09-13T16:59:46.015Z [info] BrowserWindow created
+2026-09-13T16:59:46.024Z [info] Loading URL or file
+2026-09-13T16:59:46.731Z [info] Main frame finished loading
+2026-09-13T16:59:46.732Z [info] Loaded local index.html
+2026-09-13T16:59:46.889Z [info] Window is ready to show
+2026-09-13T16:59:46.891Z [info] Window was shown
+2026-10-17T19:21:48.508Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-10-17T19:21:48.512Z [info] PluginManager initialized with 1 plugins
+2026-10-17T19:21:48.514Z [info] proxies.txt not found - starting with no proxies
+2026-10-17T19:21:48.516Z [info] Creating BrowserWindow
+2026-10-17T19:21:55.735Z [info] BrowserWindow created
+2026-10-17T19:22:02.253Z [info] Loading URL or file
+2026-10-17T19:22:25.216Z [info] Renderer process became responsive again
+2026-10-17T19:22:33.904Z [info] Main frame finished loading
+2026-10-17T19:22:33.905Z [info] Loaded local index.html
+2026-10-17T19:22:34.005Z [info] Window is ready to show
+2026-10-17T19:22:34.048Z [info] Window was shown
+2026-10-31T17:46:01.971Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-10-31T17:46:01.974Z [info] PluginManager initialized with 1 plugins
+2026-10-31T17:46:17.314Z [info] Loaded 3 proxies from proxies.txt (validating in background)
+2026-10-31T17:46:17.315Z [info] Creating BrowserWindow
+2026-10-31T17:46:19.991Z [info] BrowserWindow created
+2026-10-31T17:46:21.193Z [info] Loading URL or file
+2026-10-31T17:46:51.836Z [info] Window is ready to show
+2026-10-31T17:46:52.031Z [info] Window was shown
+2026-10-31T17:46:52.082Z [info] Main frame finished loading
+2026-10-31T17:46:52.083Z [info] Loaded dev server URL:
+2026-10-31T17:58:33.557Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-10-31T17:58:33.927Z [info] PluginManager initialized with 1 plugins
+2026-10-31T17:58:48.983Z [info] Loaded 3 proxies from proxies.txt (validating in background)
+2026-10-31T17:58:48.984Z [info] Creating BrowserWindow
+2026-10-31T17:58:50.363Z [info] BrowserWindow created
+2026-10-31T17:58:51.322Z [info] Loading URL or file
+2026-10-31T17:59:14.555Z [info] Main frame finished loading
+2026-10-31T17:59:14.556Z [info] Loaded dev server URL:
+2026-10-31T18:00:00.565Z [info] Window is ready to show
+2026-10-31T18:00:00.585Z [info] Window was shown

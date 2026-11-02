@@ -1,0 +1,53 @@
+{
+   "name": "modified-automation-app",
+   "version": "1.2.0",
+   "description": "A powerful Electron-based automation application for browser automation tasks including tab management, task execution, proxy management, and profile-based automation workflows.",
+   "author": "Vinay Kumar <vinaykumar0004@example.com>",
+   "main": "build/main/index.js",
+   "scripts": {
+      "start": "electron .",
+      "dev:renderer": "vite",
+      "dev:backend": "node scripts/build.mjs --watch",
+      "dev": "concurrently \"npm run dev:renderer\" \"npm run dev:backend\" \"npm run dev:electron\"",
+      "dev:electron": "wait-on http://localhost:5173 build/main/index.js && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron .",
+      "build:renderer": "vite build",
+      "build:backend": "node scripts/build.mjs",
+      "build": "npm run build:renderer && npm run build:backend",
+      "typecheck": "npm run typecheck:main && npm run typecheck:preload && npm run typecheck:renderer",
+      "typecheck:main": "tsc -p src/main/tsconfig.json",
+      "typecheck:preload": "tsc -p src/preload/tsconfig.json",
+      "typecheck:renderer": "tsc -p src/renderer/tsconfig.json",
+      "dist": "npm run build && electron-builder",
+      "verify:proxy": "ts-node --project scripts/tsconfig.json scripts/verify-proxy-flow.ts",
+      "playwright:install": "playwright install chromium",
+      "prebuild": "npm run playwright:install"
+   },
+   "dependencies": {
+      "electron-store": "^11.0.2",
+      "p-limit": "^7.3.0",
+      "playwright": "^1.61.1",
+      "winston": "^3.19.0",
+      "zustand": "^5.0.14"
+   },
+   "devDependencies": {
+      "@tailwindcss/vite": "^4.3.2",
+      "@types/node": "^26.0.1",
+      "@types/react": "^19.2.17",
+      "@types/react-dom": "^19.2.3",
+      "@vitejs/plugin-react": "^6.0.3",
+      "autoprefixer": "^10.5.2",
+      "concurrently": "^10.0.3",
+      "cross-env": "^10.1.0",
+      "electron": "^43.0.0",
+      "electron-builder": "^26.15.3",
+      "esbuild": "^0.28.1",
+      "postcss": "^8.5.16",
+      "react": "^19.2.7",
+      "react-dom": "^19.2.7",
+      "tailwindcss": "^4.3.2",
+      "typescript": "^6.0.3",
+      "vite": "^8.1.2",
+      "vitest": "^5.0.0",
+      "wait-on": "^9.0.10"
+   }
+}

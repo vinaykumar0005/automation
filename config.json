@@ -1,0 +1,33 @@
+{
+  "antidetection": {
+    "enabled": true,
+    "trustedInput": true,
+    "poissonMeanMs": 250,
+    "delayMinMs": 90,
+    "delayMaxMs": 900,
+    "jitterPx": 6,
+    "bezierSteps": 12,
+    "preferResidential": false,
+    "resetSession": true,
+    "clearYouTubeTrackerCookies": true,
+    "enableFontProtection": true,
+    "enableAudioVideoProtection": false,
+    "enableNetworkProtection": false,
+    "enablePlaywrightEvasion": true,
+    "enableEnvironmentalConsistency": true,
+    "enableAdvancedCanvasWebGL": true,
+    "enableHeaderRandomization": false,
+    "enableBehavioralBiometrics": false,
+    "enableAdvancedCanvasFingerprinting": false,
+    "enableWebGPUProtection": true,
+    "enableNetworkTrafficShaping": false,
+    "enableMemoryAnalyticsProtection": true,
+    "enableSensorSpoofing": true,
+    "enablePluginEnumerationSpoofing": true,
+    "enableStorageApiProtection": true,
+    "enableCSSMediaQueryProtection": true,
+    "enableFontRenderingVariance": true,
+    "enableAdvancedSessionLifecycle": false,
+    "enableContentAwareEngagement": false
+  }
+}

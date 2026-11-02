@@ -1,0 +1,54 @@
+
+> modified-automation-app@1.2.0 dist
+> npm run build && electron-builder
+
+
+> modified-automation-app@1.2.0 prebuild
+> npm run playwright:install
+
+
+> modified-automation-app@1.2.0 playwright:install
+> playwright install chromium
+
+
+> modified-automation-app@1.2.0 build
+> npm run build:renderer && npm run build:backend
+
+
+> modified-automation-app@1.2.0 build:renderer
+> vite build
+
+[36mvite v8.1.2 [32mbuilding client environment for production...[36m[39m
+[2Ktransforming...✓ 32 modules transformed.
+rendering chunks...
+computing gzip size...
+build/renderer/index.html                   0.40 kB │ gzip:  0.27 kB
+build/renderer/assets/index-qFJIyskq.css   18.06 kB │ gzip:  4.45 kB
+build/renderer/assets/index-B4yst9IL.js   244.05 kB │ gzip: 70.43 kB
+
+[32m✓ built in 364ms[39m
+
+> modified-automation-app@1.2.0 build:backend
+> node scripts/build.mjs
+
+Main + preload built.
+  • electron-builder  version=26.15.3 os=10.0.19045
+  • loaded configuration  file=F:\automation\modified-automation-app v1.2 fcc\electron-builder.yml
+  • executing @electron/rebuild  electronVersion=43.0.0 arch=x64 buildFromSource=false workspaceRoot=F:\automation\modified-automation-app v1.2 fcc projectDir=./ appDir=./
+  • installing native dependencies  arch=x64
+  • completed installing native dependencies
+  • packaging       platform=win32 arch=x64 electron=43.0.0 appOutDir=dist\win-unpacked
+  • downloaded      label=electron progress=100%
+  • downloaded electron zip extracted successfully  output=F:\automation\modified-automation-app v1.2 fcc\dist\win-unpacked
+  • searching for node modules  pm=npm searchDir=F:\automation\modified-automation-app v1.2 fcc
+  • duplicate dependency references  dependencies=["@emnapi/wasi-threads@1.2.2","@emnapi/core@1.11.1","@emnapi/runtime@1.11.1","@tybys/wasm-util@0.10.3","ajv@8.20.0","type-fest@5.7.0","logform@2.7.0","readable-stream@3.6.2"]
+  • file source doesn't exist  from=F:\automation\modified-automation-app v1.2 fcc\node_modules\playwright\.local-browsers
+  • updating asar integrity executable resource  executablePath=dist\win-unpacked\Automation Suite.exe
+  • file source doesn't exist  from=F:\automation\modified-automation-app v1.2 fcc\node_modules\playwright\.local-browsers
+  • default Electron icon is used  reason=application icon is not set
+  • signing with signtool.exe  path=dist\win-unpacked\Automation Suite.exe
+  • building        target=nsis file=dist\Automation Suite Setup 1.2.0.exe archs=x64 oneClick=true perMachine=false
+  • signing with signtool.exe  path=dist\win-unpacked\resources\elevate.exe
+  • signing with signtool.exe  path=dist\Automation Suite Setup 1.2.0.__uninstaller.exe
+  • signing with signtool.exe  path=dist\Automation Suite Setup 1.2.0.exe
+  • building block map  blockMapFile=dist\Automation Suite Setup 1.2.0.exe.blockmap

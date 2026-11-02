@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "WebFetch(domain:support.google.com)",
+      "Bash(node scripts/build.mjs)"
+    ]
+  },
+  "prefersReducedMotion": false,
+  "outputStyle": "default"
+}
