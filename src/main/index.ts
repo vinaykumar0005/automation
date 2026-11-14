@@ -1,4 +1,8 @@
 // src/main/index.ts
+//
+// Fix: 'crashed' is no longer part of the WebContents event typings; Electron
+// emits 'render-process-gone' with a details object carrying reason/exitCode.
+
 import { app, BrowserWindow, shell } from 'electron';
 import path from 'node:path';
 import { readFile } from 'node:fs/promises';
@@ -8,6 +12,7 @@ import { ProxyConfig } from './automation/types';
 import logger from './logging/logger';
 import { configService } from './config/configService';
 const os = require('os');
+
 // Set disk cache directory to avoid access denied errors
 app.commandLine.appendSwitch('disk-cache-dir', path.join(os.tmpdir(), 'electron-cache'));
 
@@ -34,39 +39,33 @@ function parseProxyList(raw: string): ProxyConfig[] {
         parts = line.split(':').map((p) => p.trim());
       }
 
-      // Handle comma-separated or colon-separated format
       if (parts.length === 1) {
-        // Format: server (label auto-generated)
         return { label: `Proxy ${i + 1}`, server: parts[0] };
       } else if (parts.length === 4) {
         // Could be: label,server,username,password OR ip:port:username:password
-        // Heuristic: if first part contains a dot and looks like an IP address/domain,
-        // treat as ip:port:username:password format
         const firstPart = parts[0];
-        const isIpAddress = /^[\d\.]+$/.test(firstPart) ||
-                           /^[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9](\.[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])*$/.test(firstPart);
+        const isIpAddress =
+          /^[\d\.]+$/.test(firstPart) ||
+          /^[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9](\.[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])*$/.test(firstPart);
 
         if (isIpAddress) {
-          // Format: ip:port:username:password
           const [ip, port, username, password] = parts;
           return {
             label: `Proxy ${i + 1}`,
             server: `${ip}:${port}`,
             username: username || undefined,
-            password: password || undefined
+            password: password || undefined,
           };
         } else {
-          // Format: label,server,username,password
           const [label, server, username, password] = parts;
           return {
             label: label || `Proxy ${i + 1}`,
             server,
             username: username || undefined,
-            password: password || undefined
+            password: password || undefined,
           };
         }
       } else {
-        // Fallback: treat as server only
         return { label: `Proxy ${i + 1}`, server: line };
       }
     });
@@ -74,14 +73,12 @@ function parseProxyList(raw: string): ProxyConfig[] {
 
 async function loadProxiesFromFile(): Promise<ProxyConfig[]> {
   try {
-    // Look for proxies.txt in the app directory
     const appPath = getAppPath();
     const proxiesPath = path.join(appPath, 'proxies.txt');
 
     const content = await readFile(proxiesPath, 'utf8');
     return parseProxyList(content);
   } catch (err: any) {
-    // File doesn't exist or other error - not fatal
     if (err.code === 'ENOENT') {
       logger.info('proxies.txt not found - starting with no proxies');
     } else {
@@ -94,38 +91,28 @@ async function loadProxiesFromFile(): Promise<ProxyConfig[]> {
 // Helper function to get the correct base path for app data
 const getAppPath = () => {
   try {
-    // When packaged, use the directory containing the executable
     if (app.isPackaged) {
-      // In packaged apps, the executable is in a different location than the app.asar
-      // We want to use the directory where the executable resides for user data
       const exePath = app.getPath('exe');
       if (exePath) {
         return path.dirname(exePath);
       }
-      // Fallback to app.getAppPath() if exePath fails
       return app.getAppPath();
     }
 
-    // When not packaged (development), use the current working directory
-    // or the directory of the main script
     try {
-      // Try to get the app path first
       const appPath = app.getAppPath();
       if (appPath) {
         return appPath;
       }
-    } catch (e) {
-      // Ignore errors and continue to fallbacks
+    } catch {
+      /* ignore */
     }
 
-    // Fallback to current working directory
     return process.cwd();
-  } catch (e) {
-    // Final fallback to ensure we always return a valid path
+  } catch {
     try {
       return path.resolve('.');
     } catch {
-      // Last resort - use system temp directory
       return require('os').tmpdir();
     }
   }
@@ -145,7 +132,7 @@ async function createWindow() {
       sandbox: true,
     },
     titleBarStyle: 'hiddenInset',
-    show: true, // Show immediately for debugging
+    show: true,
   });
 
   logger.info('BrowserWindow created');
@@ -157,19 +144,20 @@ async function createWindow() {
     logger.info('Window was shown');
   });
 
-  mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL, isMainFrame) => {
+  mainWindow.webContents.on('did-fail-load', (_event, errorCode, errorDescription, validatedURL) => {
     logger.error('Failed to load URL:', validatedURL, errorCode, errorDescription);
   });
 
-  mainWindow.webContents.on('did-frame-finish-load', (event, isMainFrame) => {
+  mainWindow.webContents.on('did-frame-finish-load', (_event, isMainFrame) => {
     if (isMainFrame) {
       logger.info('Main frame finished loading');
     }
   });
 
-  // Listen for renderer process crashes
-  mainWindow.webContents.on('crashed', (event) => {
-    logger.error('Renderer process crashed');
+  // Renderer process crashes. 'crashed' is gone from the typings; this is the
+  // current event and it carries a reason.
+  mainWindow.webContents.on('render-process-gone', (_event, details) => {
+    logger.error(`Renderer process gone: ${details.reason} (exitCode ${details.exitCode})`);
   });
 
   mainWindow.webContents.on('unresponsive', () => {
@@ -180,7 +168,6 @@ async function createWindow() {
     logger.info('Renderer process became responsive again');
   });
 
-  // Open DevTools for debugging in both development and production
   mainWindow.webContents.openDevTools();
 
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
@@ -200,22 +187,19 @@ async function createWindow() {
 }
 
 app.whenReady().then(async () => {
-  // Get configuration
   const proxyConfig = configService.getProxyConfig();
-  controller = new BrowserController(); // Fixed: no parameters needed
-  await controller.init();                        // ✅ launch Chromium first, properly awaited
+  controller = new BrowserController();
+  await controller.init();
 
-  // Load proxies from file if available and proxy is enabled
   if (proxyConfig.enabled) {
     const proxies = await loadProxiesFromFile();
     if (proxies.length > 0) {
-      // Use async non-blocking version to avoid blocking UI startup
       await controller.setProxiesAsync(proxies, proxyConfig.strategy);
       logger.info(`Loaded ${proxies.length} proxies from proxies.txt (validating in background)`);
     }
   }
 
-  controller.attachBroadcast(() => mainWindow);    // ✅ wire event broadcast
+  controller.attachBroadcast(() => mainWindow);
   registerIpcHandlers(controller, () => mainWindow);
   await createWindow();
 

@@ -1304,7 +1304,7 @@ var require_safe_stable_stringify = __commonJS({
               return circularValue;
             }
             let res = "";
-            let join4 = ",";
+            let join5 = ",";
             const originalIndentation = indentation;
             if (Array.isArray(value)) {
               if (value.length === 0) {
@@ -1318,7 +1318,7 @@ var require_safe_stable_stringify = __commonJS({
                 indentation += spacer;
                 res += `
 ${indentation}`;
-                join4 = `,
+                join5 = `,
 ${indentation}`;
               }
               const maximumValuesToStringify = Math.min(value.length, maximumBreadth);
@@ -1326,13 +1326,13 @@ ${indentation}`;
               for (; i < maximumValuesToStringify - 1; i++) {
                 const tmp2 = stringifyFnReplacer(String(i), value, stack, replacer, spacer, indentation);
                 res += tmp2 !== void 0 ? tmp2 : "null";
-                res += join4;
+                res += join5;
               }
               const tmp = stringifyFnReplacer(String(i), value, stack, replacer, spacer, indentation);
               res += tmp !== void 0 ? tmp : "null";
               if (value.length - 1 > maximumBreadth) {
                 const removedKeys = value.length - maximumBreadth - 1;
-                res += `${join4}"... ${getItemCount(removedKeys)} not stringified"`;
+                res += `${join5}"... ${getItemCount(removedKeys)} not stringified"`;
               }
               if (spacer !== "") {
                 res += `
@@ -1353,7 +1353,7 @@ ${originalIndentation}`;
             let separator = "";
             if (spacer !== "") {
               indentation += spacer;
-              join4 = `,
+              join5 = `,
 ${indentation}`;
               whitespace = " ";
             }
@@ -1367,13 +1367,13 @@ ${indentation}`;
               const tmp = stringifyFnReplacer(key2, value, stack, replacer, spacer, indentation);
               if (tmp !== void 0) {
                 res += `${separator}${strEscape(key2)}:${whitespace}${tmp}`;
-                separator = join4;
+                separator = join5;
               }
             }
             if (keyLength > maximumBreadth) {
               const removedKeys = keyLength - maximumBreadth;
               res += `${separator}"...":${whitespace}"${getItemCount(removedKeys)} not stringified"`;
-              separator = join4;
+              separator = join5;
             }
             if (spacer !== "" && separator.length > 1) {
               res = `
@@ -1414,7 +1414,7 @@ ${originalIndentation}`;
             }
             const originalIndentation = indentation;
             let res = "";
-            let join4 = ",";
+            let join5 = ",";
             if (Array.isArray(value)) {
               if (value.length === 0) {
                 return "[]";
@@ -1427,7 +1427,7 @@ ${originalIndentation}`;
                 indentation += spacer;
                 res += `
 ${indentation}`;
-                join4 = `,
+                join5 = `,
 ${indentation}`;
               }
               const maximumValuesToStringify = Math.min(value.length, maximumBreadth);
@@ -1435,13 +1435,13 @@ ${indentation}`;
               for (; i < maximumValuesToStringify - 1; i++) {
                 const tmp2 = stringifyArrayReplacer(String(i), value[i], stack, replacer, spacer, indentation);
                 res += tmp2 !== void 0 ? tmp2 : "null";
-                res += join4;
+                res += join5;
               }
               const tmp = stringifyArrayReplacer(String(i), value[i], stack, replacer, spacer, indentation);
               res += tmp !== void 0 ? tmp : "null";
               if (value.length - 1 > maximumBreadth) {
                 const removedKeys = value.length - maximumBreadth - 1;
-                res += `${join4}"... ${getItemCount(removedKeys)} not stringified"`;
+                res += `${join5}"... ${getItemCount(removedKeys)} not stringified"`;
               }
               if (spacer !== "") {
                 res += `
@@ -1454,7 +1454,7 @@ ${originalIndentation}`;
             let whitespace = "";
             if (spacer !== "") {
               indentation += spacer;
-              join4 = `,
+              join5 = `,
 ${indentation}`;
               whitespace = " ";
             }
@@ -1463,7 +1463,7 @@ ${indentation}`;
               const tmp = stringifyArrayReplacer(key2, value[key2], stack, replacer, spacer, indentation);
               if (tmp !== void 0) {
                 res += `${separator}${strEscape(key2)}:${whitespace}${tmp}`;
-                separator = join4;
+                separator = join5;
               }
             }
             if (spacer !== "" && separator.length > 1) {
@@ -1521,20 +1521,20 @@ ${originalIndentation}`;
               indentation += spacer;
               let res2 = `
 ${indentation}`;
-              const join5 = `,
+              const join6 = `,
 ${indentation}`;
               const maximumValuesToStringify = Math.min(value.length, maximumBreadth);
               let i = 0;
               for (; i < maximumValuesToStringify - 1; i++) {
                 const tmp2 = stringifyIndent(String(i), value[i], stack, spacer, indentation);
                 res2 += tmp2 !== void 0 ? tmp2 : "null";
-                res2 += join5;
+                res2 += join6;
               }
               const tmp = stringifyIndent(String(i), value[i], stack, spacer, indentation);
               res2 += tmp !== void 0 ? tmp : "null";
               if (value.length - 1 > maximumBreadth) {
                 const removedKeys = value.length - maximumBreadth - 1;
-                res2 += `${join5}"... ${getItemCount(removedKeys)} not stringified"`;
+                res2 += `${join6}"... ${getItemCount(removedKeys)} not stringified"`;
               }
               res2 += `
 ${originalIndentation}`;
@@ -1550,16 +1550,16 @@ ${originalIndentation}`;
               return '"[Object]"';
             }
             indentation += spacer;
-            const join4 = `,
+            const join5 = `,
 ${indentation}`;
             let res = "";
             let separator = "";
             let maximumPropertiesToStringify = Math.min(keyLength, maximumBreadth);
             if (isTypedArrayWithEntries(value)) {
-              res += stringifyTypedArray(value, join4, maximumBreadth);
+              res += stringifyTypedArray(value, join5, maximumBreadth);
               keys = keys.slice(value.length);
               maximumPropertiesToStringify -= value.length;
-              separator = join4;
+              separator = join5;
             }
             if (deterministic) {
               keys = sort(keys, comparator);
@@ -1570,13 +1570,13 @@ ${indentation}`;
               const tmp = stringifyIndent(key2, value[key2], stack, spacer, indentation);
               if (tmp !== void 0) {
                 res += `${separator}${strEscape(key2)}: ${tmp}`;
-                separator = join4;
+                separator = join5;
               }
             }
             if (keyLength > maximumBreadth) {
               const removedKeys = keyLength - maximumBreadth;
               res += `${separator}"...": "${getItemCount(removedKeys)} not stringified"`;
-              separator = join4;
+              separator = join5;
             }
             if (separator !== "") {
               res = `
@@ -3144,7 +3144,7 @@ var require_buffer_list = __commonJS({
         }
       }, {
         key: "join",
-        value: function join4(s) {
+        value: function join5(s) {
           if (this.length === 0) return "";
           var p = this.head;
           var ret = "" + p.data;
@@ -7513,15 +7513,15 @@ var require_index_cjs = __commonJS({
       };
     }
     function wrapConversion(toModel, graph) {
-      const path13 = [graph[toModel].parent, toModel];
+      const path14 = [graph[toModel].parent, toModel];
       let fn = convert$1[graph[toModel].parent][toModel];
       let cur = graph[toModel].parent;
       while (graph[cur].parent) {
-        path13.unshift(graph[cur].parent);
+        path14.unshift(graph[cur].parent);
         fn = link(convert$1[graph[cur].parent][cur], fn);
         cur = graph[cur].parent;
       }
-      fn.conversion = path13;
+      fn.conversion = path14;
       return fn;
     }
     function route(fromModel) {
@@ -8151,7 +8151,7 @@ var require_node2 = __commonJS({
 var require_tail_file = __commonJS({
   "node_modules/winston/lib/winston/tail-file.js"(exports2, module2) {
     "use strict";
-    var fs6 = require("fs");
+    var fs7 = require("fs");
     var { StringDecoder } = require("string_decoder");
     var { Stream } = require_readable();
     function noop() {
@@ -8172,7 +8172,7 @@ var require_tail_file = __commonJS({
         stream.emit("end");
         stream.emit("close");
       };
-      fs6.open(options.file, "a+", "0644", (err, fd) => {
+      fs7.open(options.file, "a+", "0644", (err, fd) => {
         if (err) {
           if (!iter) {
             stream.emit("error", err);
@@ -8184,10 +8184,10 @@ var require_tail_file = __commonJS({
         }
         (function read() {
           if (stream.destroyed) {
-            fs6.close(fd, noop);
+            fs7.close(fd, noop);
             return;
           }
-          return fs6.read(fd, buffer, 0, buffer.length, pos, (error, bytes) => {
+          return fs7.read(fd, buffer, 0, buffer.length, pos, (error, bytes) => {
             if (error) {
               if (!iter) {
                 stream.emit("error", error);
@@ -8246,8 +8246,8 @@ var require_tail_file = __commonJS({
 var require_file = __commonJS({
   "node_modules/winston/lib/winston/transports/file.js"(exports2, module2) {
     "use strict";
-    var fs6 = require("fs");
-    var path13 = require("path");
+    var fs7 = require("fs");
+    var path14 = require("path");
     var asyncSeries = require_series();
     var zlib = require("zlib");
     var { MESSAGE } = require_triple_beam();
@@ -8277,14 +8277,14 @@ var require_file = __commonJS({
         this._onError = this._onError.bind(this);
         if (options.filename || options.dirname) {
           throwIf("filename or dirname", "stream");
-          this._basename = this.filename = options.filename ? path13.basename(options.filename) : "winston.log";
-          this.dirname = options.dirname || path13.dirname(options.filename);
+          this._basename = this.filename = options.filename ? path14.basename(options.filename) : "winston.log";
+          this.dirname = options.dirname || path14.dirname(options.filename);
           this.options = options.options || { flags: "a" };
         } else if (options.stream) {
           console.warn("options.stream will be removed in winston@4. Use winston.transports.Stream");
           throwIf("stream", "filename", "maxsize");
           this._dest = this._stream.pipe(this._setupStream(options.stream));
-          this.dirname = path13.dirname(this._dest.path);
+          this.dirname = path14.dirname(this._dest.path);
         } else {
           throw new Error("Cannot log to file without filename or stream.");
         }
@@ -8447,11 +8447,11 @@ var require_file = __commonJS({
           options = {};
         }
         options = normalizeQuery(options);
-        const file = path13.join(this.dirname, this.filename);
+        const file = path14.join(this.dirname, this.filename);
         let buff = "";
         let results = [];
         let row = 0;
-        const stream = fs6.createReadStream(file, {
+        const stream = fs7.createReadStream(file, {
           encoding: "utf8"
         });
         stream.on("error", (err) => {
@@ -8552,7 +8552,7 @@ var require_file = __commonJS({
        * TODO: Refactor me.
        */
       stream(options = {}) {
-        const file = path13.join(this.dirname, this.filename);
+        const file = path14.join(this.dirname, this.filename);
         const stream = new Stream();
         const tail = {
           file,
@@ -8602,8 +8602,8 @@ var require_file = __commonJS({
        */
       stat(callback) {
         const target = this._getFile();
-        const fullpath = path13.join(this.dirname, target);
-        fs6.stat(fullpath, (err, stat2) => {
+        const fullpath = path14.join(this.dirname, target);
+        fs7.stat(fullpath, (err, stat2) => {
           if (err && err.code === "ENOENT") {
             debug("ENOENT\xA0ok", fullpath);
             this.filename = target;
@@ -8706,9 +8706,9 @@ var require_file = __commonJS({
        * @returns {WritableStream} Stream that writes to disk for the active file.
        */
       _createStream(source) {
-        const fullpath = path13.join(this.dirname, this.filename);
+        const fullpath = path14.join(this.dirname, this.filename);
         debug("create stream start", fullpath, this.options);
-        const dest = fs6.createWriteStream(fullpath, this.options).on("error", (err) => debug(err)).on("close", () => debug("close", dest.path, dest.bytesWritten)).on("open", () => {
+        const dest = fs7.createWriteStream(fullpath, this.options).on("error", (err) => debug(err)).on("close", () => debug("close", dest.path, dest.bytesWritten)).on("open", () => {
           debug("file open ok", fullpath);
           this.emit("open", fullpath);
           source.pipe(dest);
@@ -8731,16 +8731,16 @@ var require_file = __commonJS({
        */
       _incFile(callback) {
         debug("_incFile", this.filename);
-        const ext = path13.extname(this._basename);
-        const basename2 = path13.basename(this._basename, ext);
+        const ext = path14.extname(this._basename);
+        const basename2 = path14.basename(this._basename, ext);
         const tasks = [];
         if (this.zippedArchive) {
           tasks.push(
             function(cb) {
               const num = this._created > 0 && !this.tailable ? this._created : "";
               this._compressFile(
-                path13.join(this.dirname, `${basename2}${num}${ext}`),
-                path13.join(this.dirname, `${basename2}${num}${ext}.gz`),
+                path14.join(this.dirname, `${basename2}${num}${ext}`),
+                path14.join(this.dirname, `${basename2}${num}${ext}.gz`),
                 cb
               );
             }.bind(this)
@@ -8765,8 +8765,8 @@ var require_file = __commonJS({
        * @private
        */
       _getFile() {
-        const ext = path13.extname(this._basename);
-        const basename2 = path13.basename(this._basename, ext);
+        const ext = path14.extname(this._basename);
+        const basename2 = path14.basename(this._basename, ext);
         const isRotation = this.rotationFormat ? this.rotationFormat() : this._created;
         return !this.tailable && this._created ? `${basename2}${isRotation}${ext}` : `${basename2}${ext}`;
       }
@@ -8786,8 +8786,8 @@ var require_file = __commonJS({
         const isOldest = oldest !== 0 ? oldest : "";
         const isZipped = this.zippedArchive ? ".gz" : "";
         const filePath = `${basename2}${isOldest}${ext}${isZipped}`;
-        const target = path13.join(this.dirname, filePath);
-        fs6.unlink(target, callback);
+        const target = path14.join(this.dirname, filePath);
+        fs7.unlink(target, callback);
       }
       /**
        * Roll files forward based on integer, up to maxFiles. e.g. if base if
@@ -8809,20 +8809,20 @@ var require_file = __commonJS({
         for (let x = this.maxFiles - 1; x > 1; x--) {
           tasks.push(function(i, cb) {
             let fileName = `${basename2}${i - 1}${ext}${isZipped}`;
-            const tmppath = path13.join(this.dirname, fileName);
-            fs6.exists(tmppath, (exists) => {
+            const tmppath = path14.join(this.dirname, fileName);
+            fs7.exists(tmppath, (exists) => {
               if (!exists) {
                 return cb(null);
               }
               fileName = `${basename2}${i}${ext}${isZipped}`;
-              fs6.rename(tmppath, path13.join(this.dirname, fileName), cb);
+              fs7.rename(tmppath, path14.join(this.dirname, fileName), cb);
             });
           }.bind(this, x));
         }
         asyncSeries(tasks, () => {
-          fs6.rename(
-            path13.join(this.dirname, `${basename2}${ext}${isZipped}`),
-            path13.join(this.dirname, `${basename2}1${ext}${isZipped}`),
+          fs7.rename(
+            path14.join(this.dirname, `${basename2}${ext}${isZipped}`),
+            path14.join(this.dirname, `${basename2}1${ext}${isZipped}`),
             callback
           );
         });
@@ -8836,22 +8836,22 @@ var require_file = __commonJS({
        * @private
        */
       _compressFile(src, dest, callback) {
-        fs6.access(src, fs6.F_OK, (err) => {
+        fs7.access(src, fs7.F_OK, (err) => {
           if (err) {
             return callback();
           }
           var gzip = zlib.createGzip();
-          var inp = fs6.createReadStream(src);
-          var out = fs6.createWriteStream(dest);
+          var inp = fs7.createReadStream(src);
+          var out = fs7.createWriteStream(dest);
           out.on("finish", () => {
-            fs6.unlink(src, callback);
+            fs7.unlink(src, callback);
           });
           inp.pipe(gzip).pipe(out);
         });
       }
       _createLogDirIfNotExist(dirPath) {
-        if (!fs6.existsSync(dirPath)) {
-          fs6.mkdirSync(dirPath, { recursive: true });
+        if (!fs7.existsSync(dirPath)) {
+          fs7.mkdirSync(dirPath, { recursive: true });
         }
       }
     };
@@ -8935,9 +8935,9 @@ var require_http = __commonJS({
         };
         const auth = options.params.auth || null;
         delete options.params.auth;
-        const path13 = options.params.path || null;
+        const path14 = options.params.path || null;
         delete options.params.path;
-        this._request(options, auth, path13, (err, res, body) => {
+        this._request(options, auth, path14, (err, res, body) => {
           if (res && res.statusCode !== 200) {
             err = new Error(`Invalid HTTP Status Code: ${res.statusCode}`);
           }
@@ -8965,12 +8965,12 @@ var require_http = __commonJS({
           method: "stream",
           params: options
         };
-        const path13 = options.params.path || null;
+        const path14 = options.params.path || null;
         delete options.params.path;
         const auth = options.params.auth || null;
         delete options.params.auth;
         let buff = "";
-        const req = this._request(options, auth, path13);
+        const req = this._request(options, auth, path14);
         stream.destroy = () => req.destroy();
         req.on("data", (data) => {
           data = (buff + data).split(/\n+/);
@@ -8996,14 +8996,14 @@ var require_http = __commonJS({
        * @param {string} path - request path
        * @param {function} callback - Continuation to respond to when complete.
        */
-      _request(options, auth, path13, callback) {
+      _request(options, auth, path14, callback) {
         options = options || {};
         auth = auth || this.auth;
-        path13 = path13 || this.path || "";
+        path14 = path14 || this.path || "";
         if (this.batch) {
-          this._doBatch(options, callback, auth, path13);
+          this._doBatch(options, callback, auth, path14);
         } else {
-          this._doRequest(options, callback, auth, path13);
+          this._doRequest(options, callback, auth, path14);
         }
       }
       /**
@@ -9013,18 +9013,18 @@ var require_http = __commonJS({
        * @param {Object?} auth - authentication options
        * @param {string} path - request path
        */
-      _doBatch(options, callback, auth, path13) {
+      _doBatch(options, callback, auth, path14) {
         this.batchOptions.push(options);
         if (this.batchOptions.length === 1) {
           const me = this;
           this.batchCallback = callback;
           this.batchTimeoutID = setTimeout(function() {
             me.batchTimeoutID = -1;
-            me._doBatchRequest(me.batchCallback, auth, path13);
+            me._doBatchRequest(me.batchCallback, auth, path14);
           }, this.batchInterval);
         }
         if (this.batchOptions.length === this.batchCount) {
-          this._doBatchRequest(this.batchCallback, auth, path13);
+          this._doBatchRequest(this.batchCallback, auth, path14);
         }
       }
       /**
@@ -9033,14 +9033,14 @@ var require_http = __commonJS({
        * @param {Object?} auth - authentication options
        * @param {string} path - request path
        */
-      _doBatchRequest(callback, auth, path13) {
+      _doBatchRequest(callback, auth, path14) {
         if (this.batchTimeoutID > 0) {
           clearTimeout(this.batchTimeoutID);
           this.batchTimeoutID = -1;
         }
         const batchOptionsCopy = this.batchOptions.slice();
         this.batchOptions = [];
-        this._doRequest(batchOptionsCopy, callback, auth, path13);
+        this._doRequest(batchOptionsCopy, callback, auth, path14);
       }
       /**
        * Make a request to a winstond server or any http server which can
@@ -9050,7 +9050,7 @@ var require_http = __commonJS({
        * @param {Object?} auth - authentication options
        * @param {string} path - request path
        */
-      _doRequest(options, callback, auth, path13) {
+      _doRequest(options, callback, auth, path14) {
         const headers = Object.assign({}, this.headers);
         if (auth && auth.bearer) {
           headers.Authorization = `Bearer ${auth.bearer}`;
@@ -9060,7 +9060,7 @@ var require_http = __commonJS({
           method: "POST",
           host: this.host,
           port: this.port,
-          path: `/${path13.replace(/^\//, "")}`,
+          path: `/${path14.replace(/^\//, "")}`,
           headers,
           auth: auth && auth.username && auth.password ? `${auth.username}:${auth.password}` : "",
           agent: this.agent
@@ -10773,16 +10773,16 @@ function processSegment(segment, parts) {
   }
   return true;
 }
-function parsePath(path13) {
-  if (typeof path13 !== "string") {
-    throw new TypeError(`Expected a string, got ${typeof path13}`);
+function parsePath(path14) {
+  if (typeof path14 !== "string") {
+    throw new TypeError(`Expected a string, got ${typeof path14}`);
   }
   const parts = [];
   let currentSegment = "";
   let currentPart = "start";
   let isEscaping = false;
   let position = 0;
-  for (const character of path13) {
+  for (const character of path14) {
     position++;
     if (isEscaping) {
       currentSegment += character;
@@ -10892,13 +10892,13 @@ function parsePath(path13) {
   }
   return parts;
 }
-function normalizePath(path13) {
-  if (typeof path13 === "string") {
-    return parsePath(path13);
+function normalizePath(path14) {
+  if (typeof path14 === "string") {
+    return parsePath(path14);
   }
-  if (Array.isArray(path13)) {
+  if (Array.isArray(path14)) {
     const normalized = [];
-    for (const [index, segment] of path13.entries()) {
+    for (const [index, segment] of path14.entries()) {
       if (typeof segment !== "string" && typeof segment !== "number") {
         throw new TypeError(`Expected a string or number for path segment at index ${index}, got ${typeof segment}`);
       }
@@ -10918,11 +10918,11 @@ function normalizePath(path13) {
   }
   return [];
 }
-function getProperty(object, path13, value) {
-  if (!isObject(object) || typeof path13 !== "string" && !Array.isArray(path13)) {
+function getProperty(object, path14, value) {
+  if (!isObject(object) || typeof path14 !== "string" && !Array.isArray(path14)) {
     return value === void 0 ? object : value;
   }
-  const pathArray = normalizePath(path13);
+  const pathArray = normalizePath(path14);
   if (pathArray.length === 0) {
     return value;
   }
@@ -10938,12 +10938,12 @@ function getProperty(object, path13, value) {
   }
   return object === void 0 ? value : object;
 }
-function setProperty(object, path13, value) {
-  if (!isObject(object) || typeof path13 !== "string" && !Array.isArray(path13)) {
+function setProperty(object, path14, value) {
+  if (!isObject(object) || typeof path14 !== "string" && !Array.isArray(path14)) {
     return object;
   }
   const root = object;
-  const pathArray = normalizePath(path13);
+  const pathArray = normalizePath(path14);
   if (pathArray.length === 0) {
     return object;
   }
@@ -10960,11 +10960,11 @@ function setProperty(object, path13, value) {
   }
   return root;
 }
-function deleteProperty(object, path13) {
-  if (!isObject(object) || typeof path13 !== "string" && !Array.isArray(path13)) {
+function deleteProperty(object, path14) {
+  if (!isObject(object) || typeof path14 !== "string" && !Array.isArray(path14)) {
     return false;
   }
-  const pathArray = normalizePath(path13);
+  const pathArray = normalizePath(path14);
   if (pathArray.length === 0) {
     return false;
   }
@@ -10984,11 +10984,11 @@ function deleteProperty(object, path13) {
     }
   }
 }
-function hasProperty(object, path13) {
-  if (!isObject(object) || typeof path13 !== "string" && !Array.isArray(path13)) {
+function hasProperty(object, path14) {
+  if (!isObject(object) || typeof path14 !== "string" && !Array.isArray(path14)) {
     return false;
   }
-  const pathArray = normalizePath(path13);
+  const pathArray = normalizePath(path14);
   if (pathArray.length === 0) {
     return false;
   }
@@ -14775,8 +14775,8 @@ var require_utils = __commonJS({
       }
       return ind;
     }
-    function removeDotSegments(path13) {
-      let input = path13;
+    function removeDotSegments(path14) {
+      let input = path14;
       const output = [];
       let nextSlash = -1;
       let len = 0;
@@ -15028,8 +15028,8 @@ var require_schemes = __commonJS({
         wsComponent.secure = void 0;
       }
       if (wsComponent.resourceName) {
-        const [path13, query] = wsComponent.resourceName.split("?");
-        wsComponent.path = path13 && path13 !== "/" ? path13 : void 0;
+        const [path14, query] = wsComponent.resourceName.split("?");
+        wsComponent.path = path14 && path14 !== "/" ? path14 : void 0;
         wsComponent.query = query;
         wsComponent.resourceName = void 0;
       }
@@ -19246,12 +19246,12 @@ var require_dist = __commonJS({
         throw new Error(`Unknown format "${name}"`);
       return f;
     };
-    function addFormats(ajv, list, fs6, exportName) {
+    function addFormats(ajv, list, fs7, exportName) {
       var _a;
       var _b;
       (_a = (_b = ajv.opts.code).formats) !== null && _a !== void 0 ? _a : _b.formats = (0, codegen_1._)`require("ajv-formats/dist/formats").${exportName}`;
       for (const f of list)
-        ajv.addFormat(f, fs6[f]);
+        ajv.addFormat(f, fs7[f]);
     }
     module2.exports = exports2 = formatsPlugin;
     Object.defineProperty(exports2, "__esModule", { value: true });
@@ -22566,9 +22566,11 @@ function registerIpcHandlers(controller2, getWindow) {
 var import_node_events3 = require("node:events");
 
 // src/main/automation/TabManager.ts
-var import_playwright2 = require("playwright");
+var import_patchright = require("patchright");
 var import_node_events2 = require("node:events");
 var import_node_crypto = require("node:crypto");
+var fs2 = __toESM(require("node:fs/promises"));
+var path3 = __toESM(require("node:path"));
 
 // src/main/automation/ProxyManager.ts
 var import_playwright = require("playwright");
@@ -23066,524 +23068,88 @@ ${stack}` : `${timestamp} [${level}] ${message}`;
 var logger_default = logger;
 
 // src/main/automation/plugins/built-in/videoQuality.ts
+var QUALITY_MAP = {
+  auto: "highres",
+  "1080": "hd1080",
+  "720": "hd720",
+  "480": "large",
+  "360": "medium",
+  "240": "small",
+  "144": "tiny"
+};
 function buildPlaybackWatcherSource(q) {
-  const qualityMap = {
-    "auto": "highres",
-    "1080": "hd1080",
-    "720": "hd720",
-    "480": "large",
-    "360": "medium",
-    "240": "small",
-    "144": "tiny"
-  };
-  const mappedQ = qualityMap[q] || q;
-  const safeQ = typeof mappedQ === "string" && mappedQ.trim() ? mappedQ.trim() : "highres";
-  const arg = JSON.stringify(safeQ);
-  return `(function(q){
-    if (window.__persistVideoQuality !== undefined) return;
-    window.__persistVideoQuality = mappedQ;
+  const literal = JSON.stringify(QUALITY_MAP[q] || q || "highres");
+  return `(function(){
+    // Dedupe by desired quality, not by a boolean.
+    if (window.__vwq === ${literal}) return;
+    window.__vwq = ${literal};
+    var TARGET = ${literal};
 
-    var pick = function () {
-      return document.getElementById('movie_player') || document.querySelector('.html5-video-player');
+    var apply = function(){
+      var p = document.getElementById('movie_player');
+      if (!p) return;
+      try { p.setPlaybackQuality(TARGET); } catch (e) {}
+      try { p.setPlaybackQualityRange(TARGET, TARGET); } catch (e) {}
     };
 
-    var appliedVideo = null;
-    var idleAttempts = 0;
-    var timer = null;
-
-    var applyForCurrentVideo = function (player) {
-      var videoId = null;
-      try {
-        if (typeof player.getVideoData === 'function') {
-          var d = player.getVideoData();
-          videoId = (d && (d.video_id || d.videoId)) || null;
-        }
-      } catch (e) {}
-
-      var available = [];
-      try {
-        if (typeof player.getAvailableQualityLevels === 'function') {
-          var result = player.getAvailableQualityLevels();
-          if (Array.isArray(result)) {
-            available = result;
-          }
-          // If it's not an array, we leave available as [] (default)
-        }
-      } catch (e) {
-        // If we can't get available qualities, default to empty array
-        available = [];
-      }
-
-      var target = mappedQ; // Use the mapped quality directly
-
-      try {
-        player.setPlaybackQuality(target);
-      } catch (e) {
-        // If setting the mapped quality fails, fall back to highres
-        try {
-          player.setPlaybackQuality('highres');
-        } catch (e2) {
-          // Ignore errors in the fallback
-        }
-      }
-
-      // Update appliedVideo if we successfully got a video ID
-      if (videoId !== null) {
-        appliedVideo = videoId;
-      }
-    };
-
-    var tick = function () {
-      var player = pick();
-      if (!player || typeof player.setPlaybackQuality !== 'function') {
-        // No YouTube player (yet). Give up quietly on non-YouTube pages after a while.
-        if (++idleAttempts > 45) { if (timer) clearInterval(timer); }
-        return;
-      }
-      idleAttempts = 0;
-      applyForCurrentVideo(player);
-    };
-
-    tick();
-    timer = setInterval(tick, 1000);
-  })(${arg});`;
+    apply();
+    if (!window.__vwqTimer) window.__vwqTimer = setInterval(apply, 2000);
+  })();`;
 }
 async function setPersistentVideoQuality(page, quality) {
   const source = buildPlaybackWatcherSource(quality);
+  const marker = `__vwqRegistered_${quality}`;
   try {
-    await page.addInitScript({ content: source });
-  } catch (e) {
-    console.warn("Failed to add init script for persistent video quality:", e);
-  }
-  try {
-    await page.evaluate(source);
-  } catch (e) {
-    console.warn("Failed to set persistent video quality on current document:", e);
-  }
-}
-
-// src/main/automation/antidetection/types.ts
-var DEFAULT_ANTIDETECTION_CONFIG = {
-  enabled: false,
-  trustedInput: false,
-  poissonMeanMs: 250,
-  delayMinMs: 90,
-  delayMaxMs: 900,
-  jitterPx: 6,
-  bezierSteps: 12,
-  preferResidential: false,
-  resetSession: false,
-  clearYouTubeTrackerCookies: false,
-  // Advanced features - enabled by default for maximum undetectability
-  enableFontProtection: true,
-  // Disabled: MediaKeySystemAccess DRM rewrite + AudioContext noise break media decoding.
-  enableAudioVideoProtection: false,
-  // Disabled: per-read navigator.connection randomization yields an inconsistent fingerprint.
-  enableNetworkProtection: false,
-  enablePlaywrightEvasion: true,
-  enableEnvironmentalConsistency: true,
-  enableAdvancedCanvasWebGL: true,
-  // Disabled: per-request header reordering is an overt automation signal.
-  enableHeaderRandomization: false,
-  enableBehavioralBiometrics: true,
-  // Disabled: canvas getImageData/position noise breaks media fingerprint consistency.
-  enableAdvancedCanvasFingerprinting: false,
-  enableWebGPUProtection: true,
-  // Disabled: fetch/XHR delays and timer jitter break YouTube player/segment loading.
-  enableNetworkTrafficShaping: false,
-  enableMemoryAnalyticsProtection: true,
-  enableSensorSpoofing: true,
-  enablePluginEnumerationSpoofing: true,
-  enableStorageApiProtection: true,
-  enableCSSMediaQueryProtection: true,
-  enableFontRenderingVariance: true,
-  // Disabled: automated Like/Comment/Share/Subscribe clicks break playback and send bot signals.
-  enableContentAwareEngagement: false,
-  // Disabled: timer multiplication (up to ~2.5x) and beforeunload dialogs break player timing and navigation.
-  enableAdvancedSessionLifecycle: false
-};
-var YOUTUBE_TRACKER_COOKIES = ["YSC", "VISITOR_INFO1_LIVE"];
-function resolveOptions(cfg) {
-  const base = { ...DEFAULT_ANTIDETECTION_CONFIG, ...cfg ?? {} };
-  const clampInt = (n, lo, hi) => Number.isFinite(n) ? Math.max(lo, Math.min(hi, Math.trunc(n))) : lo;
-  return {
-    enabled: !!base.enabled,
-    trustedInput: !!base.trustedInput,
-    poissonMeanMs: clampInt(base.poissonMeanMs, 1, 6e4),
-    delayMinMs: clampInt(base.delayMinMs, 0, 6e4),
-    delayMaxMs: clampInt(base.delayMaxMs, base.delayMinMs, 6e4),
-    jitterPx: clampInt(base.jitterPx, 0, 100),
-    bezierSteps: clampInt(base.bezierSteps, 1, 200),
-    preferResidential: !!base.preferResidential,
-    resetSession: !!base.resetSession,
-    clearYouTubeTrackerCookies: !!base.clearYouTubeTrackerCookies,
-    enableFontProtection: !!base.enableFontProtection,
-    enableAudioVideoProtection: !!base.enableAudioVideoProtection,
-    enableNetworkProtection: !!base.enableNetworkProtection,
-    enablePlaywrightEvasion: !!base.enablePlaywrightEvasion,
-    enableEnvironmentalConsistency: !!base.enableEnvironmentalConsistency,
-    enableAdvancedCanvasWebGL: !!base.enableAdvancedCanvasWebGL,
-    enableHeaderRandomization: !!base.enableHeaderRandomization,
-    enableBehavioralBiometrics: !!base.enableBehavioralBiometrics,
-    enableAdvancedCanvasFingerprinting: !!base.enableAdvancedCanvasFingerprinting,
-    enableWebGPUProtection: !!base.enableWebGPUProtection,
-    enableNetworkTrafficShaping: !!base.enableNetworkTrafficShaping,
-    enableMemoryAnalyticsProtection: !!base.enableMemoryAnalyticsProtection,
-    enableSensorSpoofing: !!base.enableSensorSpoofing,
-    enablePluginEnumerationSpoofing: !!base.enablePluginEnumerationSpoofing,
-    enableStorageApiProtection: !!base.enableStorageApiProtection,
-    enableCSSMediaQueryProtection: !!base.enableCSSMediaQueryProtection,
-    enableFontRenderingVariance: !!base.enableFontRenderingVariance,
-    enableContentAwareEngagement: !!base.enableContentAwareEngagement,
-    enableAdvancedSessionLifecycle: !!base.enableAdvancedSessionLifecycle
-  };
-}
-
-// src/main/automation/antidetection/delays.ts
-function randomInt(min, max) {
-  if (!Number.isFinite(min) || !Number.isFinite(max)) return min;
-  const lo = Math.trunc(min);
-  const hi = Math.trunc(max);
-  if (hi < lo) return lo;
-  return lo + Math.floor(Math.random() * (hi - lo + 1));
-}
-function poissonSample(lambda) {
-  if (!Number.isFinite(lambda) || lambda <= 0) return 0;
-  const L = Math.exp(-lambda);
-  let k = 0;
-  let p = 1;
-  while (p > L && k < 1e4) {
-    k += 1;
-    p *= Math.random();
-  }
-  return k;
-}
-function poissonDelayMs(meanMs, minMs, maxMs) {
-  const sample = poissonSample(meanMs);
-  return Math.max(minMs, Math.min(maxMs, sample));
-}
-function humanDelay(meanMs, minMs, maxMs) {
-  const ms = poissonDelayMs(meanMs, minMs, maxMs);
-  return new Promise((resolve3) => setTimeout(resolve3, ms));
-}
-function bezier1d(t, s, c1, c2, e) {
-  const u = 1 - t;
-  return u * u * u * s + 3 * u * u * t * c1 + 3 * u * t * t * c2 + t * t * t * e;
-}
-function bezierPath(start, end, steps, maxPx) {
-  const n = Math.max(1, Math.trunc(steps));
-  const dx = end.x - start.x;
-  const dy = end.y - start.y;
-  const len = Math.hypot(dx, dy) || 1;
-  const px = -dy / len;
-  const py = dx / len;
-  const mid = 0.5;
-  const jitter = (Math.random() * 2 - 1) * maxPx;
-  const cx = bezier1d(
-    mid,
-    start.x,
-    (start.x + end.x) / 2 + px * jitter,
-    (start.x + end.x) / 2,
-    end.x
-  );
-  const cy = bezier1d(
-    mid,
-    start.y,
-    (start.y + end.y) / 2 + py * jitter,
-    (start.y + end.y) / 2,
-    end.y
-  );
-  const points = [];
-  for (let i = 0; i <= n; i += 1) {
-    const t = i / n;
-    const bx = bezier1d(t, start.x, cx, cx, end.x);
-    const by = bezier1d(t, start.y, cy, cy, end.y);
-    points.push({
-      x: bx + (Math.random() * 2 - 1) * maxPx * 0.15,
-      y: by + (Math.random() * 2 - 1) * maxPx * 0.15
-    });
-  }
-  points[points.length - 1] = { x: end.x, y: end.y };
-  return points;
-}
-function bezierJitter(maxPx) {
-  if (!Number.isFinite(maxPx) || maxPx <= 0) return { x: 0, y: 0 };
-  const r = () => (Math.random() * 2 - 1) * maxPx;
-  return { x: r(), y: r() };
-}
-
-// src/main/automation/antidetection/trustedInput.ts
-async function trustedClick(page, selector, opts) {
-  try {
-    const locator = page.locator(selector).first();
-    await locator.waitFor({ state: "visible", timeout: 1500 }).catch(() => {
-    });
-    const box = await locator.boundingBox();
-    if (!box) return false;
-    const jx = bezierJitter(opts.jitterPx);
-    const endX = box.x + box.width / 2 + jx.x;
-    const endY = box.y + box.height / 2 + jx.y;
-    const start = {
-      x: Math.max(0, endX - randomInt(120, 260) + jx.x),
-      y: Math.max(0, endY + randomInt(40, 120))
-    };
-    const path13 = bezierPath(start, { x: endX, y: endY }, opts.bezierSteps, opts.jitterPx);
-    for (const pt of path13) {
-      await page.mouse.move(pt.x, pt.y, { steps: 1 });
-    }
-    await humanDelay(opts.poissonMeanMs, opts.delayMinMs, opts.delayMaxMs);
-    await locator.click({ timeout: 2e3 });
-    await humanDelay(opts.poissonMeanMs, opts.delayMinMs, opts.delayMaxMs);
-    return true;
-  } catch {
-    return false;
-  }
-}
-async function trustedConsentClick(page, selectors, opts) {
-  let clicked = 0;
-  for (const selector of selectors) {
-    try {
-      const count = await page.locator(selector).count().catch(() => 0);
-      if (count === 0) continue;
-      const ok = await trustedClick(page, selector, opts);
-      if (ok) clicked += count;
-    } catch {
-    }
-  }
-  return clicked;
-}
-
-// src/main/automation/antidetection/sessionHygiene.ts
-async function resetSession(page, opts = {}) {
-  try {
-    if (opts.trackerOnly) {
-      const cookies = await page.context().cookies();
-      const target = cookies.filter((c) => YOUTUBE_TRACKER_COOKIES.includes(c.name));
-      if (target.length > 0) {
-        const keep = cookies.filter((c) => !YOUTUBE_TRACKER_COOKIES.includes(c.name));
-        await page.context().clearCookies();
-        if (keep.length > 0) {
-          await page.context().addCookies(keep);
-        }
-      }
-    } else {
-      await page.context().clearCookies();
+    const already = await page.evaluate((m) => !!window[m], marker).catch(() => false);
+    if (!already) {
+      await page.addInitScript({ content: source });
+      await page.evaluate((m) => {
+        window[m] = true;
+      }, marker);
     }
   } catch {
   }
-  await page.evaluate(async () => {
-    const safe = (fn) => {
-      try {
-        fn();
-      } catch {
-      }
-    };
-    safe(() => localStorage.clear());
-    safe(() => sessionStorage.clear());
-    if ("indexedDB" in window) {
-      try {
-        const dbs = await indexedDB.databases();
-        for (const db of dbs) {
-          const dbName = db.name;
-          if (dbName !== void 0) {
-            try {
-              await indexedDB.deleteDatabase(dbName);
-            } catch {
-            }
-          }
-        }
-      } catch {
-      }
-    }
-    const cacheStorage = navigator.caches;
-    if (cacheStorage) {
-      try {
-        const names = await cacheStorage.keys();
-        const nameArray = names || [];
-        for (const name of nameArray) {
-          await cacheStorage.delete(name);
-        }
-      } catch {
-      }
-    }
-    if ("serviceWorker" in navigator) {
-      try {
-        const regs = await navigator.serviceWorker.getRegistrations();
-        for (const reg of regs) {
-          await reg.unregister().catch(() => {
-          });
-        }
-      } catch {
-      }
-    }
-  }).catch(() => {
+  await page.evaluate(source).catch(() => {
   });
 }
 
-// src/main/automation/antidetection/fonts.ts
-async function applyFontProtection(target) {
-  await target.addInitScript(() => {
-    const originalQuery = navigator.fonts?.query;
-    if (originalQuery) {
-      navigator.fonts = {
-        ...navigator.fonts,
-        query: async () => {
-          const commonFonts = [
-            "Arial",
-            "Helvetica",
-            "Times New Roman",
-            "Times",
-            "Courier New",
-            "Courier",
-            "Verdana",
-            "Georgia",
-            "Palatino",
-            "Garamond",
-            "Bookman",
-            "Comic Sans MS",
-            "Trebuchet MS",
-            "Arial Black",
-            "Impact",
-            "Lucida Sans Unicode",
-            "Lucida Console",
-            "Tahoma",
-            "MS Sans Serif",
-            "MS Serif"
-          ];
-          return commonFonts;
-        }
+// src/main/automation/antidetection/hardened.ts
+async function applyHardening(context, fp) {
+  await context.addInitScript((f) => {
+    const g = globalThis;
+    const nav = navigator;
+    const rand = (() => {
+      let s = f.seed >>> 0;
+      return () => {
+        s = s * 1664525 + 1013904223 >>> 0;
+        return s / 4294967296;
       };
-    }
-    const originalMeasureText = CanvasRenderingContext2D.prototype.measureText;
-    CanvasRenderingContext2D.prototype.measureText = function(text) {
-      return originalMeasureText.call(this, text);
+    })();
+    const sources = /* @__PURE__ */ new WeakMap();
+    const origToString = Function.prototype.toString;
+    const mask = (fn, name, isAsync = false) => {
+      sources.set(fn, `${isAsync ? "async " : ""}function ${name}() { [native code] }`);
+      return fn;
     };
-    if ("fonts" in document) {
-      Object.defineProperty(document, "fonts", {
-        get: () => ({
-          ...document.fonts,
-          check: async () => true,
-          load: async () => void 0,
-          ready: Promise.resolve()
-        }),
-        configurable: true
-      });
-    }
-  });
-}
-
-// src/main/automation/antidetection/audioVideo.ts
-async function applyAudioVideoProtection(target) {
-  await target.addInitScript(() => {
-  });
-}
-
-// src/main/automation/antidetection/network.ts
-async function applyNetworkProtection(target) {
-  await target.addInitScript(() => {
-    const originalFetch = window.fetch;
-    window.fetch = async function(input, init) {
-      const modifiedInit = {
-        ...init
-        // Don't modify credentials - let Playwright handle proxy auth
-      };
-      return originalFetch.call(this, input, modifiedInit);
+    const patchedToString = function toString() {
+      return sources.get(this) ?? origToString.call(this);
     };
-    const originalXHROpen = XMLHttpRequest.prototype.open;
-    XMLHttpRequest.prototype.open = function(method, url, async, user, password) {
-      const adjustedAsync = async !== false;
-      return originalXHROpen.call(this, method, url, adjustedAsync, user, password);
-    };
-    if ("connection" in navigator) {
-      Object.defineProperty(navigator, "connection", {
-        get: () => ({
-          // Report values that match typical broadband connections
-          effectiveType: "4g",
-          rtt: 50 + Math.random() * 50,
-          // 50-100ms RTT
-          downlink: 10 + Math.random() * 20,
-          // 10-30 Mbps
-          saveData: false,
-          type: "wifi"
-        }),
-        configurable: true
-      });
-    }
-    const originalDateNow = Date.now;
-    let lastTime = 0;
-    Date.now = function() {
-      const now = originalDateNow.call(this);
-      const jitter = Math.random() * 0.1;
-      return now + jitter;
-    };
-    try {
-      const originalWebSocket = window.WebSocket || window.MozWebSocket;
-      if (originalWebSocket) {
-        const WrappedWebSocket = function(protocols, ...args) {
-          let finalProtocols = protocols;
-          if (typeof finalProtocols === "string") {
-            finalProtocols = [finalProtocols];
-          } else if (!Array.isArray(finalProtocols)) {
-            finalProtocols = [];
-          }
-          const suspiciousPatterns = ["automated", "bot", "headless", "selenium", "playwright"];
-          if (Array.isArray(finalProtocols)) {
-            finalProtocols = finalProtocols.filter(
-              (p) => !suspiciousPatterns.some((pattern) => p.toLowerCase().includes(pattern))
-            );
-            if (finalProtocols.length === 0) {
-              finalProtocols = ["browser"];
-            }
-          }
-          return new originalWebSocket(finalProtocols, ...args);
-        };
-        WrappedWebSocket.prototype = originalWebSocket.prototype;
-        try {
-          window.WebSocket = WrappedWebSocket;
-        } catch (e) {
-        }
-      }
-    } catch (e) {
-    }
-    if ("RTCPeerConnection" in window) {
+    sources.set(patchedToString, "function toString() { [native code] }");
+    Function.prototype.toString = patchedToString;
+    const define2 = (target, key, getter) => {
       try {
-        const originalRTCPeerConnection = window.RTCPeerConnection;
-        const WrappedRTCPeerConnection = function(...args) {
-          const pc = new originalRTCPeerConnection(...args);
-          const originalSetLocalDescription = pc.setLocalDescription.bind(pc);
-          pc.setLocalDescription = function(description) {
-            if (description && description.sdp) {
-              let sdp = description.sdp;
-              sdp = sdp.replace(/c=IN IP4 0\.0\.0\.0/g, "c=IN IP4 0.0.0.0");
-              sdp = sdp.replace(
-                /a=candidate:[0-9]+ 1 udp [0-9]+ 127\.0\.0\.1 [0-9]+ typ host/g,
-                "a=candidate:1 1 udp 2113667325 192.168.1.100 50789 typ host"
-              );
-              return originalSetLocalDescription({ ...description, sdp });
-            }
-            return originalSetLocalDescription(description);
-          };
-          return pc;
-        };
-        WrappedRTCPeerConnection.prototype = originalRTCPeerConnection.prototype;
-        try {
-          window.RTCPeerConnection = WrappedRTCPeerConnection;
-        } catch (e) {
-        }
-      } catch (e) {
+        Object.defineProperty(target, key, { get: mask(getter, `get ${key}`), configurable: true });
+      } catch {
       }
-    }
-  });
-}
-
-// src/main/automation/antidetection/playwrightEvasion.ts
-async function applyPlaywrightEvasion(target) {
-  await target.addInitScript(() => {
-    const playwrightProps = [
-      "__playwright_initalized",
-      "__playwright_page_initialize_promise",
+    };
+    define2(nav, "webdriver", () => false);
+    for (const k of [
+      "__playwright",
+      "__playwright__binding__",
+      "__pwInitScripts",
+      "__pw_manual",
+      "__PW_inspect",
       "__CLIKEE",
-      "__PLAYWRIGHT_INTERNAL",
       "__PW_INTERR",
       "__PW_UPD_TS",
       "__PWAIT_SELECTORS",
@@ -23594,1179 +23160,458 @@ async function applyPlaywrightEvasion(target) {
       "__PWAIT_DETACHED",
       "__PWAIT_FOCUSED",
       "__PWAIT_ENABLED",
-      "__PWAIT_EDITABLE"
-    ];
-    playwrightProps.forEach((prop) => {
-      delete window[prop];
-      delete document[prop];
-    });
-    if ("chrome" in window && window.chrome.runtime) {
-      const originalOnConnect = window.chrome.runtime.onConnect;
-      if (originalOnConnect) {
-        window.chrome.runtime.onConnect = {
-          ...originalOnConnect,
-          // Remove any automation-specific listeners
-          _listeners: originalOnConnect._listeners?.filter(
-            (listener) => !listener.toString().includes("automated")
-          ) || []
-        };
-      }
-    }
-    if ("navigator" in window) {
-      const fakePlugins = [
-        {
-          name: "Chrome PDF Plugin",
-          filename: "internal-pdf-viewer",
-          description: "Portable Document Format",
-          length: 1
-        },
-        {
-          name: "Chrome PDF Viewer",
-          filename: "mhjfbmdgcfjbbpaeojofohoefgiehjai",
-          description: "",
-          length: 1
-        },
-        {
-          name: "Native Client",
-          filename: "internal-nacl-plugin",
-          description: "",
-          length: 1
-        }
-      ];
-      Object.defineProperty(navigator, "plugins", {
-        get: () => {
-          const pluginArray = {
-            length: fakePlugins.length,
-            item: (index) => fakePlugins[index] || null,
-            namedItem: (name) => fakePlugins.find((p) => p.name === name) || null,
-            [Symbol.iterator]: function* () {
-              yield* fakePlugins;
-            }
-          };
-          return pluginArray;
-        },
-        configurable: true
-      });
-    }
-    if ("navigator" in window) {
-      Object.defineProperty(navigator, "webdriver", {
-        get: () => void 0,
-        configurable: true
-      });
-    }
-    if ("navigator" in window) {
-      Object.defineProperty(navigator, "languages", {
-        get: () => ["en-US", "en"],
-        configurable: true
-      });
-    }
-    if ("chrome" in window && window.chrome.app) {
-      const chromeApp = window.chrome.app;
-      if (!chromeApp.isInstalled) {
-        chromeApp.isInstalled = false;
-      }
-      chromeApp.getDetails = function() {
-        return {
-          version: "1.0.0",
-          name: "Chrome"
-        };
-      };
-      chromeApp.getIsInstalled = function() {
-        return false;
-      };
-      chromeApp.getPackageDirectoryEntry = function() {
-        return {
-          isFile: false,
-          isDirectory: true,
-          name: "chrome",
-          fullPath: "/chrome"
-        };
-      };
-    }
-    if ("permissions" in navigator) {
-      const originalQuery = navigator.permissions.query.bind(navigator.permissions);
-      navigator.permissions.query = async (permissionDesc) => {
-        return originalQuery(permissionDesc);
-      };
-    }
-    if ("window" in window) {
-      Object.defineProperty(window, "outerWidth", {
-        get: () => window.innerWidth + (Math.random() > 0.5 ? 10 : 0),
-        configurable: true
-      });
-      Object.defineProperty(window, "outerHeight", {
-        get: () => window.innerHeight + (Math.random() > 0.5 ? 10 : 0),
-        configurable: true
-      });
-    }
-    Object.defineProperty(document, "visibilityState", {
-      get: () => document.hidden ? "hidden" : "visible",
-      configurable: true
-    });
-    const originalGetAttribute = Element.prototype.getAttribute;
-    Element.prototype.getAttribute = function(name) {
-      if (name && (name.includes("webkit") || name.includes("playwright") || name.includes("automated"))) {
-        return null;
-      }
-      return originalGetAttribute.call(this, name);
-    };
-  });
-}
-
-// src/main/automation/antidetection/environmental.ts
-async function applyEnvironmentalConsistency(target) {
-  await target.addInitScript(() => {
-    if ("navigator" in window) {
-      const locale = navigator.language || "en-US";
-      const langValues = [
-        locale,
-        locale.split("-")[0],
-        // primary language
-        "en"
-      ].filter((v, i, arr) => arr.indexOf(v) === i);
-      Object.defineProperty(navigator, "languages", {
-        get: () => langValues,
-        configurable: true
-      });
-    }
-    if ("navigator" in window) {
-      const ua = navigator.userAgent || "";
-      let expectedCores = 4;
-      if (/Windows NT/.test(ua)) {
-        expectedCores = 4;
-      } else if (/Macintosh|Mac OS X/.test(ua)) {
-        expectedCores = 8;
-      } else if (/Linux|X11/.test(ua)) {
-        expectedCores = 4;
-      } else if (/Android/.test(ua)) {
-        expectedCores = 4;
-      } else if (/iPhone|iPad|iPod/.test(ua)) {
-        expectedCores = 6;
-      }
-      const reported = navigator.hardwareConcurrency || expectedCores;
-      const plausible = Math.max(2, Math.min(reported, 32));
-      Object.defineProperty(navigator, "hardwareConcurrency", {
-        get: () => plausible,
-        configurable: true
-      });
-    }
-    if ("navigator" in window) {
-      const typicalMemory = [2, 4, 8, 16, 32];
-      const reported = navigator.deviceMemory || 8;
-      const closest = typicalMemory.reduce(
-        (prev, curr) => Math.abs(curr - reported) < Math.abs(prev - reported) ? curr : prev
-      );
-      Object.defineProperty(navigator, "deviceMemory", {
-        get: () => closest,
-        configurable: true
-      });
-    }
-    if ("navigator" in window) {
-      const hasTouch = navigator.maxTouchPoints > 0;
-      const reported = navigator.maxTouchPoints || (hasTouch ? 5 : 0);
-      const plausible = hasTouch ? Math.min(Math.max(reported, 1), 10) : 0;
-      Object.defineProperty(navigator, "maxTouchPoints", {
-        get: () => plausible,
-        configurable: true
-      });
-    }
-    if ("navigator" in window) {
-      const ua = navigator.userAgent || "";
-      let platform = navigator.platform;
-      if (/Windows NT/.test(ua) && !/Win32|Win64/.test(platform)) {
-        platform = "Win32";
-      } else if (/Macintosh|Mac OS X/.test(ua) && !/Mac/.test(platform)) {
-        platform = "MacIntel";
-      } else if (/Linux|X11/.test(ua) && !/Linux/.test(platform)) {
-        platform = "Linux x86_64";
-      } else if (/Android/.test(ua) && !/Linux/.test(platform)) {
-        platform = "Linux armv7l";
-      } else if (/iPhone|iPad|iPod/.test(ua) && !/iPhone|iPad|iPod/.test(platform)) {
-        platform = "iPhone";
-      }
-      Object.defineProperty(navigator, "platform", {
-        get: () => platform,
-        configurable: true
-      });
-    }
-    if ("navigator" in window) {
-      const platform = navigator.platform || "";
-      let cpuClass = navigator.cpuClass;
-      if (!cpuClass) {
-        if (/Win/.test(platform)) {
-          cpuClass = "x86";
-        } else if (/Mac/.test(platform)) {
-          cpuClass = void 0;
-        } else if (/Linux/.test(platform)) {
-          cpuClass = void 0;
-        }
-      }
-      if (cpuClass) {
-        Object.defineProperty(navigator, "cpuClass", {
-          get: () => cpuClass,
-          configurable: true
-        });
-      }
-    }
-    if ("navigator" in window) {
-      Object.defineProperty(navigator, "cookieEnabled", {
-        get: () => true,
-        configurable: true
-      });
-    }
-    if ("navigator" in window) {
-      Object.defineProperty(navigator, "onLine", {
-        get: () => true,
-        configurable: true
-      });
-    }
-    if ("navigator" in window) {
-      Object.defineProperty(navigator, "doNotTrack", {
-        get: () => null,
-        configurable: true
-      });
-    }
-  });
-}
-
-// src/main/automation/antidetection/advancedCanvasWebGL.ts
-async function applyAdvancedCanvasWebGL(target) {
-  await target.addInitScript(() => {
-    const originalToDataURL = HTMLCanvasElement.prototype.toDataURL;
-    HTMLCanvasElement.prototype.toDataURL = function(type, encoderOptions) {
-      const result = originalToDataURL.call(this, type, encoderOptions);
-      return result;
-    };
-    const originalGetImageData = CanvasRenderingContext2D.prototype.getImageData;
-    CanvasRenderingContext2D.prototype.getImageData = function(sx, sy, sw, sh) {
-      const imageData = originalGetImageData.call(this, sx, sy, sw, sh);
-      const data = imageData.data;
-      const timeStamp = Date.now();
-      for (let i = 0; i < data.length; i += 4) {
-        const xFreq = Math.sin(sx + i / 4 * 0.01) * 0.1;
-        const yFreq = Math.cos(sy + Math.floor(i / 4 / sw) * 0.01) * 0.1;
-        const timeFreq = Math.sin(timeStamp * 1e-3) * 0.05;
-        const noise = (xFreq + yFreq + timeFreq) * (Math.random() - 0.5) * 0.5;
-        data[i] = Math.max(0, Math.min(255, data[i] + noise * 128));
-        data[i + 1] = Math.max(0, Math.min(255, data[i + 1] + noise * 128));
-        data[i + 2] = Math.max(0, Math.min(255, data[i + 2] + noise * 128));
-      }
-      return imageData;
-    };
-    const originalMeasureText = CanvasRenderingContext2D.prototype.measureText;
-    CanvasRenderingContext2D.prototype.measureText = function(text) {
-      const metrics = originalMeasureText.call(this, text);
-      return metrics;
-    };
-    const originalGetComputedStyle = window.getComputedStyle;
-    window.getComputedStyle = function(element) {
-      const style = originalGetComputedStyle.call(this, element);
-      return style;
-    };
-    const originalRaf = window.requestAnimationFrame;
-    window.requestAnimationFrame = function(callback) {
-      const delayedCallback = function(timestamp) {
-        const jitter = Math.random() * 2;
-        return callback(timestamp + jitter);
-      };
-      return originalRaf.call(this, delayedCallback);
-    };
-    if ("performance" in window && performance.now) {
-      const originalNow = performance.now.bind(performance);
-      performance.now = function() {
-        return originalNow() + (Math.random() - 0.5) * 0.1;
-      };
-    }
-  });
-}
-
-// src/main/automation/antidetection/headerRandomization.ts
-async function applyHeaderRandomization(target) {
-  await target.addInitScript(() => {
-    if ("navigator" in window) {
-      const ua = navigator.userAgent || "";
-      if (ua) {
-        let isChrome = /Chrome\/\d+/.test(ua) && !/Edge\/\d+/.test(ua);
-        let isFirefox = /Firefox\/\d+/.test(ua);
-        if (isChrome) {
-          Object.defineProperty(navigator, "plugins", {
-            get: () => {
-              const chromePlugins = [
-                { name: "Chrome PDF Plugin", filename: "internal-pdf-viewer", description: "Portable Document Format", length: 1 },
-                { name: "Chrome PDF Viewer", filename: "mhjfbmdgcfjbbpaeojofohoefgiehjai", description: "", length: 1 },
-                { name: "Native Client", filename: "internal-nacl-plugin", description: "", length: 1 }
-              ];
-              const pluginArray = {
-                length: chromePlugins.length,
-                item: (index) => chromePlugins[index] || null,
-                namedItem: (name) => chromePlugins.find((p) => p.name === name) || null,
-                [Symbol.iterator]: function* () {
-                  yield* chromePlugins;
-                }
-              };
-              return pluginArray;
-            },
-            configurable: true
-          });
-        } else if (isFirefox) {
-          Object.defineProperty(navigator, "plugins", {
-            get: () => {
-              const ffPlugins = [
-                { name: "Shockwave Flash", filename: "pepflashplayer.dll", description: "Shockwave Flash 32.0 r0", length: 1 }
-              ];
-              const pluginArray = {
-                length: ffPlugins.length,
-                item: (index) => ffPlugins[index] || null,
-                namedItem: (name) => ffPlugins.find((p) => p.name === name) || null,
-                [Symbol.iterator]: function* () {
-                  yield* ffPlugins;
-                }
-              };
-              return pluginArray;
-            },
-            configurable: true
-          });
-        }
-      }
-    }
-    if ("navigator" in window) {
-      Object.defineProperty(navigator, "appCodeName", {
-        get: () => "Mozilla",
-        configurable: true
-      });
-      Object.defineProperty(navigator, "appName", {
-        get: () => "Netscape",
-        configurable: true
-      });
-    }
-    if ("navigator" in window) {
-      const ua = navigator.userAgent || "";
-      const versionMatch = ua.match(/Chrome\/(\d+\.\d+\.\d+\.\d+)/);
-      const version = versionMatch ? versionMatch[1] : "129.0.0.0";
-      Object.defineProperty(navigator, "appVersion", {
-        get: () => `5.0 (${navigator.platform}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${version} Safari/537.36`,
-        configurable: true
-      });
-    }
-    if ("connection" in navigator) {
-      const conn = {
-        effectiveType: "4g",
-        rtt: 50 + Math.random() * 50,
-        downlink: 10 + Math.random() * 20,
-        saveData: false,
-        type: "wifi"
-      };
+      "__PWAIT_EDITABLE",
+      "cdc_adoQpoasnfa76pfcZLmcfl_Array",
+      "cdc_adoQpoasnfa76pfcZLmcfl_Promise",
+      "cdc_adoQpoasnfa76pfcZLmcfl_Symbol",
+      "cdc_adoQpoasnfa76pfcZLmcfl_JSON",
+      "cdc_adoQpoasnfa76pfcZLmcfl_Object",
+      "cdc_adoQpoasnfa76pfcZLmcfl_Proxy"
+    ]) {
       try {
-        Object.defineProperty(navigator, "connection", {
-          get: () => conn,
-          configurable: true
-        });
+        delete g[k];
       } catch {
       }
     }
-    if ("navigator" in window) {
-      const langs = navigator.languages || [];
-      if (langs.length > 0) {
-      }
-    }
-  });
-}
-
-// src/main/automation/antidetection/behavioralBiometrics.ts
-async function applyBehavioralBiometrics(target) {
-  await target.addInitScript(() => {
-    const originalInitMouseEvent = window.MouseEvent?.prototype.initMouseEvent;
-    if (typeof originalInitMouseEvent === "function") {
-      window.MouseEvent.prototype.initMouseEvent = function(typeArg, canBubbleArg, cancelableArg, viewArg, detailArg, screenXArg, screenYArg, clientXArg, clientYArg, ctrlKeyArg, altKeyArg, shiftKeyArg, metaKeyArg, buttonArg, relatedTargetArg) {
-        const modifiedClientXArg = clientXArg + (Math.random() * 6 - 3);
-        const modifiedClientYArg = clientYArg + (Math.random() * 6 - 3);
-        const finalClientX = Math.max(0, modifiedClientXArg);
-        const finalClientY = Math.max(0, modifiedClientYArg);
-        return originalInitMouseEvent.call(
-          this,
-          typeArg,
-          canBubbleArg,
-          cancelableArg,
-          viewArg,
-          detailArg,
-          screenXArg,
-          screenYArg,
-          finalClientX,
-          finalClientY,
-          ctrlKeyArg,
-          altKeyArg,
-          shiftKeyArg,
-          metaKeyArg,
-          buttonArg,
-          relatedTargetArg
-        );
-      };
-    }
-    const originalElementClick = HTMLElement.prototype.click;
-    HTMLElement.prototype.click = function() {
-      setTimeout(() => {
-        originalElementClick.call(this);
-      }, Math.random() * 50 + 10);
-    };
-    const originalScrollTo = Element.prototype.scrollTo;
-    Element.prototype.scrollTo = function(...args) {
-      if (args.length === 1 && typeof args[0] === "object" && args[0] !== null) {
-        const options = args[0];
-        const modifiedOptions = Object.assign({}, options);
-        if ("left" in modifiedOptions && typeof modifiedOptions.left === "number") {
-          modifiedOptions.left += Math.random() * 4 - 2;
-        }
-        if ("top" in modifiedOptions && typeof modifiedOptions.top === "number") {
-          modifiedOptions.top += Math.random() * 4 - 2;
-        }
-        if ("behavior" in modifiedOptions && modifiedOptions.behavior === "smooth") {
-        }
-        return originalScrollTo.call(this, modifiedOptions);
-      }
-      if (args.length === 2 && typeof args[0] === "number" && typeof args[1] === "number") {
-        const x = args[0];
-        const y = args[1];
-        return originalScrollTo.call(this, x, y);
-      }
-      return originalScrollTo.apply(this, args);
-    };
-    const originalGetBoundingClientRect = Element.prototype.getBoundingClientRect;
-    Element.prototype.getBoundingClientRect = function() {
-      const rect = originalGetBoundingClientRect.call(this);
-      const x = rect.left + (Math.random() * 0.4 - 0.2);
-      const y = rect.top + (Math.random() * 0.4 - 0.2);
-      const width = rect.width + (Math.random() * 0.4 - 0.2);
-      const height = rect.height + (Math.random() * 0.4 - 0.2);
-      return new DOMRect(x, y, width, height);
-    };
-    const originalDbClickHandler = window.ondblclick;
-    window.ondblclick = function(event) {
-      if (originalDbClickHandler) {
-        return originalDbClickHandler.call(this, event);
-      }
-      return false;
-    };
-    let lastMoveTime = 0;
-    let lastMoveX = 0;
-    let lastMoveY = 0;
-    const moveHistory = [];
-    document.addEventListener("mousemove", (e) => {
-      const now = performance.now();
-      const timeDelta = now - lastMoveTime;
-      moveHistory.push({ time: now, x: e.clientX, y: e.clientY });
-      if (moveHistory.length > 10) {
-        moveHistory.shift();
-      }
-      lastMoveTime = now;
-      lastMoveX = e.clientX;
-      lastMoveY = e.clientY;
-    }, true);
-    if ("ontouchstart" in window) {
-      const originalTouchStart = window.ontouchstart;
-      window.ontouchstart = function(event) {
-        if (originalTouchStart) {
-          return originalTouchStart.call(this, event);
-        }
-        return false;
-      };
-      const originalTouchEnd = window.ontouchend;
-      window.ontouchend = function(event) {
-        if (originalTouchEnd) {
-          return originalTouchEnd.call(this, event);
-        }
-        return false;
-      };
-    }
-  });
-}
-
-// src/main/automation/antidetection/sensorSpoofing.ts
-async function applySensorSpoofing(target) {
-  await target.addInitScript(() => {
-    if ("accelerometer" in window) {
-      if ("ondeviceorientationabsolute" in window) {
-        const originalHandler = window.ondeviceorientationabsolute;
-        window.ondeviceorientationabsolute = function(event) {
-          if (originalHandler && typeof originalHandler === "function") {
-            const modifiedEvent = new DeviceOrientationEvent("deviceorientationabsolute", {
-              alpha: event.alpha,
-              // Keep alpha (compass direction) as-is
-              beta: normalizeSensorValue(event.beta, -90, 90, 0),
-              // Front-back tilt
-              gamma: normalizeSensorValue(event.gamma, -180, 180, 0),
-              // Left-right tilt
-              absolute: event.absolute
-            });
-            return originalHandler.call(this, modifiedEvent);
-          }
-          return false;
-        };
-      }
-    }
-    if ("gyroscope" in window) {
-      if ("ondeviceorientation" in window) {
-        const originalHandler = window.ondeviceorientation;
-        window.ondeviceorientation = function(event) {
-          if (originalHandler && typeof originalHandler === "function") {
-            const modifiedEvent = new DeviceOrientationEvent("deviceorientation", {
-              alpha: normalizeSensorValue(event.alpha, 0, 360, 0),
-              beta: normalizeSensorValue(event.beta, -90, 90, 0),
-              gamma: normalizeSensorValue(event.gamma, -90, 90, 0),
-              absolute: event.absolute
-            });
-            return originalHandler.call(this, modifiedEvent);
-          }
-          return false;
-        };
-      }
-    }
-    if ("ondeviceproximity" in window) {
-      const originalHandler = window.ondeviceproximity;
-      window.ondeviceproximity = function(event) {
-        if (originalHandler && typeof originalHandler === "function") {
-          const value = event.value;
-          const max = event.max;
-          const min = event.min;
-          const normalizedValue = value + Math.random() * 0.5 - 0.25;
-          const normalizedMax = max + Math.random() * 0.5 - 0.25;
-          const normalizedMin = min + Math.random() * 0.5 - 0.25;
-          const modifiedEvent = new window.DeviceProximityEvent("deviceproximity", {
-            value: normalizedValue,
-            max: normalizedMax,
-            min: normalizedMin
-          });
-          return originalHandler.call(this, modifiedEvent);
-        }
-        return false;
-      };
-    }
-    if ("ondevicemotion" in window) {
-      const originalHandler = window.ondevicemotion;
-      window.ondevicemotion = function(event) {
-        if (originalHandler && typeof originalHandler === "function") {
-          const acceleration = event.acceleration;
-          const accelerationIncludingGravity = event.accelerationIncludingGravity;
-          const rotationRate = event.rotationRate;
-          const modifiedEvent = new window.DeviceMotionEvent("devicemotion", {
-            acceleration: acceleration ? {
-              x: normalizeSensorValue(acceleration.x, -20, 20, 0),
-              y: normalizeSensorValue(acceleration.y, -20, 20, 0),
-              z: normalizeSensorValue(acceleration.z, -20, 20, 0)
-            } : null,
-            accelerationIncludingGravity: accelerationIncludingGravity ? {
-              x: normalizeSensorValue(accelerationIncludingGravity.x, -20, 20, 0),
-              y: normalizeSensorValue(accelerationIncludingGravity.y, -20, 20, 0),
-              z: normalizeSensorValue(accelerationIncludingGravity.z, -20, 20, 0)
-            } : null,
-            rotationRate: rotationRate ? {
-              alpha: normalizeSensorValue(rotationRate.alpha, -360, 360, 0),
-              beta: normalizeSensorValue(rotationRate.beta, -360, 360, 0),
-              gamma: normalizeSensorValue(rotationRate.gamma, -360, 360, 0)
-            } : null,
-            interval: event.interval
-          });
-          return originalHandler.call(this, modifiedEvent);
-        }
-        return false;
-      };
-    }
-    if ("permissions" in navigator) {
-      const originalQuery = navigator.permissions.query;
-      navigator.permissions.query = async (permissionDesc) => {
-        const sensorPermissions = ["accelerometer", "gyroscope", "magnetometer", "ambient-light-sensor"];
-        if (permissionDesc && typeof permissionDesc.name === "string" && sensorPermissions.includes(permissionDesc.name)) {
-          return Promise.resolve({
-            state: "prompt",
-            name: permissionDesc.name,
-            onchange: null,
-            addEventListener: () => {
-            },
-            removeEventListener: () => {
-            },
-            dispatchEvent: () => false
-          });
-        }
-        return originalQuery.call(navigator.permissions, permissionDesc);
-      };
-    }
-    if ("Accelerometer" in window) {
-      const originalAccelerometer = window.Accelerometer;
-      window.Accelerometer = class {
-        constructor(options = {}) {
-          const instance = new originalAccelerometer(options);
-          Object.getOwnPropertyNames(instance).forEach((prop) => {
-            if (!(prop in this)) {
-              Object.defineProperty(this, prop, Object.getOwnPropertyDescriptor(instance, prop));
-            }
-          });
-          this.addEventListener("reading", () => {
-          });
-        }
-      };
-      Object.getOwnPropertyNames(originalAccelerometer).forEach((prop) => {
-        if (!(prop in window.Accelerometer)) {
-          Object.defineProperty(window.Accelerometer, prop, Object.getOwnPropertyDescriptor(originalAccelerometer, prop));
-        }
+    const desc = Object.getOwnPropertyDescriptor(Error.prototype, "stack");
+    if (desc?.get) {
+      const origStack = desc.get;
+      Object.defineProperty(Error.prototype, "stack", {
+        get: mask(function stack() {
+          return (origStack.call(this) ?? "").replace(/\n\s*at .*playwright.*/g, "").replace(/\n\s*at .*puppeteer.*/g, "").replace(/\n\s*at .*__pw.*/g, "");
+        }, "get stack"),
+        configurable: true
       });
     }
-    if ("Gyroscope" in window) {
-      const originalGyroscope = window.Gyroscope;
-      window.Gyroscope = class extends originalGyroscope {
-        constructor(options = {}) {
-          super(options);
-        }
+    const chromeObj = g.chrome ?? {};
+    if (!chromeObj.runtime) {
+      chromeObj.runtime = {
+        connect: () => ({
+          onMessage: { addListener: () => void 0 },
+          postMessage: () => void 0,
+          disconnect: () => void 0
+        }),
+        sendMessage: () => void 0,
+        onConnect: { addListener: () => void 0, removeListener: () => void 0, hasListener: () => false },
+        onMessage: { addListener: () => void 0, removeListener: () => void 0, hasListener: () => false }
       };
-      window.Gyroscope.prototype = originalGyroscope.prototype;
     }
-    function normalizeSensorValue(value, min, max, defaultValue) {
-      if (value === null) return defaultValue;
-      let clamped = Math.max(min, Math.min(max, value));
-      const variance = (max - min) * 0.01;
-      const jitter = Math.random() * variance * 2 - variance;
-      return clamped + jitter;
+    if (!chromeObj.app) {
+      chromeObj.app = {
+        isInstalled: false,
+        InstallState: { DISABLED: "disabled", INSTALLED: "installed", NOT_INSTALLED: "not_installed" },
+        RunningState: { CANNOT_RUN: "cannot_run", READY_TO_RUN: "ready_to_run", RUNNING: "running" },
+        getDetails: mask(function getDetails() {
+          return null;
+        }, "getDetails"),
+        getIsInstalled: mask(function getIsInstalled() {
+          return false;
+        }, "getIsInstalled")
+      };
     }
-  });
-}
-
-// src/main/automation/antidetection/contentAwareEngagement.ts
-async function applyContentAwareEngagement(target) {
-}
-
-// src/main/automation/antidetection/advancedSessionLifecycle.ts
-async function applyAdvancedSessionLifecycle(target) {
-  await target.addInitScript(() => {
-    const sessionStartTime = Date.now();
-    let lastInteractionTime = sessionStartTime;
-    let interactionCount = 0;
-    let lastBreakTime = sessionStartTime;
-    let attentionLevel = 1;
-    let fatigueLevel = 0;
-    const interactionHistory = [];
-    const viewportHistory = [];
-    let isDocumentVisible = true;
-    let lastVisibilityChange = sessionStartTime;
-    try {
-      if ("navigator" in window && typeof navigator.webdriver !== "undefined") {
-        Object.defineProperty(navigator, "webdriver", {
-          get: () => false,
-          configurable: true
-        });
-      }
-      if ("window" in window && typeof window.navigator !== "undefined") {
-        if (typeof navigator.plugins !== "undefined" && navigator.plugins.length === 0) {
-          const mockPlugins = [
-            { name: "Chrome PDF Plugin", filename: "internal-pdf-viewer", description: "Portable Document Format" },
-            { name: "Chrome PDF Viewer", filename: "mhjfbmdgcfjbbpaeojofohoefgiehjai", description: "" },
-            { name: "Native Client", filename: "internal-nacl-plugin", description: "" }
-          ];
-          Object.defineProperty(navigator, "plugins", {
-            get: () => mockPlugins,
-            configurable: true
-          });
-        }
-      }
-    } catch (e) {
+    if (typeof chromeObj.csi !== "function") {
+      chromeObj.csi = mask(function csi() {
+        return { onloadT: Date.now(), startE: Date.now(), pageT: performance.now(), tran: 15 };
+      }, "csi");
     }
-    const recordInteraction = (type = "generic") => {
-      const now = Date.now();
-      const timeSinceLast = now - lastInteractionTime;
-      lastInteractionTime = now;
-      interactionCount++;
-      try {
-        const interaction = {
-          time: now,
-          delta: timeSinceLast,
-          type
+    if (typeof chromeObj.loadTimes !== "function") {
+      const t = Date.now() / 1e3;
+      chromeObj.loadTimes = mask(function loadTimes() {
+        return {
+          requestTime: t,
+          startLoadTime: t,
+          commitLoadTime: t + 0.05,
+          finishDocumentLoadTime: t + 0.2,
+          finishLoadTime: t + 0.3,
+          firstPaintTime: t + 0.25,
+          firstPaintAfterLoadTime: 0,
+          navigationType: "Other",
+          wasFetchedViaSpdy: true,
+          wasNpnNegotiated: true,
+          npnNegotiatedProtocol: "h2",
+          wasAlternateProtocolAvailable: false,
+          connectionInfo: "h2"
         };
-        interactionHistory.push(interaction);
-        if (interactionHistory.length > 150) {
-          interactionHistory.shift();
-        }
-        try {
-          const stored = sessionStorage.getItem("yt_interactions");
-          const interactions = stored ? JSON.parse(stored) : [];
-          interactions.push({
-            t: now,
-            d: timeSinceLast,
-            tp: type.charAt(0)
-            // Store only first letter to obfuscate
-          });
-          if (interactions.length > 150) interactions.splice(0, interactions.length - 150);
-          sessionStorage.setItem("yt_interactions", JSON.stringify(interactions));
-        } catch (e) {
-        }
-      } catch (e) {
-      }
-    };
-    const getCircadianFactor = () => {
-      const now = /* @__PURE__ */ new Date();
-      const hour = now.getHours();
-      const minute = now.getMinutes();
-      const hourOfDay = hour + minute / 60;
-      let circadianFactor = 0.5 + 0.5 * Math.sin((hourOfDay - 6) * (2 * Math.PI) / 24);
-      circadianFactor += 0.25 * Math.exp(-0.5 * Math.pow((hourOfDay - 20) / 3.5, 2));
-      const dayOfWeek = now.getDay();
-      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-      if (isWeekend) {
-        circadianFactor *= 0.9 + 0.2 * Math.sin(hourOfDay * (2 * Math.PI) / 24);
-      }
-      circadianFactor += (Math.random() - 0.5) * 0.1;
-      return Math.min(Math.max(circadianFactor, 0.25), 1.7);
-    };
-    const getExpectedSessionDuration = () => {
-      const r = Math.random();
-      if (r < 0.4) {
-        return 1 + Math.random() * 5;
-      } else if (r < 0.7) {
-        return 6 + Math.random() * 14;
-      } else if (r < 0.9) {
-        return 20 + Math.random() * 30;
-      } else if (r < 0.97) {
-        return 50 + Math.random() * 70;
-      } else {
-        return 120 + Math.random() * 180;
-      }
-    };
-    const expectedSessionDuration = getExpectedSessionDuration() * 60 * 1e3;
-    const sessionEndTime = sessionStartTime + expectedSessionDuration;
-    const shouldTakeBreak = () => {
-      const timeInSession = Date.now() - sessionStartTime;
-      const progressInSession = timeInSession / expectedSessionDuration;
-      attentionLevel = 0.6 + 0.4 * Math.sin(progressInSession * Math.PI * 3);
-      attentionLevel += (Math.random() - 0.5) * 0.1;
-      attentionLevel = Math.min(Math.max(attentionLevel, 0.3), 1);
-      fatigueLevel = Math.min(progressInSession * 0.9, 0.85);
-      if (Math.random() < 0.02) {
-        fatigueLevel *= 0.8;
-      }
-      fatigueLevel = Math.min(Math.max(fatigueLevel, 0), 0.85);
-      const baseMicrobreakInterval = 12e4 + Math.random() * 24e4;
-      const attentionFactor = 2 - attentionLevel;
-      const fatigueFactor = 1 + fatigueLevel;
-      const microbreakInterval = baseMicrobreakInterval * attentionFactor * fatigueFactor;
-      const timeSinceLastBreak = sessionStorage.getItem("yt_last_break") ? Date.now() - parseInt(sessionStorage.getItem("yt_last_break") || "0") : microbreakInterval;
-      const microbreakBaseProbability = 0.05 + fatigueLevel * 0.3;
-      const timeFactor = Math.min(progressInSession * 2, 1);
-      const microbreakProbability = Math.min(microbreakBaseProbability * (1 + timeFactor), 0.6);
-      if (timeSinceLastBreak > microbreakInterval * 0.4 && Math.random() < microbreakProbability) {
-        sessionStorage.setItem("yt_last_break", Date.now().toString());
-        const mbRand = Math.random();
-        let microbreakDuration;
-        if (mbRand < 0.7) {
-          microbreakDuration = 1e3 + Math.random() * 3e3;
-        } else if (mbRand < 0.9) {
-          microbreakDuration = 4e3 + Math.random() * 6e3;
-        } else {
-          microbreakDuration = 1e4 + Math.random() * 1e4;
-        }
-        return { type: "microbreak", duration: microbreakDuration };
-      }
-      const shortBreakBaseInterval = 6e5 + Math.random() * 12e5;
-      const timeSinceLastShortBreak = sessionStorage.getItem("yt_last_short_break") ? Date.now() - parseInt(sessionStorage.getItem("yt_last_short_break") || "0") : shortBreakBaseInterval;
-      const shortBreakBaseProbability = Math.min(0.05 + progressInSession * 0.15, 0.25);
-      const shortBreakProbability = shortBreakBaseProbability * (1 - attentionLevel);
-      if (timeSinceLastShortBreak > shortBreakBaseInterval * 0.5 && Math.random() < shortBreakProbability) {
-        sessionStorage.setItem("yt_last_short_break", Date.now().toString());
-        const sbRand = Math.random();
-        let shortBreakDuration;
-        if (sbRand < 0.6) {
-          shortBreakDuration = 5e3 + Math.random() * 1e4;
-        } else if (sbRand < 0.85) {
-          shortBreakDuration = 15e3 + Math.random() * 15e3;
-        } else {
-          shortBreakDuration = 3e4 + Math.random() * 15e3;
-        }
-        return { type: "shortbreak", duration: shortBreakDuration };
-      }
-      const longBreakBaseInterval = 27e5 + Math.random() * 27e5;
-      const timeSinceLastLongBreak = sessionStorage.getItem("yt_last_long_break") ? Date.now() - parseInt(sessionStorage.getItem("yt_last_long_break") || "0") : longBreakBaseInterval;
-      const longBreakBaseProbability = Math.min(0.03 + progressInSession * 0.09, 0.12);
-      const longBreakProbability = longBreakBaseProbability * (0.5 + fatigueLevel);
-      if (timeSinceLastLongBreak > longBreakBaseInterval * 0.4 && Math.random() < longBreakProbability) {
-        sessionStorage.setItem("yt_last_long_break", Date.now().toString());
-        const lbRand = Math.random();
-        let longBreakDuration;
-        if (lbRand < 0.5) {
-          longBreakDuration = 3e4 + Math.random() * 3e4;
-        } else if (lbRand < 0.8) {
-          longBreakDuration = 6e4 + Math.random() * 6e4;
-        } else {
-          longBreakDuration = 12e4 + Math.random() * 6e4;
-        }
-        return { type: "longbreak", duration: longBreakDuration };
-      }
-      return null;
-    };
-    const originalSetTimeout = window.setTimeout;
-    window.setTimeout = originalSetTimeout.bind(window);
-    const originalSetInterval = window.setInterval;
-    window.setInterval = originalSetInterval.bind(window);
-    const originalElementClick = HTMLElement.prototype.click;
-    HTMLElement.prototype.click = function() {
-      recordInteraction("click");
-      return originalElementClick.call(this);
-    };
-    const originalScrollTo = Element.prototype.scrollTo;
-    Element.prototype.scrollTo = (function(x, y) {
-      recordInteraction("scroll");
-      const shouldPauseForReading = Math.random() < 0.12;
-      if (shouldPauseForReading) {
-        const originalSetTimeout2 = window.setTimeout;
-        window.setTimeout = (function(handler, timeout, ...args2) {
-          return originalSetTimeout2.call(this, handler, timeout, ...args2);
-        });
-        const readingTime = 300 + Math.random() * 1700 + (Math.random() < 0.1 ? 2e3 : 0);
-        setTimeout(() => {
-          window.setTimeout = originalSetTimeout2;
-        }, readingTime);
-      }
-      if (typeof x === "number" && typeof y === "number") {
-        originalScrollTo.call(this, x, y);
-      } else if (typeof x === "object" && x !== null) {
-        originalScrollTo.call(this, x);
-      } else {
-        originalScrollTo.call(this, x, 0);
-      }
-    });
-    const originalKeyPress = window.onkeypress;
-    window.onkeypress = (event) => {
-      recordInteraction("keypress");
-      if (originalKeyPress) return originalKeyPress.call(window, event);
-    };
-    let visibilityChangeCount = 0;
-    document.addEventListener("visibilitychange", function() {
-      visibilityChangeCount++;
-      recordInteraction("visibilitychange");
-      isDocumentVisible = !document.hidden;
-      lastVisibilityChange = Date.now();
-      if (document.hidden) {
-        sessionStorage.setItem("yt_tab_hidden_at", Date.now().toString());
-      } else {
-        const hiddenAt = sessionStorage.getItem("yt_tab_hidden_at");
-        if (hiddenAt) {
-          const hiddenDuration = Date.now() - parseInt(hiddenAt, 10);
-          if (hiddenDuration > 500 && hiddenDuration < 3e5) {
-            const isBriefCheck = hiddenDuration < 8e3 || Math.random() < 0.7;
-            if (isBriefCheck) {
-              const originalSetTimeout2 = window.setTimeout;
-              window.setTimeout = (function(handler, timeout, ...args) {
-                let adjustedTimeout = timeout;
-                if (typeof handler === "function" && typeof timeout === "number") {
-                  adjustedTimeout = timeout * (1 + Math.random() * 0.2);
-                }
-                return originalSetTimeout2.call(this, handler, adjustedTimeout, ...args);
-              });
-              setTimeout(() => {
-                window.setTimeout = originalSetTimeout2;
-              }, 100 + Math.random() * 200);
-            } else {
-              const originalSetTimeout2 = window.setTimeout;
-              window.setTimeout = (function(handler, timeout, ...args) {
-                let adjustedTimeout = timeout;
-                if (typeof handler === "function" && typeof timeout === "number") {
-                  const delayFactor = 1 + Math.min(hiddenDuration / 2e4, 1.5);
-                  adjustedTimeout = timeout * delayFactor;
-                }
-                return originalSetTimeout2.call(this, handler, adjustedTimeout, ...args);
-              });
-              setTimeout(() => {
-                window.setTimeout = originalSetTimeout2;
-              }, 800 + Math.random() * 1200);
-            }
-          }
-          sessionStorage.removeItem("yt_tab_hidden_at");
-        }
-      }
-    });
-    const originalBeforeUnload = window.onbeforeunload;
-    window.onbeforeunload = null;
-    try {
-      if ("performance" in window && "timing" in window.performance) {
-        const originalTiming = window.performance.timing;
-        if (originalTiming) {
-        }
-      }
-    } catch (e) {
+      }, "loadTimes");
     }
-    try {
-      const originalGetClientRects = Element.prototype.getClientRects;
-      Element.prototype.getClientRects = function() {
-        const rects = originalGetClientRects.call(this);
-        return rects;
+    g.chrome = chromeObj;
+    const makeArrayLike = (items, tag) => {
+      const obj = {};
+      items.forEach((it, i) => {
+        obj[i] = it;
+        obj[it.name ?? it.type] = it;
+      });
+      obj.length = items.length;
+      obj.item = mask(function item(i) {
+        return items[i] ?? null;
+      }, "item");
+      obj.namedItem = mask(function namedItem(n) {
+        return items.find((x) => (x.name ?? x.type) === n) ?? null;
+      }, "namedItem");
+      obj.refresh = mask(function refresh() {
+        return void 0;
+      }, "refresh");
+      obj[Symbol.iterator] = function* () {
+        yield* items;
       };
-    } catch (e) {
+      obj[Symbol.toStringTag] = tag;
+      return obj;
+    };
+    const pluginNames = [
+      "PDF Viewer",
+      "Chrome PDF Viewer",
+      "Chromium PDF Viewer",
+      "Microsoft Edge PDF Viewer",
+      "WebKit built-in PDF"
+    ];
+    const plugins = pluginNames.map((name) => ({
+      name,
+      filename: "internal-pdf-viewer",
+      description: "Portable Document Format",
+      length: 1
+    }));
+    define2(nav, "plugins", () => makeArrayLike(plugins, "PluginArray"));
+    define2(
+      nav,
+      "mimeTypes",
+      () => makeArrayLike(
+        [
+          { type: "application/pdf", suffixes: "pdf", description: "Portable Document Format", enabledPlugin: plugins[0] },
+          { type: "text/pdf", suffixes: "pdf", description: "Portable Document Format", enabledPlugin: plugins[0] }
+        ],
+        "MimeTypeArray"
+      )
+    );
+    define2(nav, "pdfViewerEnabled", () => true);
+    const langs = [f.locale, f.locale.split("-")[0], "en"].filter((v, i, a) => a.indexOf(v) === i);
+    define2(nav, "languages", () => langs);
+    define2(nav, "language", () => f.locale);
+    const origResolved = Intl.DateTimeFormat.prototype.resolvedOptions;
+    Intl.DateTimeFormat.prototype.resolvedOptions = mask(function resolvedOptions() {
+      const r = origResolved.call(this);
+      r.timeZone = f.timezoneId;
+      r.locale = f.locale;
+      return r;
+    }, "resolvedOptions");
+    Date.prototype.getTimezoneOffset = mask(function getTimezoneOffset() {
+      return f.timezoneOffsetMinutes;
+    }, "getTimezoneOffset");
+    define2(nav, "platform", () => f.platform);
+    define2(nav, "hardwareConcurrency", () => f.hardwareConcurrency);
+    define2(nav, "deviceMemory", () => f.deviceMemory);
+    define2(nav, "maxTouchPoints", () => f.maxTouchPoints);
+    define2(nav, "vendor", () => "Google Inc.");
+    define2(nav, "productSub", () => "20030107");
+    define2(nav, "appCodeName", () => "Mozilla");
+    define2(nav, "appName", () => "Netscape");
+    define2(nav, "appVersion", () => f.userAgent.replace(/^Mozilla\//, ""));
+    define2(nav, "cookieEnabled", () => true);
+    define2(nav, "onLine", () => true);
+    define2(nav, "doNotTrack", () => null);
+    const major = f.uaFullVersion.split(".")[0];
+    const brands = [
+      { brand: "Not=A?Brand", version: "99" },
+      { brand: "Google Chrome", version: major },
+      { brand: "Chromium", version: major }
+    ];
+    const platformName = f.platform === "MacIntel" ? "macOS" : f.platform === "Win32" ? "Windows" : "Linux";
+    const highEntropy = {
+      architecture: "x86",
+      bitness: "64",
+      brands,
+      formFactors: ["Desktop"],
+      fullVersionList: [
+        { brand: "Not=A?Brand", version: "99.0.0.0" },
+        { brand: "Google Chrome", version: f.uaFullVersion },
+        { brand: "Chromium", version: f.uaFullVersion }
+      ],
+      mobile: f.isMobile,
+      model: "",
+      platform: platformName,
+      platformVersion: f.platformVersion,
+      uaFullVersion: f.uaFullVersion,
+      wow64: false
+    };
+    define2(nav, "userAgentData", () => ({
+      brands,
+      mobile: f.isMobile,
+      platform: platformName,
+      getHighEntropyValues: mask(async function getHighEntropyValues(hints) {
+        const out = {};
+        for (const h2 of hints ?? []) if (h2 in highEntropy) out[h2] = highEntropy[h2];
+        return out;
+      }, "getHighEntropyValues", true),
+      toJSON: mask(function toJSON() {
+        return { brands, mobile: f.isMobile, platform: platformName };
+      }, "toJSON")
+    }));
+    const w = f.viewportWidth;
+    const h = f.viewportHeight;
+    for (const [k, v] of [
+      ["width", w],
+      ["height", h],
+      ["availWidth", w],
+      ["availHeight", h - 40],
+      ["availLeft", 0],
+      ["availTop", 0],
+      ["colorDepth", 24],
+      ["pixelDepth", 24]
+    ]) {
+      define2(screen, k, () => v);
     }
-    try {
-      const originalObjToString = Object.prototype.toString;
-      Object.prototype.toString = function() {
-        if (this === window || this === document || this === navigator) {
-          return originalObjToString.call(this);
+    define2(screen, "orientation", () => ({
+      angle: 0,
+      type: "landscape-primary",
+      onchange: null,
+      lock: mask(async function lock() {
+        return void 0;
+      }, "lock", true),
+      unlock: mask(function unlock() {
+        return void 0;
+      }, "unlock")
+    }));
+    define2(window, "devicePixelRatio", () => f.deviceScaleFactor);
+    define2(window, "outerWidth", () => w);
+    define2(window, "outerHeight", () => h);
+    define2(window, "innerWidth", () => w);
+    define2(window, "innerHeight", () => h - 85);
+    define2(window, "screenX", () => 0);
+    define2(window, "screenY", () => 0);
+    const origMatchMedia = window.matchMedia;
+    window.matchMedia = mask(function matchMedia(query) {
+      const q = query.replace(/\(min-width:\s*\d+px\)/g, `(min-width: ${w}px)`).replace(/\(max-width:\s*\d+px\)/g, `(max-width: ${w}px)`);
+      return origMatchMedia.call(this, q);
+    }, "matchMedia");
+    const patchGL = (proto) => {
+      if (!proto) return;
+      const orig = proto.getParameter;
+      proto.getParameter = mask(function getParameter(p) {
+        if (p === 37445 || p === 7936) return f.webglVendor;
+        if (p === 37446 || p === 7937) return f.webglRenderer;
+        return orig.call(this, p);
+      }, "getParameter");
+      const origExt = proto.getExtension;
+      proto.getExtension = mask(function getExtension(name) {
+        const ext = origExt.call(this, name);
+        if (ext && name === "WEBGL_debug_renderer_info") {
+          return { UNMASKED_VENDOR_WEBGL: 37445, UNMASKED_RENDERER_WEBGL: 37446 };
         }
-        return originalObjToString.call(this);
+        return ext;
+      }, "getExtension");
+    };
+    patchGL(g.WebGLRenderingContext?.prototype);
+    patchGL(g.WebGL2RenderingContext?.prototype);
+    const canvasRand = (() => {
+      let s = f.canvasSeed >>> 0;
+      return () => {
+        s = s * 1103515245 + 12345 >>> 0;
+        return s / 4294967296;
       };
-    } catch (e) {
-    }
-    (function() {
-      function randomDelay2(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-      }
-      function randomMouseMove() {
-        const x = randomDelay2(100, window.innerWidth - 100);
-        const y = randomDelay2(100, window.innerHeight - 100);
-        const mouseEvent = new MouseEvent("mousemove", {
-          "view": window,
-          "bubbles": true,
-          "cancelable": true,
-          "clientX": x,
-          "clientY": y
-        });
-        document.dispatchEvent(mouseEvent);
-      }
-      function randomScroll() {
-        const deltaY = randomDelay2(-100, 100);
-        window.scrollBy(0, deltaY);
-      }
-      setInterval(randomMouseMove, randomDelay2(2e4, 4e4));
-      setInterval(randomScroll, randomDelay2(4e4, 6e4));
     })();
+    const perturb = (data) => {
+      for (let i = 0; i < data.length; i += 4) {
+        if (canvasRand() < 8e-4) {
+          data[i] = Math.min(255, data[i] + 1);
+          data[i + 1] = Math.max(0, data[i + 1] - 1);
+        }
+      }
+    };
+    const origToDataURL = HTMLCanvasElement.prototype.toDataURL;
+    HTMLCanvasElement.prototype.toDataURL = mask(function toDataURL(...a) {
+      const ctx = this.getContext("2d");
+      if (ctx && this.width > 16 && this.height > 16) {
+        try {
+          const img = ctx.getImageData(0, 0, this.width, this.height);
+          perturb(img.data);
+          ctx.putImageData(img, 0, 0);
+        } catch {
+        }
+      }
+      return origToDataURL.apply(this, a);
+    }, "toDataURL");
+    const origGetImageData = CanvasRenderingContext2D.prototype.getImageData;
+    CanvasRenderingContext2D.prototype.getImageData = mask(function getImageData(...a) {
+      const img = origGetImageData.apply(this, a);
+      perturb(img.data);
+      return img;
+    }, "getImageData");
+    if (g.AudioContext) {
+      const origCreateOsc = g.AudioContext.prototype.createOscillator;
+      g.AudioContext.prototype.createOscillator = mask(function createOscillator() {
+        const osc = origCreateOsc.call(this);
+        const origStart = osc.start;
+        osc.start = mask(function start(...a) {
+          try {
+            osc.frequency.value = osc.frequency.value + (rand() - 0.5) * 0.02;
+          } catch {
+          }
+          return origStart.apply(this, a);
+        }, "start");
+        return osc;
+      }, "createOscillator");
+    }
+    if (nav.mediaDevices) {
+      const origEnum = nav.mediaDevices.enumerateDevices;
+      nav.mediaDevices.enumerateDevices = mask(async function enumerateDevices() {
+        const devices = await origEnum.call(this);
+        return devices.filter((d) => d.kind === "audiooutput" || d.kind === "videoinput");
+      }, "enumerateDevices", true);
+    }
+    if (g.MediaCapabilities?.prototype?.decodingInfo) {
+      const origDecoding = g.MediaCapabilities.prototype.decodingInfo;
+      g.MediaCapabilities.prototype.decodingInfo = mask(async function decodingInfo(cfg) {
+        const res = await origDecoding.call(this, cfg);
+        return { ...res, smooth: res.supported && res.smooth };
+      }, "decodingInfo", true);
+    }
+    const permissionTable = {
+      geolocation: "prompt",
+      notifications: "default",
+      push: "prompt",
+      midi: "prompt",
+      camera: "prompt",
+      microphone: "prompt",
+      background_sync: "granted",
+      persistent_storage: "prompt",
+      "clipboard-write": "granted",
+      "system-wake-lock": "granted",
+      "window-placement": "granted",
+      "idle-detection": "prompt"
+    };
+    if (nav.permissions?.query) {
+      const origQuery = nav.permissions.query;
+      nav.permissions.query = mask(async function query(d) {
+        const state = permissionTable[d?.name];
+        if (state) {
+          return { state, onchange: null, addEventListener: () => void 0, removeEventListener: () => void 0 };
+        }
+        return origQuery.call(this, d);
+      }, "query", true);
+    }
+    if (nav.getBattery) {
+      const origBattery = nav.getBattery;
+      nav.getBattery = mask(async function getBattery() {
+        const b = await origBattery.call(this);
+        define2(b, "charging", () => true);
+        define2(b, "chargingTime", () => 0);
+        define2(b, "dischargingTime", () => Infinity);
+        define2(b, "level", () => 0.55 + rand() * 0.4);
+        return b;
+      }, "getBattery", true);
+    }
+    const conn = {
+      effectiveType: "4g",
+      rtt: 50 + Math.round(rand() * 40),
+      downlink: 20 + rand() * 60,
+      downlinkMax: Infinity,
+      saveData: false,
+      type: "wifi",
+      onchange: null,
+      addEventListener: mask(function addEventListener() {
+        return void 0;
+      }, "addEventListener"),
+      removeEventListener: mask(function removeEventListener() {
+        return void 0;
+      }, "removeEventListener")
+    };
+    define2(nav, "connection", () => conn);
+    if (nav.storage?.estimate) {
+      nav.storage.estimate = mask(async function estimate() {
+        const quota = Math.round((120 + rand() * 80) * 1024 * 1024 * 1024);
+        return { quota, usage: Math.round(rand() * 400 * 1024 * 1024) };
+      }, "estimate", true);
+    }
+    define2(nav, "bluetooth", () => ({ getAvailability: mask(async () => true, "getAvailability", true) }));
+    define2(nav, "usb", () => ({ getDevices: mask(async () => [], "getDevices", true) }));
+    define2(nav, "hid", () => ({ getDevices: mask(async () => [], "getDevices", true) }));
+    define2(nav, "serial", () => ({ getPorts: mask(async () => [], "getPorts", true) }));
+    const origNow = performance.now.bind(performance);
+    performance.now = mask(function now() {
+      return Math.round(origNow() * 20) / 20;
+    }, "now");
+  }, fp);
+}
+async function readFingerprintReport(page) {
+  return page.evaluate(() => {
+    const v = document.createElement("video");
+    return {
+      webdriver: navigator.webdriver,
+      ua: navigator.userAgent,
+      languages: navigator.languages,
+      platform: navigator.platform,
+      cores: navigator.hardwareConcurrency,
+      memory: navigator.deviceMemory,
+      plugins: navigator.plugins.length,
+      dpr: window.devicePixelRatio,
+      outerWidth: window.outerWidth,
+      innerWidth: window.innerWidth,
+      screen: `${screen.width}x${screen.height}`,
+      tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      tzOffset: (/* @__PURE__ */ new Date()).getTimezoneOffset(),
+      chromeCsi: typeof window.chrome?.csi,
+      webglVendor: (() => {
+        const c = document.createElement("canvas").getContext("webgl");
+        const e = c?.getExtension("WEBGL_debug_renderer_info");
+        return e ? c?.getParameter(e.UNMASKED_VENDOR_WEBGL) : null;
+      })(),
+      codecs: {
+        h264: v.canPlayType('video/mp4; codecs="avc1.42E01E"'),
+        vp9: v.canPlayType('video/webm; codecs="vp9"'),
+        av1: v.canPlayType('video/mp4; codecs="av01.0.05M.08"')
+      }
+    };
   });
 }
 
 // src/main/automation/TabManager.ts
-var FINGERPRINT_POOL = [
-  // Windows 10/11 Chrome - 1920x1080 - NVIDIA RTX 3080
-  {
-    userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
-    locale: "en-US",
-    timezoneId: "America/New_York",
-    viewportWidth: 1920,
-    viewportHeight: 1080,
-    deviceScaleFactor: 1,
-    isMobile: false,
-    hasTouch: false,
-    platform: "Win32",
-    webglVendor: "Google Inc. (NVIDIA)",
-    webglRenderer: "ANGLE (NVIDIA, NVIDIA GeForce RTX 3080 Direct3D11 vs_5_0 ps_5_0)",
-    hardwareConcurrency: 16,
-    deviceMemory: 32,
-    cpuClass: "x86",
-    maxTouchPoints: 0
-  },
-  // Windows 10/11 Chrome - 1366x768 - AMD Radeon
-  {
-    userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
-    locale: "en-GB",
-    timezoneId: "Europe/London",
-    viewportWidth: 1366,
-    viewportHeight: 768,
-    deviceScaleFactor: 1,
-    isMobile: false,
-    hasTouch: false,
-    platform: "Win32",
-    webglVendor: "Google Inc. (AMD)",
-    webglRenderer: "ANGLE (AMD, AMD Radeon RX 6800 XT Direct3D11 vs_5_0 ps_5_0)",
-    hardwareConcurrency: 8,
-    deviceMemory: 16,
-    cpuClass: "x86",
-    maxTouchPoints: 0
-  },
-  // Windows 11 Chrome - 1600x900 - Intel UHD
-  {
-    userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
-    locale: "en-CA",
-    timezoneId: "America/Toronto",
-    viewportWidth: 1600,
-    viewportHeight: 900,
-    deviceScaleFactor: 1,
-    isMobile: false,
-    hasTouch: false,
-    platform: "Win32",
-    webglVendor: "Google Inc. (Intel)",
-    webglRenderer: "ANGLE (Intel, Intel UHD Graphics 770 Direct3D11 vs_5_0 ps_5_0)",
-    hardwareConcurrency: 12,
-    deviceMemory: 16,
-    cpuClass: "x86",
-    maxTouchPoints: 0
-  },
-  // macOS Chrome - 1440x900 - M1 Pro
-  {
-    userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
-    locale: "en-US",
-    timezoneId: "America/Los_Angeles",
-    viewportWidth: 1440,
-    viewportHeight: 900,
-    deviceScaleFactor: 2,
-    isMobile: false,
-    hasTouch: false,
-    platform: "MacIntel",
-    webglVendor: "Google Inc. (Apple)",
-    webglRenderer: "ANGLE (Apple, Apple M1 Pro Metal vs_1_2 ps_1_2)",
-    hardwareConcurrency: 10,
-    deviceMemory: 16,
-    cpuClass: void 0,
-    maxTouchPoints: 0
-  },
-  // macOS Chrome - 1512x982 - M2 (Retina)
-  {
-    userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
-    locale: "en-GB",
-    timezoneId: "Europe/London",
-    viewportWidth: 1512,
-    viewportHeight: 982,
-    deviceScaleFactor: 2,
-    isMobile: false,
-    hasTouch: false,
-    platform: "MacIntel",
-    webglVendor: "Google Inc. (Apple)",
-    webglRenderer: "ANGLE (Apple, Apple M2 Metal vs_1_2 ps_1_2)",
-    hardwareConcurrency: 8,
-    deviceMemory: 16,
-    cpuClass: void 0,
-    maxTouchPoints: 0
-  },
-  // macOS Chrome - 1280x800 - M3 (MacBook Air)
-  {
-    userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
-    locale: "en-AU",
-    timezoneId: "Australia/Sydney",
-    viewportWidth: 1280,
-    viewportHeight: 800,
-    deviceScaleFactor: 2,
-    isMobile: false,
-    hasTouch: false,
-    platform: "MacIntel",
-    webglVendor: "Google Inc. (Apple)",
-    webglRenderer: "ANGLE (Apple, Apple M3 Metal vs_1_2 ps_1_2)",
-    hardwareConcurrency: 8,
-    deviceMemory: 8,
-    cpuClass: void 0,
-    maxTouchPoints: 0
-  },
-  // Linux Chrome - 1920x1080 - NVIDIA GTX 1660
-  {
-    userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
-    locale: "en-US",
-    timezoneId: "America/Chicago",
-    viewportWidth: 1920,
-    viewportHeight: 1080,
-    deviceScaleFactor: 1,
-    isMobile: false,
-    hasTouch: false,
-    platform: "Linux x86_64",
-    webglVendor: "Google Inc. (NVIDIA)",
-    webglRenderer: "ANGLE (NVIDIA, NVIDIA GeForce GTX 1660 OpenGL 4.6)",
-    hardwareConcurrency: 6,
-    deviceMemory: 16,
-    cpuClass: void 0,
-    maxTouchPoints: 0
-  },
-  // Linux Chrome - 1366x768 - AMD Radeon
-  {
-    userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
-    locale: "de-DE",
-    timezoneId: "Europe/Berlin",
-    viewportWidth: 1366,
-    viewportHeight: 768,
-    deviceScaleFactor: 1,
-    isMobile: false,
-    hasTouch: false,
-    platform: "Linux x86_64",
-    webglVendor: "Google Inc. (AMD)",
-    webglRenderer: "ANGLE (AMD, AMD Radeon RX 6700 XT OpenGL 4.6)",
-    hardwareConcurrency: 8,
-    deviceMemory: 16,
-    cpuClass: void 0,
-    maxTouchPoints: 0
-  },
-  // Windows Edge - 1920x1080
-  {
-    userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0",
-    locale: "en-US",
-    timezoneId: "America/New_York",
-    viewportWidth: 1920,
-    viewportHeight: 1080,
-    deviceScaleFactor: 1,
-    isMobile: false,
-    hasTouch: false,
-    platform: "Win32",
-    webglVendor: "Google Inc. (NVIDIA)",
-    webglRenderer: "ANGLE (NVIDIA, NVIDIA GeForce RTX 3070 Direct3D11 vs_5_0 ps_5_0)",
-    hardwareConcurrency: 16,
-    deviceMemory: 32,
-    cpuClass: "x86",
-    maxTouchPoints: 0
-  },
-  // Windows Firefox - 1920x1080 (for variety)
-  {
-    userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:130.0) Gecko/20100101 Firefox/130.0",
-    locale: "en-US",
-    timezoneId: "America/Denver",
-    viewportWidth: 1920,
-    viewportHeight: 1080,
-    deviceScaleFactor: 1,
-    isMobile: false,
-    hasTouch: false,
-    platform: "Win32",
-    webglVendor: "Mozilla",
-    webglRenderer: "NVIDIA Corporation -- NVIDIA GeForce RTX 3080/PCIe/SSE2",
-    hardwareConcurrency: 16,
-    deviceMemory: 32,
-    cpuClass: void 0,
-    maxTouchPoints: 0
-  },
-  // Windows Chrome - 1536x864 (common laptop)
-  {
-    userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
-    locale: "fr-FR",
-    timezoneId: "Europe/Paris",
-    viewportWidth: 1536,
-    viewportHeight: 864,
-    deviceScaleFactor: 1.25,
-    isMobile: false,
-    hasTouch: false,
-    platform: "Win32",
-    webglVendor: "Google Inc. (Intel)",
-    webglRenderer: "ANGLE (Intel, Intel Iris Xe Graphics Direct3D11 vs_5_0 ps_5_0)",
-    hardwareConcurrency: 12,
-    deviceMemory: 16,
-    cpuClass: "x86",
-    maxTouchPoints: 0
-  },
-  // Windows Chrome - 1440x900 (common laptop)
-  {
-    userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
-    locale: "es-ES",
-    timezoneId: "Europe/Madrid",
-    viewportWidth: 1440,
-    viewportHeight: 900,
-    deviceScaleFactor: 1,
-    isMobile: false,
-    hasTouch: false,
-    platform: "Win32",
-    webglVendor: "Google Inc. (AMD)",
-    webglRenderer: "ANGLE (AMD, AMD Radeon 680M Direct3D11 vs_5_0 ps_5_0)",
-    hardwareConcurrency: 8,
-    deviceMemory: 16,
-    cpuClass: "x86",
-    maxTouchPoints: 0
-  }
+var CHROME_CANDIDATES = [
+  "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+  "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+  `${process.env.LOCALAPPDATA ?? ""}\\Google\\Chrome\\Application\\chrome.exe`,
+  "/usr/bin/google-chrome",
+  "/usr/bin/google-chrome-stable",
+  "/opt/google/chrome/chrome",
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 ];
-var usedFingerprints = /* @__PURE__ */ new Map();
-function pickFingerprint(tabId) {
-  if (tabId) {
-    const available = FINGERPRINT_POOL.filter((_, index) => {
-      const count = usedFingerprints.get(`${tabId}-${index}`) || 0;
-      return count < 3;
-    });
-    if (available.length > 0) {
-      const picked2 = available[Math.floor(Math.random() * available.length)];
-      const index = FINGERPRINT_POOL.indexOf(picked2);
-      const key = `${tabId}-${index}`;
-      usedFingerprints.set(key, (usedFingerprints.get(key) || 0) + 1);
-      return picked2;
-    }
+var UA_VERSION = "141.0.7390.55";
+function uaFor(platform) {
+  if (platform === "MacIntel") {
+    return `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${UA_VERSION} Safari/537.36`;
   }
-  const picked = FINGERPRINT_POOL[Math.floor(Math.random() * FINGERPRINT_POOL.length)];
+  if (platform === "Linux x86_64") {
+    return `Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${UA_VERSION} Safari/537.36`;
+  }
+  return `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${UA_VERSION} Safari/537.36`;
+}
+var PROFILES = [
+  { uaFullVersion: UA_VERSION, locale: "en-US", country: "US", timezoneId: "America/New_York", timezoneOffsetMinutes: 300, viewportWidth: 1920, viewportHeight: 1080, deviceScaleFactor: 1, platform: "Win32", platformVersion: "15.0.0", isMobile: false, hasTouch: false, maxTouchPoints: 0, hardwareConcurrency: 12, deviceMemory: 16, webglVendor: "Google Inc. (NVIDIA)", webglRenderer: "ANGLE (NVIDIA, NVIDIA GeForce RTX 3060 Direct3D11 vs_5_0 ps_5_0)" },
+  { uaFullVersion: UA_VERSION, locale: "en-US", country: "US", timezoneId: "America/Chicago", timezoneOffsetMinutes: 360, viewportWidth: 1536, viewportHeight: 864, deviceScaleFactor: 1.25, platform: "Win32", platformVersion: "15.0.0", isMobile: false, hasTouch: false, maxTouchPoints: 0, hardwareConcurrency: 8, deviceMemory: 8, webglVendor: "Google Inc. (Intel)", webglRenderer: "ANGLE (Intel, Intel Iris Xe Graphics Direct3D11 vs_5_0 ps_5_0)" },
+  { uaFullVersion: UA_VERSION, locale: "en-US", country: "US", timezoneId: "America/Los_Angeles", timezoneOffsetMinutes: 480, viewportWidth: 1440, viewportHeight: 900, deviceScaleFactor: 2, platform: "MacIntel", platformVersion: "15.0.0", isMobile: false, hasTouch: false, maxTouchPoints: 0, hardwareConcurrency: 10, deviceMemory: 16, webglVendor: "Google Inc. (Apple)", webglRenderer: "ANGLE (Apple, Apple M1 Metal vs_1_2 ps_1_2)" },
+  { uaFullVersion: UA_VERSION, locale: "en-GB", country: "GB", timezoneId: "Europe/London", timezoneOffsetMinutes: 0, viewportWidth: 1366, viewportHeight: 768, deviceScaleFactor: 1, platform: "Win32", platformVersion: "15.0.0", isMobile: false, hasTouch: false, maxTouchPoints: 0, hardwareConcurrency: 8, deviceMemory: 16, webglVendor: "Google Inc. (AMD)", webglRenderer: "ANGLE (AMD, AMD Radeon RX 6600 Direct3D11 vs_5_0 ps_5_0)" },
+  { uaFullVersion: UA_VERSION, locale: "en-GB", country: "GB", timezoneId: "Europe/London", timezoneOffsetMinutes: 0, viewportWidth: 1512, viewportHeight: 982, deviceScaleFactor: 2, platform: "MacIntel", platformVersion: "15.0.0", isMobile: false, hasTouch: false, maxTouchPoints: 0, hardwareConcurrency: 8, deviceMemory: 16, webglVendor: "Google Inc. (Apple)", webglRenderer: "ANGLE (Apple, Apple M2 Metal vs_1_2 ps_1_2)" },
+  { uaFullVersion: UA_VERSION, locale: "de-DE", country: "DE", timezoneId: "Europe/Berlin", timezoneOffsetMinutes: -60, viewportWidth: 1920, viewportHeight: 1080, deviceScaleFactor: 1, platform: "Win32", platformVersion: "15.0.0", isMobile: false, hasTouch: false, maxTouchPoints: 0, hardwareConcurrency: 16, deviceMemory: 16, webglVendor: "Google Inc. (NVIDIA)", webglRenderer: "ANGLE (NVIDIA, NVIDIA GeForce GTX 1660 SUPER Direct3D11 vs_5_0 ps_5_0)" },
+  { uaFullVersion: UA_VERSION, locale: "de-DE", country: "DE", timezoneId: "Europe/Berlin", timezoneOffsetMinutes: -60, viewportWidth: 1366, viewportHeight: 768, deviceScaleFactor: 1, platform: "Linux x86_64", platformVersion: "6.5.0", isMobile: false, hasTouch: false, maxTouchPoints: 0, hardwareConcurrency: 8, deviceMemory: 16, webglVendor: "Google Inc. (AMD)", webglRenderer: "ANGLE (AMD, AMD Radeon RX 6700 XT OpenGL 4.6)" },
+  { uaFullVersion: UA_VERSION, locale: "en-CA", country: "CA", timezoneId: "America/Toronto", timezoneOffsetMinutes: 300, viewportWidth: 1600, viewportHeight: 900, deviceScaleFactor: 1, platform: "Win32", platformVersion: "15.0.0", isMobile: false, hasTouch: false, maxTouchPoints: 0, hardwareConcurrency: 12, deviceMemory: 16, webglVendor: "Google Inc. (Intel)", webglRenderer: "ANGLE (Intel, Intel UHD Graphics 770 Direct3D11 vs_5_0 ps_5_0)" },
+  { uaFullVersion: UA_VERSION, locale: "en-AU", country: "AU", timezoneId: "Australia/Sydney", timezoneOffsetMinutes: -600, viewportWidth: 1920, viewportHeight: 1080, deviceScaleFactor: 1, platform: "Win32", platformVersion: "15.0.0", isMobile: false, hasTouch: false, maxTouchPoints: 0, hardwareConcurrency: 16, deviceMemory: 32, webglVendor: "Google Inc. (AMD)", webglRenderer: "ANGLE (AMD, AMD Radeon RX 6800 XT Direct3D11 vs_5_0 ps_5_0)" },
+  { uaFullVersion: UA_VERSION, locale: "en-IN", country: "IN", timezoneId: "Asia/Kolkata", timezoneOffsetMinutes: -330, viewportWidth: 1536, viewportHeight: 864, deviceScaleFactor: 1.25, platform: "Win32", platformVersion: "15.0.0", isMobile: false, hasTouch: false, maxTouchPoints: 0, hardwareConcurrency: 8, deviceMemory: 8, webglVendor: "Google Inc. (NVIDIA)", webglRenderer: "ANGLE (NVIDIA, NVIDIA GeForce GTX 1650 Direct3D11 vs_5_0 ps_5_0)" },
+  { uaFullVersion: UA_VERSION, locale: "en-IN", country: "IN", timezoneId: "Asia/Kolkata", timezoneOffsetMinutes: -330, viewportWidth: 1366, viewportHeight: 768, deviceScaleFactor: 1, platform: "Linux x86_64", platformVersion: "6.5.0", isMobile: false, hasTouch: false, maxTouchPoints: 0, hardwareConcurrency: 4, deviceMemory: 8, webglVendor: "Google Inc. (Intel)", webglRenderer: "ANGLE (Intel, Mesa Intel(R) UHD Graphics 620 OpenGL 4.6)" },
+  { uaFullVersion: UA_VERSION, locale: "en-US", country: "US", timezoneId: "America/Denver", timezoneOffsetMinutes: 420, viewportWidth: 1280, viewportHeight: 720, deviceScaleFactor: 1, platform: "Win32", platformVersion: "15.0.0", isMobile: false, hasTouch: false, maxTouchPoints: 0, hardwareConcurrency: 8, deviceMemory: 16, webglVendor: "Google Inc. (AMD)", webglRenderer: "ANGLE (AMD, AMD Radeon 680M Direct3D11 vs_5_0 ps_5_0)" }
+];
+var profileByProxy = /* @__PURE__ */ new Map();
+function countryFromLabel(label) {
+  if (!label) return null;
+  const m = label.toUpperCase().match(/\b([A-Z]{2})\b/);
+  return m ? m[1] : null;
+}
+function pickProfile(proxyLabel) {
+  const key = proxyLabel ?? "default";
+  const cached = profileByProxy.get(key);
+  if (cached) return cached;
+  const country = countryFromLabel(proxyLabel);
+  const matching = country ? PROFILES.filter((p) => p.country === country) : [];
+  const pool = matching.length > 0 ? matching : PROFILES;
+  const picked = pool[Math.floor(Math.random() * pool.length)];
+  profileByProxy.set(key, picked);
   return picked;
 }
 function randomDelay(minMs, maxMs) {
@@ -24787,91 +23632,131 @@ var TabManager = class _TabManager extends import_node_events2.EventEmitter {
   browserOptions;
   forceIPv4;
   stealthMode;
-  // Resolved antidetection options, captured ONCE at construction so the hot
-  // createTab / dispatchTask paths stay fully synchronous — no per-task import,
-  // no per-task await. Off by default (every flag false), which is why the OFF
-  // runtime path is byte-identical to today: the gated branches simply don't run.
-  antidetection;
   isShuttingDown = false;
   relaunchAttempts = 0;
   static MAX_RELAUNCH_ATTEMPTS = 5;
   static RELAUNCH_BACKOFF_BASE_MS = 2e3;
   onBrowserLaunched = null;
+  launchVia = null;
   constructor(maxTabs = 20, proxyManager, pluginManager, browserOptions, onBrowserLaunched) {
     super();
     this.maxTabs = maxTabs;
     this.proxyManager = proxyManager ?? new ProxyManager();
-    this.pluginManager = pluginManager ?? {
-      getHandler: () => void 0,
-      getAvailableTaskTypes: () => []
-    };
+    this.pluginManager = pluginManager ?? { getHandler: () => void 0, getAvailableTaskTypes: () => [] };
     this.browserOptions = { ...DEFAULT_BROWSER_OPTIONS, ...browserOptions };
     this.onBrowserLaunched = onBrowserLaunched;
     const browserConfig = configService.getBrowserConfig();
     this.forceIPv4 = browserConfig.forceIPv4 ?? true;
     this.stealthMode = browserConfig.stealthMode ?? true;
-    this.antidetection = resolveOptions(configService.getAntiDetectionConfig());
   }
   async init() {
     await this.launchBrowser();
   }
-  /** Launches Chromium and wires up crash detection. Reused both for the
-   *  initial launch and for auto-relaunch after an unexpected crash. */
-  async launchBrowser() {
+  buildArgs() {
     const args = [
-      "--disable-blink-features=AutomationControlled",
       "--disable-dev-shm-usage",
       "--autoplay-policy=no-user-gesture-required",
-      // Forces WebRTC to only use the configured proxy's route for any
-      // media/ICE candidate gathering, instead of also gathering the
-      // machine's real local/public IP as a fallback candidate — this is
-      // the single most common way a "proxied" browser still leaks the
-      // real IP to a destination site via getUserMedia/RTCPeerConnection.
+      "--disable-background-timer-throttling",
+      "--disable-backgrounding-occluded-windows",
+      "--disable-renderer-backgrounding",
+      "--disable-ipc-flooding-protection",
       "--force-webrtc-ip-handling-policy=disable_non_proxied_udp",
-      "--enforce-webrtc-ip-permission-check"
+      "--enforce-webrtc-ip-permission-check",
+      "--disable-features=TranslateUI,BlinkGenPropertyTrial,WebRtcHideLocalIpsWithMdns,AudioServiceOutOfProcess",
+      "--no-first-run",
+      "--no-default-browser-check",
+      "--no-service-autorun",
+      "--password-store=basic",
+      "--use-mock-keychain",
+      "--disable-session-crashed-bubble",
+      "--hide-crash-restore-bubble",
+      "--disable-component-extensions-with-background-pages",
+      "--exclude-switches=enable-automation"
     ];
-    if (this.forceIPv4) {
-      args.push("--disable-ipv6");
-      args.push("--disable-features=WebRtcHideLocalIpsWithMdns");
+    if (this.forceIPv4) args.push("--disable-ipv6");
+    if (this.stealthMode) args.push("--disable-infobars", "--disable-field-trial-config");
+    return args;
+  }
+  async launchBrowser() {
+    const args = this.buildArgs();
+    const attempts = [
+      {
+        label: "patchright+channel:chrome",
+        run: () => import_patchright.chromium.launch({ headless: this.browserOptions.headless, args, channel: "chrome" })
+      },
+      ...CHROME_CANDIDATES.filter(Boolean).map((executablePath) => ({
+        label: `patchright+${executablePath}`,
+        run: () => import_patchright.chromium.launch({ headless: this.browserOptions.headless, args, executablePath })
+      })),
+      {
+        label: "patchright+bundled",
+        run: () => import_patchright.chromium.launch({ headless: this.browserOptions.headless, args })
+      }
+    ];
+    let lastError = null;
+    for (const attempt of attempts) {
+      try {
+        this.browser = await attempt.run();
+        this.launchVia = attempt.label;
+        break;
+      } catch (err) {
+        lastError = err;
+      }
     }
-    if (this.stealthMode) {
-      args.push(
-        // Additional anti-detection flags
-        "--disable-blink-features=AutomationControlled",
-        "--disable-infobars",
-        "--disable-background-timer-throttling",
-        "--disable-backgrounding-occluded-windows",
-        "--disable-renderer-backgrounding",
-        "--disable-field-trial-config",
-        "--disable-back-forward-cache",
-        "--disable-ipc-flooding-protection",
-        "--no-first-run",
-        "--no-default-browser-check",
-        "--no-service-autorun",
-        "--password-store=basic",
-        "--use-mock-keychain",
-        // Randomized viewport to avoid detection
-        "--window-size=1920,1080",
-        "--start-maximized",
-        // Hide automation indicators
-        "--exclude-switches=enable-automation",
-        "--disable-extensions-except",
-        "--disable-extensions",
-        // Media/permissions
-        "--disable-features=TranslateUI,BlinkGenPropertyTrial",
-        "--disable-component-extensions-with-background-pages"
-      );
+    if (!this.browser) {
+      throw new Error(`Could not launch any browser: ${lastError?.message ?? "unknown"}`);
     }
-    this.browser = await import_playwright2.chromium.launch({
-      headless: this.browserOptions.headless,
-      args,
-      // Use consistent executable path
-      executablePath: void 0
-      // Let Playwright find it
-    });
+    logger_default.info(`Browser launched via ${this.launchVia}`);
+    await this.assertCodecSupport();
     this.browser.on("disconnected", () => this.handleBrowserDisconnected());
-    if (this.onBrowserLaunched) {
-      this.onBrowserLaunched();
+    this.onBrowserLaunched?.();
+  }
+  async assertCodecSupport() {
+    if (!this.browser) return;
+    let ctx = null;
+    try {
+      ctx = await this.browser.newContext();
+      const page = await ctx.newPage();
+      await page.goto("https://www.youtube.com/", { waitUntil: "domcontentloaded", timeout: 25e3 }).catch(() => {
+      });
+      const caps = await page.evaluate(async () => {
+        const v = document.createElement("video");
+        let widevine = false;
+        try {
+          await navigator.requestMediaKeySystemAccess("com.widevine.alpha", [
+            { initDataTypes: ["cenc"], videoCapabilities: [{ contentType: 'video/mp4; codecs="avc1.42E01E"' }] }
+          ]);
+          widevine = true;
+        } catch {
+        }
+        return {
+          secure: window.isSecureContext,
+          h264: v.canPlayType('video/mp4; codecs="avc1.42E01E"'),
+          aac: v.canPlayType('audio/mp4; codecs="mp4a.40.2"'),
+          vp9: v.canPlayType('video/webm; codecs="vp9"'),
+          av1: v.canPlayType('video/mp4; codecs="av01.0.05M.08"'),
+          widevine
+        };
+      });
+      logger_default.info(
+        `Codecs h264="${caps.h264}" aac="${caps.aac}" vp9="${caps.vp9}" av1="${caps.av1}" widevine=${caps.widevine}`
+      );
+      if (!caps.h264 || !caps.aac) {
+        this.emitEvent({
+          tabId: "system",
+          kind: "error",
+          data: "Browser cannot decode H.264/AAC \u2014 install Google Chrome. YouTube returns player error 5 without it.",
+          timestamp: Date.now()
+        });
+      }
+      if (!caps.widevine) {
+        logger_default.warn("Widevine unavailable \u2014 DRM-protected videos will fail. Non-DRM videos are unaffected.");
+      }
+    } catch (err) {
+      logger_default.warn("Codec probe failed", err);
+    } finally {
+      await ctx?.close().catch(() => {
+      });
     }
   }
   handleBrowserDisconnected() {
@@ -24879,7 +23764,7 @@ var TabManager = class _TabManager extends import_node_events2.EventEmitter {
       this.browser = null;
       return;
     }
-    logger_default.error("Browser process disconnected/crashed \u2014 clearing all tabs");
+    logger_default.error("Browser disconnected \u2014 clearing tabs");
     for (const [id, tab] of this.tabs) {
       if (tab.closed) continue;
       if (tab.loopTimer) clearInterval(tab.loopTimer);
@@ -24896,30 +23781,25 @@ var TabManager = class _TabManager extends import_node_events2.EventEmitter {
   async attemptRelaunch() {
     if (this.isShuttingDown) return;
     if (this.relaunchAttempts >= _TabManager.MAX_RELAUNCH_ATTEMPTS) {
-      logger_default.error(
-        `Browser crashed and failed to relaunch after ${_TabManager.MAX_RELAUNCH_ATTEMPTS} attempts \u2014 giving up. Restart the app to recover.`
-      );
+      logger_default.error(`Browser failed to relaunch after ${_TabManager.MAX_RELAUNCH_ATTEMPTS} attempts`);
       this.emitEvent({
         tabId: "system",
         kind: "error",
-        data: `Browser could not be restarted after ${_TabManager.MAX_RELAUNCH_ATTEMPTS} attempts. Please restart the app.`,
+        data: `Browser could not be restarted after ${_TabManager.MAX_RELAUNCH_ATTEMPTS} attempts. Restart the app.`,
         timestamp: Date.now()
       });
       return;
     }
     this.relaunchAttempts += 1;
     const attempt = this.relaunchAttempts;
-    const delayMs = _TabManager.RELAUNCH_BACKOFF_BASE_MS * attempt;
-    logger_default.warn(`Attempting to relaunch browser (attempt ${attempt}/${_TabManager.MAX_RELAUNCH_ATTEMPTS}) in ${delayMs}ms`);
-    await new Promise((resolve3) => setTimeout(resolve3, delayMs));
+    await new Promise((r) => setTimeout(r, _TabManager.RELAUNCH_BACKOFF_BASE_MS * attempt));
     if (this.isShuttingDown) return;
     try {
       await this.launchBrowser();
-      logger_default.info("Browser relaunched successfully after crash.");
       this.relaunchAttempts = 0;
       this.emitEvent({ tabId: "system", kind: "status", data: "Browser relaunched after crash", timestamp: Date.now() });
-    } catch (error) {
-      logger_default.error(`Relaunch attempt ${attempt} failed`, error);
+    } catch (err) {
+      logger_default.error(`Relaunch ${attempt} failed`, err);
       void this.attemptRelaunch();
     }
   }
@@ -24932,14 +23812,16 @@ var TabManager = class _TabManager extends import_node_events2.EventEmitter {
   getProxyStatus() {
     return this.proxyManager.getStatus();
   }
-  async createTab(label, fingerprintParam) {
+  storagePathFor(proxyLabel) {
+    const key = (proxyLabel ?? "default").replace(/[^a-z0-9]+/gi, "_");
+    return path3.join(process.cwd(), "profiles", `${key}.json`);
+  }
+  async createTab(label, _fp) {
     if (!this.browser) throw new Error("Browser not initialized");
-    if (this.tabs.size >= this.maxTabs) {
-      throw new Error(`Tab limit reached (${this.maxTabs})`);
-    }
+    if (this.tabs.size >= this.maxTabs) throw new Error(`Tab limit reached (${this.maxTabs})`);
     const id = (0, import_node_crypto.randomUUID)();
     const proxy = this.proxyManager.assign(id);
-    const fingerprint = pickFingerprint(id);
+    const profile = pickProfile(proxy?.label);
     const state = {
       id,
       label: label ?? `Tab ${this.tabs.size + 1}`,
@@ -24948,355 +23830,65 @@ var TabManager = class _TabManager extends import_node_events2.EventEmitter {
       proxyLabel: proxy?.label
     };
     this.emitEvent({ tabId: id, kind: "status", data: state, timestamp: Date.now() });
+    const statePath = this.storagePathFor(proxy?.label);
+    let restoredState = void 0;
+    try {
+      restoredState = JSON.parse(await fs2.readFile(statePath, "utf8"));
+    } catch {
+    }
     const context = await this.browser.newContext({
-      viewport: {
-        width: fingerprint.viewportWidth,
-        height: fingerprint.viewportHeight
-      },
-      userAgent: fingerprint.userAgent,
-      locale: fingerprint.locale,
-      timezoneId: fingerprint.timezoneId,
-      deviceScaleFactor: fingerprint.deviceScaleFactor,
-      isMobile: fingerprint.isMobile,
-      hasTouch: fingerprint.hasTouch,
+      viewport: { width: profile.viewportWidth, height: profile.viewportHeight },
+      screen: { width: profile.viewportWidth, height: profile.viewportHeight },
+      userAgent: uaFor(profile.platform),
+      locale: profile.locale,
+      timezoneId: profile.timezoneId,
+      deviceScaleFactor: profile.deviceScaleFactor,
+      isMobile: profile.isMobile,
+      hasTouch: profile.hasTouch,
       bypassCSP: this.browserOptions.bypassCSP,
       ignoreHTTPSErrors: this.browserOptions.ignoreHTTPSErrors,
       proxy: proxy ? { server: proxy.server, username: proxy.username, password: proxy.password } : void 0,
-      // Additional context options for better stealth
       colorScheme: "light",
       reducedMotion: "no-preference",
       forcedColors: "none",
-      // Enhanced stealth: pass additional fingerprint properties
-      // Keep ONLY the anti-detection client hints and Accept-Language.
-      //
-      // We deliberately do NOT force Accept, Accept-Encoding, Upgrade-Insecure-Requests,
-      // or any Sec-Fetch-* header here. Those are document-navigation metadata that
-      // Chromium sets per-request to match the actual request type. When they're forced
-      // globally, the network stack rejects every *subresource* request (script/XHR/media)
-      // as ERR_INVALID_ARGUMENT because a `Sec-Fetch-Dest: document` header is invalid on
-      // a script or media fetch. That killed the YouTube player: the main frame loaded but
-      // its JS bundles never did, so no <video> element was ever created. Chromium handles
-      // all of those headers correctly on its own; forcing them buys nothing for stealth and
-      // breaks page loading entirely.
+      storageState: restoredState,
       extraHTTPHeaders: {
-        "Accept-Language": `${fingerprint.locale},${fingerprint.locale.split("-")[0]};q=0.9,en;q=0.8`,
-        "Sec-CH-UA": `"Not A(Brand";v="99", "Google Chrome";v="${fingerprint.userAgent.match(/Chrome\/(\d+)/)?.[1] || "129"}", "Chromium";v="${fingerprint.userAgent.match(/Chrome\/(\d+)/)?.[1] || "129"}"`,
-        "Sec-CH-UA-Mobile": fingerprint.isMobile ? "?1" : "?0",
-        "Sec-CH-UA-Platform": `"${fingerprint.platform.replace("Win32", "Windows").replace("MacIntel", "macOS").replace("Linux x86_64", "Linux")}"`
+        "Accept-Language": `${profile.locale},${profile.locale.split("-")[0]};q=0.9,en;q=0.8`
       }
     });
-    await context.addInitScript((fp) => {
-      if ("RTCPeerConnection" in globalThis) {
-        const originalRTCPeerConnection = globalThis.RTCPeerConnection;
-        const originalRTCPeerConnectionConstruct = globalThis.RTCPeerConnection;
-        globalThis.RTCPeerConnection = function(...args) {
-          const pc = new originalRTCPeerConnection(...args);
-          return pc;
-        };
-        globalThis.RTCPeerConnection.prototype = originalRTCPeerConnection.prototype;
-        globalThis.webkitRTCPeerConnection = globalThis.RTCPeerConnection;
-        globalThis.mozRTCPeerConnection = globalThis.RTCPeerConnection;
-      }
-      if ("navigator" in globalThis) {
-        Object.defineProperty(globalThis.navigator, "webdriver", {
-          get: () => void 0,
-          configurable: true
-        });
-      }
-      const cdcProperties = Object.getOwnPropertyNames(globalThis).filter(
-        (prop) => prop.startsWith("cdc_") && prop.endsWith("_ado") || prop.endsWith("_asdo") || prop.endsWith("_csdo")
-      );
-      cdcProperties.forEach((prop) => {
-        try {
-          delete globalThis[prop];
-        } catch (e) {
-        }
-      });
-      const originalQuery = navigator.permissions?.query;
-      if (originalQuery) {
-        navigator.permissions.query = async (parameters) => {
-          if (parameters.name === "notifications") {
-            return { state: "denied", onchange: null };
-          }
-          if (parameters.name === "geolocation") {
-            return { state: "denied", onchange: null };
-          }
-          return originalQuery(parameters);
-        };
-      }
-      window.chrome = {
-        runtime: {},
-        loadTimes: function() {
-        },
-        csi: function() {
-        },
-        app: { isInstalled: false }
-      };
-      if (!navigator.userAgent.includes("Firefox")) {
-        Object.defineProperty(navigator, "plugins", {
-          get: () => [
-            { name: "Chrome PDF Plugin", filename: "internal-pdf-viewer", description: "Portable Document Format" },
-            { name: "Chrome PDF Viewer", filename: "mhjfbmdgcfjbbpaeojofohoefgiehjai", description: "" },
-            { name: "Native Client", filename: "internal-nacl-plugin", description: "" }
-          ],
-          configurable: true
-        });
-      }
-      Object.defineProperty(navigator, "languages", {
-        get: () => [fp.locale, fp.locale.split("-")[0], "en"],
-        configurable: true
-      });
-      Object.defineProperty(navigator, "language", {
-        get: () => fp.locale,
-        configurable: true
-      });
-      Object.defineProperty(navigator, "platform", {
-        get: () => fp.platform,
-        configurable: true
-      });
-      Object.defineProperty(navigator, "hardwareConcurrency", {
-        get: () => fp.hardwareConcurrency,
-        configurable: true
-      });
-      Object.defineProperty(navigator, "deviceMemory", {
-        get: () => fp.deviceMemory,
-        configurable: true
-      });
-      if (fp.cpuClass) {
-        Object.defineProperty(navigator, "cpuClass", {
-          get: () => fp.cpuClass,
-          configurable: true
-        });
-      }
-      Object.defineProperty(navigator, "maxTouchPoints", {
-        get: () => fp.maxTouchPoints ?? (fp.hasTouch ? 5 : 0),
-        configurable: true
-      });
-      if ("getBattery" in navigator) {
-        const originalGetBattery = navigator.getBattery.bind(navigator);
-        navigator.getBattery = async () => {
-          const battery = await originalGetBattery();
-          return {
-            ...battery,
-            charging: Math.random() > 0.5,
-            chargingTime: Math.random() > 0.5 ? 0 : Math.random() * 3600,
-            dischargingTime: Math.random() > 0.5 ? Infinity : Math.random() * 3600,
-            level: 0.3 + Math.random() * 0.7
-          };
-        };
-      }
-      const originalToDataURL = HTMLCanvasElement.prototype.toDataURL;
-      const originalGetImageData = CanvasRenderingContext2D.prototype.getImageData;
-      const noise = `${Math.random()}${Math.random()}${Date.now()}`;
-      HTMLCanvasElement.prototype.toDataURL = function(type, encoderOptions) {
-        const ctx = this.getContext("2d");
-        if (ctx && this.width > 16 && this.height > 16) {
-          const imageData = ctx.getImageData(0, 0, this.width, this.height);
-          const data = imageData.data;
-          for (let i = 0; i < data.length; i += 4) {
-            if (Math.random() < 1e-3) {
-              data[i] = Math.min(255, data[i] + Math.floor(Math.random() * 3) - 1);
-              data[i + 1] = Math.min(255, data[i + 1] + Math.floor(Math.random() * 3) - 1);
-              data[i + 2] = Math.min(255, data[i + 2] + Math.floor(Math.random() * 3) - 1);
-            }
-          }
-          ctx.putImageData(imageData, 0, 0);
-        }
-        return originalToDataURL.call(this, type, encoderOptions);
-      };
-      CanvasRenderingContext2D.prototype.getImageData = function(sx, sy, sw, sh) {
-        const imageData = originalGetImageData.call(this, sx, sy, sw, sh);
-        const data = imageData.data;
-        for (let i = 0; i < data.length; i += 4) {
-          if (Math.random() < 1e-3) {
-            data[i] = Math.min(255, data[i] + Math.floor(Math.random() * 3) - 1);
-            data[i + 1] = Math.min(255, data[i + 1] + Math.floor(Math.random() * 3) - 1);
-            data[i + 2] = Math.min(255, data[i + 2] + Math.floor(Math.random() * 3) - 1);
-          }
-        }
-        return imageData;
-      };
-      const getParameter = WebGLRenderingContext.prototype.getParameter;
-      WebGLRenderingContext.prototype.getParameter = function(parameter) {
-        if (parameter === 37245) {
-          return fp.webglVendor;
-        }
-        if (parameter === 37246) {
-          return fp.webglRenderer;
-        }
-        return getParameter.call(this, parameter);
-      };
-      if (typeof WebGL2RenderingContext !== "undefined") {
-        const getParameter2 = WebGL2RenderingContext.prototype.getParameter;
-        WebGL2RenderingContext.prototype.getParameter = function(parameter) {
-          if (parameter === 37245) return fp.webglVendor;
-          if (parameter === 37246) return fp.webglRenderer;
-          return getParameter2.call(this, parameter);
-        };
-      }
-      Object.defineProperty(screen, "width", { get: () => fp.viewportWidth, configurable: true });
-      Object.defineProperty(screen, "height", { get: () => fp.viewportHeight, configurable: true });
-      Object.defineProperty(screen, "availWidth", { get: () => fp.viewportWidth, configurable: true });
-      Object.defineProperty(screen, "availHeight", { get: () => fp.viewportHeight - 40, configurable: true });
-      Object.defineProperty(screen, "colorDepth", { get: () => 24, configurable: true });
-      Object.defineProperty(screen, "pixelDepth", { get: () => 24, configurable: true });
-      if (typeof AudioContext !== "undefined") {
-        const originalCreateAnalyser = AudioContext.prototype.createAnalyser;
-        AudioContext.prototype.createAnalyser = function() {
-          const analyser = originalCreateAnalyser.call(this);
-          const originalGetFloatFrequencyData = analyser.getFloatFrequencyData;
-          analyser.getFloatFrequencyData = function(array) {
-            originalGetFloatFrequencyData.call(this, array);
-            for (let i = 0; i < array.length; i++) {
-              array[i] += (Math.random() - 0.5) * 1e-10;
-            }
-          };
-          return analyser;
-        };
-      }
-      if ("navigator" in globalThis && "userAgentData" in navigator) {
-        const chromeVersion = fp.userAgent.match(/Chrome\/(\d+)/)?.[1] || "129";
-        Object.defineProperty(navigator, "userAgentData", {
-          get: () => ({
-            brands: [
-              { brand: "Not A(Brand", version: "99" },
-              { brand: "Google Chrome", version: chromeVersion },
-              { brand: "Chromium", version: chromeVersion }
-            ],
-            mobile: fp.isMobile,
-            platform: fp.platform,
-            platformVersion: fp.platform === "MacIntel" ? "15.0.0" : fp.platform === "Win32" ? "15.0.0" : "6.5.0",
-            architecture: "x86",
-            bitness: "64",
-            model: "",
-            uaFullVersion: fp.userAgent.match(/Chrome\/(\d+\.\d+\.\d+\.\d+)/)?.[1] || `${chromeVersion}.0.0.0`,
-            getHighEntropyValues: async () => ({
-              platform: fp.platform,
-              platformVersion: fp.platform === "MacIntel" ? "15.0.0" : fp.platform === "Win32" ? "15.0.0" : "6.5.0",
-              architecture: "x86",
-              bitness: "64",
-              model: "",
-              uaFullVersion: fp.userAgent.match(/Chrome\/(\d+\.\d+\.\d+\.\d+)/)?.[1] || `${chromeVersion}.0.0.0`,
-              brands: [
-                { brand: "Not A(Brand", version: "99" },
-                { brand: "Google Chrome", version: chromeVersion },
-                { brand: "Chromium", version: chromeVersion }
-              ],
-              mobile: fp.isMobile
-            })
-          }),
-          configurable: true
-        });
-      }
-      if ("connection" in navigator) {
-        Object.defineProperty(navigator, "connection", {
-          get: () => ({
-            effectiveType: "4g",
-            rtt: 50 + Math.random() * 100,
-            downlink: 10 + Math.random() * 50,
-            saveData: false,
-            type: "wifi"
-          }),
-          configurable: true
-        });
-      }
-      if ("mediaDevices" in navigator) {
-        const originalEnumerateDevices = navigator.mediaDevices.enumerateDevices;
-        navigator.mediaDevices.enumerateDevices = async () => {
-          const devices = await originalEnumerateDevices.call(navigator.mediaDevices);
-          return devices.filter((d) => d.kind === "audiooutput" || d.kind === "videooutput");
-        };
-      }
-      Object.defineProperty(navigator, "webdriver", {
-        get: () => void 0,
-        configurable: true
-      });
-      Object.defineProperty(navigator, "appVersion", {
-        get: () => fp.userAgent.replace("Mozilla/", ""),
-        configurable: true
-      });
-      Object.defineProperty(navigator, "vendor", {
-        get: () => "Google Inc.",
-        configurable: true
-      });
-      Object.defineProperty(navigator, "product", {
-        get: () => "Gecko",
-        configurable: true
-      });
-      Object.defineProperty(navigator, "cookieEnabled", {
-        get: () => true,
-        configurable: true
-      });
-      Object.defineProperty(navigator, "onLine", {
-        get: () => true,
-        configurable: true
-      });
-      Object.defineProperty(navigator, "doNotTrack", {
-        get: () => null,
-        configurable: true
-      });
-    }, fingerprint);
-    if (this.antidetection.enabled) {
-      await context.addInitScript(() => {
-        try {
-          if ("navigator" in globalThis) {
-            Object.defineProperty(globalThis.navigator, "webdriver", {
-              get: () => false,
-              configurable: true
-            });
-          }
-        } catch {
-        }
-        try {
-          const w = globalThis;
-          for (const key of Object.keys(w)) {
-            if (key.startsWith("cdc_") && typeof w[key] !== "function") {
-              try {
-                delete w[key];
-              } catch {
-              }
-            }
-          }
-        } catch {
-        }
-      });
-    }
-    if (this.antidetection.enableFontProtection) {
-      await applyFontProtection(context);
-    }
-    if (this.antidetection.enableAudioVideoProtection) {
-      await applyAudioVideoProtection(context);
-    }
-    if (this.antidetection.enableNetworkProtection) {
-      await applyNetworkProtection(context);
-    }
-    if (this.antidetection.enablePlaywrightEvasion) {
-      await applyPlaywrightEvasion(context);
-    }
-    if (this.antidetection.enableEnvironmentalConsistency) {
-      await applyEnvironmentalConsistency(context);
-    }
-    if (this.antidetection.enableAdvancedCanvasWebGL) {
-      await applyAdvancedCanvasWebGL(context);
-    }
-    if (this.antidetection.enableHeaderRandomization) {
-      await applyHeaderRandomization(context);
-    }
-    if (this.antidetection.enableBehavioralBiometrics) {
-      await applyBehavioralBiometrics(context);
-    }
-    if (this.antidetection.enableSensorSpoofing) {
-      await applySensorSpoofing(context);
-    }
-    if (this.antidetection.enableContentAwareEngagement) {
-      await applyContentAwareEngagement(context);
-    }
-    if (this.antidetection.enableAdvancedSessionLifecycle) {
-      await applyAdvancedSessionLifecycle(context);
-    }
+    const seed = Math.floor(Math.random() * 4294967295);
+    const hardened = {
+      userAgent: uaFor(profile.platform),
+      uaFullVersion: profile.uaFullVersion,
+      locale: profile.locale,
+      timezoneId: profile.timezoneId,
+      timezoneOffsetMinutes: profile.timezoneOffsetMinutes,
+      viewportWidth: profile.viewportWidth,
+      viewportHeight: profile.viewportHeight,
+      deviceScaleFactor: profile.deviceScaleFactor,
+      platform: profile.platform,
+      platformVersion: profile.platformVersion,
+      isMobile: profile.isMobile,
+      hasTouch: profile.hasTouch,
+      maxTouchPoints: profile.maxTouchPoints,
+      hardwareConcurrency: profile.hardwareConcurrency,
+      deviceMemory: profile.deviceMemory,
+      webglVendor: profile.webglVendor,
+      webglRenderer: profile.webglRenderer,
+      audioSampleRate: 48e3,
+      canvasSeed: seed,
+      seed
+    };
+    await applyHardening(context, hardened);
     const page = await context.newPage();
     const managed = { state, context, page, closed: false };
     this.tabs.set(id, managed);
+    try {
+      const cdp = await context.newCDPSession(page);
+      await cdp.send("Emulation.setFocusEmulationEnabled", { enabled: true });
+      await cdp.send("Page.setWebLifecycleState", { state: "active" });
+    } catch {
+    }
     page.on("console", (msg) => {
       if (managed.closed) return;
       const text = msg.text();
@@ -25305,22 +23897,20 @@ var TabManager = class _TabManager extends import_node_events2.EventEmitter {
     });
     page.on("framenavigated", (frame) => {
       if (managed.closed || frame !== page.mainFrame()) return;
-      this.emitEvent({
-        tabId: id,
-        kind: "log",
-        data: `[nav] frame navigated to ${frame.url()}`,
-        timestamp: Date.now()
-      });
+      this.emitEvent({ tabId: id, kind: "log", data: `[nav] ${frame.url()}`, timestamp: Date.now() });
     });
     page.on("crash", () => this.markError(id, "Page crashed"));
     page.on("close", () => this.handleTabGone(id));
     context.on("close", () => this.handleTabGone(id));
     setTimeout(() => {
-      if (!this.tabs.get(id)?.closed) {
-        this.markStatus(id, "idle");
-      }
+      if (!this.tabs.get(id)?.closed) this.markStatus(id, "idle");
     }, 500 + Math.random() * 1e3);
     return this.tabs.get(id).state;
+  }
+  async fingerprintReport(id) {
+    const tab = this.tabs.get(id);
+    if (!tab) throw new Error(`Tab ${id} not found`);
+    return readFingerprintReport(tab.page);
   }
   handleTabGone(id) {
     const tab = this.tabs.get(id);
@@ -25336,14 +23926,19 @@ var TabManager = class _TabManager extends import_node_events2.EventEmitter {
     const tab = this.tabs.get(id);
     if (!tab || tab.closed) return;
     if (tab.loopTimer) clearInterval(tab.loopTimer);
+    try {
+      const target = this.storagePathFor(tab.state.proxyLabel);
+      await fs2.mkdir(path3.dirname(target), { recursive: true });
+      await fs2.writeFile(target, JSON.stringify(await tab.context.storageState()), "utf8");
+    } catch (e) {
+      logger_default.warn("storageState save failed", e);
+    }
     await tab.context.close().catch((e) => logger_default.warn("closeTab error", e));
     this.handleTabGone(id);
   }
   async runTask(id, task) {
     const tab = this.tabs.get(id);
-    if (!tab || tab.closed) {
-      throw new Error(`Tab ${id} is no longer available (closed or crashed)`);
-    }
+    if (!tab || tab.closed) throw new Error(`Tab ${id} is no longer available (closed or crashed)`);
     this.markStatus(id, "running");
     try {
       const result = await this.dispatchTask(tab, task);
@@ -25365,13 +23960,9 @@ var TabManager = class _TabManager extends import_node_events2.EventEmitter {
         results.push({ id, result: new Error(`Tab ${id} is no longer available`) });
         continue;
       }
-      if (i > 0) {
-        const staggerDelay = 1e3 + Math.floor(Math.random() * 2e3) + i * 500;
-        await new Promise((resolve3) => setTimeout(resolve3, staggerDelay));
-      }
+      if (i > 0) await new Promise((r) => setTimeout(r, 3e3 + Math.floor(Math.random() * 6e3) + i * 900));
       try {
-        const result = await this.dispatchTask(tab, { ...task, id });
-        results.push({ id, result });
+        results.push({ id, result: await this.dispatchTask(tab, { ...task, id }) });
       } catch (err) {
         results.push({ id, result: err });
       }
@@ -25388,104 +23979,57 @@ var TabManager = class _TabManager extends import_node_events2.EventEmitter {
       randomDelay,
       simulateHumanInteraction: async (page) => {
         try {
+          const size = page.viewportSize?.() ?? { width: 1280, height: 720 };
           await page.mouse.move(
-            Math.random() * 500 + 100,
-            Math.random() * 500 + 100,
-            { steps: 5 }
+            Math.random() * size.width * 0.7 + size.width * 0.15,
+            Math.random() * size.height * 0.7 + size.height * 0.15,
+            { steps: 5 + Math.floor(Math.random() * 10) }
           );
-          await page.evaluate(() => {
-            window.scrollBy(0, Math.random() * 200 - 100);
-          });
+          if (Math.random() < 0.3) await page.evaluate(() => window.scrollBy(0, Math.random() * 120 - 40));
         } catch {
         }
       },
       handleYouTubeConsent: async (page) => {
         await page.evaluate(() => {
-          const workingSelectors = [
+          const sels = [
+            "ytd-consent-bump-v2-lightbox ytd-button-renderer:last-of-type button",
+            "tp-yt-paper-dialog ytd-button-renderer:last-of-type button",
+            'form[action*="consent"] button',
             'button[aria-label*="Accept all"]',
-            'button[aria-label*="Accept everything"]',
-            'button[aria-label*="I agree"]',
-            'button[aria-label*="Agree"]',
-            'button[aria-label*="Accept cookies"]',
-            "#accept-button",
-            "#agree-button",
-            '#yDmH0d button[aria-label*="Accept"]',
-            'tp-yt-paper-button[aria-label*="Accept"]',
-            'tp-yt-paper-button[aria-label*="Agree"]',
-            'ytd-button-renderer[aria-label*="Accept all"]',
-            'ytd-button-renderer[aria-label*="I agree"]',
-            'ytd-button-renderer[aria-label*="Accept"]',
-            'ytd-button-renderer[aria-label*="Agree"]'
+            "#consent-bump button:last-of-type"
           ];
-          workingSelectors.forEach((selector) => {
-            try {
-              const elements = document.querySelectorAll(selector);
-              elements.forEach((el) => {
-                try {
-                  el.click();
-                } catch (e) {
-                }
-              });
-            } catch (e) {
+          for (const s of sels) {
+            const el = document.querySelector(s);
+            if (el && el.offsetParent !== null) {
+              el.click();
+              return;
             }
-          });
-          const allButtons = document.querySelectorAll('button, [role="button"], tp-yt-paper-button, ytd-button-renderer');
-          allButtons.forEach((button) => {
-            const text = button.textContent?.toLowerCase() || "";
-            if (text.includes("accept") || text.includes("agree") || text.includes("consent") || text.includes("continue") || text.includes("allow") || text.includes("i agree") || text.includes("accept all") || text.includes("allow all")) {
-              try {
-                button.click();
-              } catch (e) {
-              }
-            }
-          });
+          }
         }).catch(() => {
         });
-        await new Promise((resolve3) => setTimeout(resolve3, 1500));
+        await new Promise((r) => setTimeout(r, 800));
       },
       clearSessionData: async (page) => {
-        await page.context().clearCookies();
-        await page.evaluate(() => {
+        await page.context().clearCookies().catch(() => {
+        });
+        await page.evaluate(async () => {
           try {
             localStorage.clear();
             sessionStorage.clear();
           } catch {
           }
-        });
-        await page.evaluate(async () => {
           try {
             if ("indexedDB" in window) {
               const dbs = await indexedDB.databases();
-              for (const db of dbs) {
-                if (db.name) {
-                  await indexedDB.deleteDatabase(db.name);
-                }
-              }
+              for (const db of dbs) if (db.name) indexedDB.deleteDatabase(db.name);
             }
           } catch {
           }
-        });
-        await page.evaluate(async () => {
           try {
-            if ("caches" in window) {
-              const names = await caches.keys();
-              for (const name of names) {
-                await caches.delete(name);
-              }
-            }
+            if ("caches" in window) for (const n of await caches.keys()) await caches.delete(n);
           } catch {
           }
-        });
-        await page.evaluate(async () => {
-          try {
-            if ("serviceWorker" in navigator) {
-              const registrations = await navigator.serviceWorker.getRegistrations();
-              for (const reg of registrations) {
-                await reg.unregister();
-              }
-            }
-          } catch {
-          }
+        }).catch(() => {
         });
       },
       setVideoQuality: async (page, quality) => {
@@ -25493,24 +24037,10 @@ var TabManager = class _TabManager extends import_node_events2.EventEmitter {
       },
       markProxyFailed: (reason) => {
         this.proxyManager.markProxyFailed(tab.state.id, reason);
-      },
-      // Antidetection features (conditionally added)
-      ...this.antidetection.trustedInput ? {
-        trustedClick: async (page, selector, opts) => {
-          return trustedClick(page, selector, opts);
-        },
-        trustedConsentClick: async (page, selectors, opts) => {
-          return trustedConsentClick(page, selectors, opts);
-        },
-        resetSession: async (page, opts) => {
-          await resetSession(page, opts);
-        }
-      } : {}
+      }
     };
-    const pluginHandler = this.pluginManager.getHandler(task.type);
-    if (pluginHandler) {
-      return await pluginHandler.execute(tab, task, executionContext);
-    }
+    const handler = this.pluginManager.getHandler(task.type);
+    if (handler) return await handler.execute(tab, task, executionContext);
     throw new Error(`Unknown task type: ${task.type}`);
   }
   listTabs() {
@@ -25538,9 +24068,7 @@ var TabManager = class _TabManager extends import_node_events2.EventEmitter {
   }
   async shutdownAll() {
     this.isShuttingDown = true;
-    for (const tab of this.tabs.values()) {
-      if (tab.loopTimer) clearInterval(tab.loopTimer);
-    }
+    for (const tab of this.tabs.values()) if (tab.loopTimer) clearInterval(tab.loopTimer);
     await Promise.allSettled([...this.tabs.keys()].map((id) => this.closeTab(id)));
     await this.browser?.close().catch(() => {
     });
@@ -25652,13 +24180,13 @@ var WatchDurationTaskHandler = class {
     const watchMax = Math.max(watchMin, maxWatchTimeMs);
     const duration = Math.floor(watchMin + Math.random() * (watchMax - watchMin));
     const targetUrl = url?.trim() || page.url();
+    const isYouTubeUrl = /youtube\.com|youtu\.be/.test(targetUrl);
     if (clearSessionFirst && ctx.clearSessionData) {
       await ctx.clearSessionData(page);
     }
     if (page.url() !== targetUrl) {
-      const isYouTubeUrl2 = /youtube\.com|youtu\.be/.test(targetUrl);
-      const effectiveTimeout = isYouTubeUrl2 ? 9e4 : 3e4;
-      const effectiveWaitUntil = isYouTubeUrl2 ? "networkidle" : "domcontentloaded";
+      const effectiveTimeout = isYouTubeUrl ? 9e4 : 3e4;
+      const effectiveWaitUntil = isYouTubeUrl ? "load" : "domcontentloaded";
       await page.goto(targetUrl, { waitUntil: effectiveWaitUntil, timeout: effectiveTimeout });
       if (ctx.handleYouTubeConsent) {
         await ctx.handleYouTubeConsent(page);
@@ -25672,10 +24200,13 @@ var WatchDurationTaskHandler = class {
       }
     }, selector);
     if (isYouTubeUrl) {
-      await page.waitForFunction(() => {
-        const player = document.getElementById("movie_player") || document.querySelector(".html5-video-player");
-        return player && typeof player.setPlaybackQuality === "function";
-      }, { timeout: 15e3 }).catch(() => {
+      await page.waitForFunction(
+        () => {
+          const player = document.getElementById("movie_player") || document.querySelector(".html5-video-player");
+          return player && typeof player.setPlaybackQuality === "function";
+        },
+        { timeout: 15e3 }
+      ).catch(() => {
         ctx.emitEvent("log", "YouTube player API not fully ready, continuing anyway...");
       });
     }
@@ -25711,11 +24242,7 @@ var WatchDurationTaskHandler = class {
         return new Promise((resolve3) => setTimeout(resolve3, delay));
       },
       simulateHumanInteraction: async (page) => {
-        await page.mouse.move(
-          Math.random() * 100 + 50,
-          Math.random() * 100 + 50,
-          { steps: 5 }
-        ).catch(() => {
+        await page.mouse.move(Math.random() * 100 + 50, Math.random() * 100 + 50, { steps: 5 }).catch(() => {
         });
       },
       handleYouTubeConsent: async (page) => {
@@ -25736,25 +24263,26 @@ var WatchDurationTaskHandler = class {
             'ytd-button-renderer[aria-label*="Accept"]',
             'ytd-button-renderer[aria-label*="Agree"]'
           ];
-          workingSelectors.forEach((selector) => {
+          workingSelectors.forEach((s) => {
             try {
-              const elements = document.querySelectorAll(selector);
-              elements.forEach((el) => {
+              document.querySelectorAll(s).forEach((el) => {
                 try {
                   el.click();
-                } catch (e) {
+                } catch {
                 }
               });
-            } catch (e) {
+            } catch {
             }
           });
-          const allButtons = document.querySelectorAll('button, [role="button"], tp-yt-paper-button, ytd-button-renderer');
+          const allButtons = document.querySelectorAll(
+            'button, [role="button"], tp-yt-paper-button, ytd-button-renderer'
+          );
           allButtons.forEach((button) => {
             const text = button.textContent?.toLowerCase() || "";
-            if (text.includes("accept") || text.includes("agree") || text.includes("consent") || text.includes("continue") || text.includes("allow") || text.includes("i agree") || text.includes("accept all") || text.includes("allow all")) {
+            if (text.includes("accept") || text.includes("agree") || text.includes("consent") || text.includes("continue") || text.includes("allow")) {
               try {
                 button.click();
-              } catch (e) {
+              } catch {
               }
             }
           });
@@ -25783,6 +24311,21 @@ var WatchDurationTaskHandler = class {
 };
 
 // src/main/automation/plugins/built-in/navigateTask.ts
+function normalizeYouTubeUrl(input) {
+  try {
+    const u = new URL(input);
+    if (u.hostname === "youtu.be") {
+      const id = u.pathname.slice(1).split("?")[0].split("&")[0];
+      if (id) return `https://www.youtube.com/watch?v=${id}`;
+    }
+    if (u.hostname.endsWith("youtube.com") && u.pathname === "/watch") {
+      const id = u.searchParams.get("v");
+      if (id) return `https://www.youtube.com/watch?v=${id}`;
+    }
+  } catch {
+  }
+  return input;
+}
 var NavigateTaskPlugin = class {
   initialize() {
     console.log("NavigateTaskPlugin initialized");
@@ -25804,97 +24347,81 @@ var NavigateTaskHandler = class {
   }
   async execute(tab, task, context) {
     const page = tab.page;
+    const payload = task.payload ?? {};
     const {
-      url,
       waitUntil = "domcontentloaded",
       timeout = 9e4,
-      // Increased default timeout for YouTube
       clearSessionFirst = false,
-      handleYouTubeConsent = false,
-      setVideoQuality = "1080"
-    } = task.payload;
+      handleYouTubeConsent = true,
+      setVideoQuality
+    } = payload;
     let parsed;
     try {
-      parsed = new URL(url);
+      parsed = new URL(payload.url);
     } catch {
-      throw new Error(`navigate: "${url}" is not a valid URL`);
+      throw new Error(`navigate: "${payload.url}" is not a valid URL`);
     }
     if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
       throw new Error(
         `navigate: blocked "${parsed.protocol}" URL \u2014 only http:// and https:// are allowed (this task's payload may come from an imported profile)`
       );
     }
+    const isYouTubeUrl = /youtube\.com|youtu\.be/.test(payload.url);
+    const target = isYouTubeUrl ? normalizeYouTubeUrl(payload.url) : payload.url;
     const ctx = context || this.createDefaultContext(tab);
-    if (clearSessionFirst) {
-      await page.context().clearCookies().catch(() => {
-      });
-    }
-    if (clearSessionFirst) {
-      await tab.page.evaluate(() => {
-        const safe = (fn) => {
+    const existingCookies = await page.context().cookies().catch(() => []);
+    const freshSession = existingCookies.length === 0;
+    if (clearSessionFirst && freshSession) {
+      if (ctx.clearSessionData) {
+        await ctx.clearSessionData(page);
+      }
+      ctx.emitEvent("log", "fresh session \u2014 cookies and storage cleared");
+    } else if (clearSessionFirst) {
+      await page.evaluate(() => {
+        const keys = ["yt-remote-", "yt-player-", "yt-img-", "google_ads", "_ga", "_gid"];
+        for (const store of [localStorage, sessionStorage]) {
           try {
-            fn();
+            Object.keys(store).forEach((k) => {
+              if (keys.some((t) => k.toLowerCase().includes(t))) store.removeItem(k);
+            });
           } catch {
           }
-        };
-        try {
-          const trackingKeys = ["yt-remote-", "yt-player-", "yt-", "google_ads", "_ga", "_gid", "_gat", "amp_", "__utma", "__utmb", "__utmc", "__utmz"];
-          Object.keys(localStorage).forEach((key) => {
-            if (trackingKeys.some((tk) => key.toLowerCase().includes(tk.toLowerCase()))) {
-              localStorage.removeItem(key);
-            }
-          });
-        } catch {
         }
-        try {
-          const trackingKeys = ["yt-remote-", "yt-player-", "yt-", "google_ads", "_ga", "_gid", "_gat", "amp_", "__utma", "__utmb", "__utmc", "__utmz"];
-          Object.keys(sessionStorage).forEach((key) => {
-            if (trackingKeys.some((tk) => key.toLowerCase().includes(tk.toLowerCase()))) {
-              sessionStorage.removeItem(key);
-            }
-          });
-        } catch {
-        }
-        console.log("Selective session data cleared");
+      }).catch(() => {
       });
+      ctx.emitEvent("log", "existing session \u2014 player keys only");
     }
-    console.log(`Session data cleared for ${parsed.hostname}`);
     if (tab.loopTimer) {
       clearInterval(tab.loopTimer);
       tab.loopTimer = void 0;
     }
-    if (clearSessionFirst && ctx.clearSessionData) {
-      await ctx.clearSessionData(page);
-    }
-    const isYouTubeUrl2 = /youtube\.com|youtu\.be/.test(url);
-    const effectiveTimeout = isYouTubeUrl2 ? 12e4 : timeout;
-    const effectiveWaitUntil = isYouTubeUrl2 ? "networkidle" : waitUntil;
+    const effectiveTimeout = isYouTubeUrl ? 9e4 : timeout;
+    const effectiveWaitUntil = isYouTubeUrl ? "load" : waitUntil;
     const urlBefore = page.url();
     try {
-      await page.goto(url, { waitUntil: effectiveWaitUntil, timeout: effectiveTimeout });
+      await page.goto(target, { waitUntil: effectiveWaitUntil, timeout: effectiveTimeout });
     } catch (err) {
       const message = err?.message ?? "";
       const isTimeout = /Timeout .* exceeded/.test(message);
-      const isProxyFailure = /ERR_PROXY_CONNECTION_FAILED|ERR_TUNNEL_CONNECTION_FAILED|ERR_SOCKS_CONNECTION_FAILED|ERR_CONNECTION_REFUSED|ERR_CONNECTION_RESET|ERR_CONNECTION_CLOSED|ERR_TIMED_OUT|ERR_ADDRESS_UNREACHABLE|net::ERR|401|403|407|502|503|504/.test(message);
+      const isProxyFailure = /ERR_PROXY_CONNECTION_FAILED|ERR_TUNNEL_CONNECTION_FAILED|ERR_SOCKS_CONNECTION_FAILED|ERR_CONNECTION_REFUSED|ERR_CONNECTION_RESET|ERR_CONNECTION_CLOSED|ERR_TIMED_OUT|ERR_ADDRESS_UNREACHABLE|net::ERR|401|403|407|502|503|504/.test(
+        message
+      );
       const navigatedAnyway = page.url() !== urlBefore && page.url() !== "about:blank";
-      if (isProxyFailure) {
-        if (ctx.markProxyFailed) {
-          ctx.markProxyFailed(`Proxy connection failed: ${message}`);
-        }
+      if (isProxyFailure && !navigatedAnyway) {
+        if (ctx.markProxyFailed) ctx.markProxyFailed(`Proxy connection failed: ${message}`);
         throw new Error(
-          `Proxy connection failed for this tab's assigned proxy \u2014 the proxy may be dead or blocking this destination.`
+          "Proxy connection failed for this tab \u2014 the proxy may be dead, out of DNS, or blocking this destination."
         );
       }
-      if (isTimeout && !navigatedAnyway) {
-        if (ctx.markProxyFailed) {
-          ctx.markProxyFailed(`Navigation timeout: ${message}`);
-        }
+      if (isTimeout && navigatedAnyway) {
+        ctx.emitEvent("log", `navigate timeout but page loaded (${page.url()}) \u2014 continuing`);
+      } else {
+        if (isTimeout && ctx.markProxyFailed) ctx.markProxyFailed(`Navigation timeout: ${message}`);
+        if (!navigatedAnyway) throw err;
       }
-      if (!(isTimeout && navigatedAnyway)) throw err;
-      console.warn(`navigate timeout on ${url}, but page did load (${page.url()}) \u2014 treating as success`);
     }
     await this.randomDelay(500, 1500);
-    if (handleYouTubeConsent && ctx.handleYouTubeConsent) {
+    if (isYouTubeUrl && handleYouTubeConsent && ctx.handleYouTubeConsent) {
       await ctx.handleYouTubeConsent(page);
     }
     if (setVideoQuality && ctx.setVideoQuality) {
@@ -25903,7 +24430,7 @@ var NavigateTaskHandler = class {
     if (ctx.simulateHumanInteraction) {
       await ctx.simulateHumanInteraction(page);
     }
-    return { url: page.url() };
+    return { url: page.url(), normalized: target !== payload.url };
   }
   randomDelay(minMs, maxMs) {
     const delay = Math.floor(Math.random() * (maxMs - minMs + 1)) + minMs;
@@ -25920,73 +24447,51 @@ var NavigateTaskHandler = class {
       simulateHumanInteraction: async (page) => {
         const targetX = Math.random() * 300 + 100;
         const targetY = Math.random() * 300 + 100;
-        const stepCount = Math.floor(Math.random() * 8) + 3;
-        await page.mouse.move(
-          targetX,
-          targetY,
-          { steps: stepCount }
-        ).catch(() => {
+        await page.mouse.move(targetX, targetY, { steps: Math.floor(Math.random() * 8) + 3 }).catch(() => {
         });
-        if (Math.random() < 0.3) {
-          await page.mouse.move(
-            targetX + (Math.random() - 0.5) * 20,
-            targetY + (Math.random() - 0.5) * 20,
-            { steps: 2 }
-          ).catch(() => {
-          });
-        }
       },
       handleYouTubeConsent: async (page) => {
         await page.evaluate(() => {
-          const workingSelectors = [
+          const sels = [
+            "ytd-consent-bump-v2-lightbox ytd-button-renderer:last-of-type button",
+            "tp-yt-paper-dialog ytd-button-renderer:last-of-type button",
+            'form[action*="consent"] button',
             'button[aria-label*="Accept all"]',
-            'button[aria-label*="Accept everything"]',
-            'button[aria-label*="I agree"]',
-            'button[aria-label*="Agree"]',
-            'button[aria-label*="Accept cookies"]',
-            "#accept-button",
-            "#agree-button",
-            '#yDmH0d button[aria-label*="Accept"]',
-            'tp-yt-paper-button[aria-label*="Accept"]',
-            'tp-yt-paper-button[aria-label*="Agree"]',
-            'ytd-button-renderer[aria-label*="Accept all"]',
-            'ytd-button-renderer[aria-label*="I agree"]',
-            'ytd-button-renderer[aria-label*="Accept"]',
-            'ytd-button-renderer[aria-label*="Agree"]'
+            'button[aria-label*="Alle akzeptieren"]',
+            "#consent-bump button:last-of-type"
           ];
-          workingSelectors.forEach((selector) => {
-            try {
-              const elements = document.querySelectorAll(selector);
-              elements.forEach((el) => {
-                try {
-                  el.click();
-                } catch (e) {
-                }
-              });
-            } catch (e) {
+          for (const s of sels) {
+            const el = document.querySelector(s);
+            if (el && el.offsetParent !== null) {
+              el.click();
+              return;
             }
-          });
-          const allButtons = document.querySelectorAll('button, [role="button"], tp-yt-paper-button, ytd-button-renderer');
-          allButtons.forEach((button) => {
-            const text = button.textContent?.toLowerCase() || "";
-            if (text.includes("accept") || text.includes("agree") || text.includes("consent") || text.includes("continue") || text.includes("allow") || text.includes("i agree") || text.includes("accept all") || text.includes("allow all")) {
-              try {
-                button.click();
-              } catch (e) {
-              }
-            }
-          });
+          }
         }).catch(() => {
         });
+        await new Promise((r) => setTimeout(r, 700));
       },
       clearSessionData: async (page) => {
-        await page.context().clearCookies();
-        await page.evaluate(() => {
+        await page.context().clearCookies().catch(() => {
+        });
+        await page.evaluate(async () => {
           try {
             localStorage.clear();
             sessionStorage.clear();
           } catch {
           }
+          try {
+            if ("indexedDB" in window) {
+              const dbs = await indexedDB.databases();
+              for (const db of dbs) if (db.name) indexedDB.deleteDatabase(db.name);
+            }
+          } catch {
+          }
+          try {
+            if ("caches" in window) for (const n of await caches.keys()) await caches.delete(n);
+          } catch {
+          }
+        }).catch(() => {
         });
       },
       setVideoQuality: async (page, quality) => {
@@ -26027,7 +24532,177 @@ var WaitForSelectorTaskHandler = class {
   }
 };
 
+// src/main/automation/plugins/built-in/loopVideoPresets.ts
+var LOOP_VIDEO_DEFAULTS = {
+  maxLoops: 0,
+  loopDelayMs: 2500,
+  enableHumanBehavior: true,
+  setVideoQuality: "1080",
+  clearSessionFirst: false,
+  useYouTubeLoopUrl: true,
+  minWatchDurationMs: 9e4,
+  maxWatchDurationMs: 9e5,
+  watchPercentMin: 0.78,
+  watchPercentMax: 0.98,
+  reloadEveryLoops: 20,
+  rotateDeviceProfile: false,
+  useWarmup: true,
+  useSearchEntry: false,
+  searchQuery: "",
+  verifyViews: true
+};
+function mergeLoopPayload(payload, selectorFallback) {
+  const merged = {
+    ...LOOP_VIDEO_DEFAULTS,
+    selector: selectorFallback
+  };
+  if (payload) {
+    for (const key of Object.keys(payload)) {
+      const value = payload[key];
+      if (value !== void 0 && value !== null) {
+        merged[key] = value;
+      }
+    }
+  }
+  return merged;
+}
+
+// src/main/automation/plugins/built-in/sessionWarmup.ts
+var HOMEPAGE = "https://www.youtube.com/";
+async function clickConsent(page) {
+  const clicked = await page.evaluate(() => {
+    const sels = [
+      "ytd-consent-bump-v2-lightbox ytd-button-renderer:last-of-type button",
+      "tp-yt-paper-dialog ytd-button-renderer:last-of-type button",
+      'form[action*="consent"] button',
+      'button[aria-label*="Accept all"]',
+      'button[aria-label*="Alle akzeptieren"]',
+      "#consent-bump button:last-of-type"
+    ];
+    for (const s of sels) {
+      const el = document.querySelector(s);
+      if (el && el.offsetParent !== null) {
+        el.click();
+        return true;
+      }
+    }
+    return false;
+  }).catch(() => false);
+  if (clicked) await page.waitForTimeout(900 + Math.random() * 900);
+}
+async function typeHuman(page, text) {
+  for (let i = 0; i < text.length; i++) {
+    await page.keyboard.type(text[i]);
+    const base = 55 + Math.random() * 95;
+    const pause = Math.random() < 0.08 ? 180 + Math.random() * 320 : 0;
+    await page.waitForTimeout(base + pause);
+  }
+}
+async function clickVideoResult(page, videoId) {
+  const selector = `a#video-title[href*="${videoId}"], a[href*="/watch?v=${videoId}"]`;
+  const locator = page.locator(selector).first();
+  try {
+    await locator.waitFor({ state: "attached", timeout: 12e3 });
+    await locator.scrollIntoViewIfNeeded({ timeout: 5e3 });
+    await page.waitForTimeout(250 + Math.random() * 450);
+    const box = await locator.boundingBox();
+    if (!box) return false;
+    const x = box.x + box.width * (0.3 + Math.random() * 0.4);
+    const y = box.y + box.height * (0.4 + Math.random() * 0.2);
+    await page.mouse.move(x - 60, y - 40, { steps: 7 });
+    await page.mouse.move(x, y, { steps: 5 });
+    await page.waitForTimeout(90 + Math.random() * 160);
+    await page.mouse.click(x, y);
+    return true;
+  } catch {
+    return false;
+  }
+}
+async function warmUpToVideo(page, opts) {
+  const { videoId, useSearch, searchQuery, log } = opts;
+  const dwell = opts.dwellMs ?? [1200, 3200];
+  try {
+    log?.("warmup: opening homepage");
+    await page.goto(HOMEPAGE, { waitUntil: "domcontentloaded", timeout: 45e3 });
+    await clickConsent(page);
+    await page.waitForTimeout(dwell[0] + Math.random() * (dwell[1] - dwell[0]));
+    await page.mouse.move(400 + Math.random() * 500, 300 + Math.random() * 300, { steps: 9 });
+    await page.evaluate(() => window.scrollBy(0, 180 + Math.random() * 260)).catch(() => {
+    });
+    await page.waitForTimeout(500 + Math.random() * 1200);
+    if (useSearch) {
+      const box = page.locator("input#search, ytd-searchbox input#search").first();
+      await box.waitFor({ state: "visible", timeout: 8e3 });
+      await box.click();
+      await page.waitForTimeout(200 + Math.random() * 300);
+      await typeHuman(page, searchQuery?.trim() || videoId);
+      await page.waitForTimeout(300 + Math.random() * 500);
+      await page.keyboard.press("Enter");
+      log?.("warmup: submitted search");
+      await page.waitForTimeout(1800 + Math.random() * 2200);
+    }
+    const clicked = await clickVideoResult(page, videoId);
+    if (clicked) {
+      log?.("warmup: clicked result");
+      await page.waitForTimeout(900 + Math.random() * 1100);
+      return true;
+    }
+  } catch (err) {
+    log?.(`warmup failed (${err.message}) \u2014 falling back to direct load`);
+  }
+  try {
+    await page.goto(`https://www.youtube.com/watch?v=${videoId}`, {
+      waitUntil: "domcontentloaded",
+      timeout: 6e4,
+      referer: HOMEPAGE
+    });
+    log?.("warmup: direct fallback");
+  } catch {
+  }
+  return false;
+}
+async function readReferrer(page) {
+  return page.evaluate(() => document.referrer).catch(() => "");
+}
+
+// src/main/automation/plugins/built-in/viewTelemetry.ts
+var PATTERNS = {
+  playback: /\/api\/stats\/playback\?/,
+  watchtime: /\/api\/stats\/watchtime\?/,
+  qoe: /\/api\/stats\/qoe\?/
+};
+function attachViewTelemetry(page) {
+  let playback = 0;
+  let watchtime = 0;
+  let qoe = 0;
+  const onRequest = (req) => {
+    const url = req.url?.() ?? "";
+    if (PATTERNS.playback.test(url)) playback++;
+    else if (PATTERNS.watchtime.test(url)) watchtime++;
+    else if (PATTERNS.qoe.test(url)) qoe++;
+  };
+  page.on("request", onRequest);
+  return {
+    playbackPings: () => playback,
+    watchtimePings: () => watchtime,
+    isReporting: () => playback > 0 || watchtime > 0 || qoe > 0,
+    reset: () => {
+      playback = 0;
+      watchtime = 0;
+      qoe = 0;
+    },
+    detach: () => {
+      page.off?.("request", onRequest);
+    }
+  };
+}
+
 // src/main/automation/plugins/built-in/loopVideoTask.ts
+var PS_UNSTARTED = -1;
+var PS_ENDED = 0;
+var PS_PLAYING = 1;
+var PS_PAUSED = 2;
+var PS_CUED = 5;
 var LoopVideoTaskPlugin = class {
   initialize() {
     console.log("LoopVideoTaskPlugin initialized");
@@ -26051,937 +24726,591 @@ var LoopVideoTaskHandler = class {
   async execute(tab, task, context) {
     const page = tab.page;
     const {
-      selector: initialSelector = "video.html5-main-video, video",
+      selector: initialSelector,
       url,
-      maxLoops = 0,
-      // 0 = infinite
-      loopDelayMs = 2e3,
-      // delay between loops
-      enableHumanBehavior = true,
-      setVideoQuality = "1080",
-      clearSessionFirst = true,
-      useYouTubeLoopUrl = true,
-      minWatchDurationMs = 0,
-      // Minimum time to watch before reloading (default: 0, will randomize)
-      rotateDeviceProfile = false
-      // Rotate device fingerprint on each loop iteration
-    } = task.payload;
+      maxLoops,
+      loopDelayMs,
+      enableHumanBehavior,
+      setVideoQuality,
+      clearSessionFirst,
+      useYouTubeLoopUrl,
+      minWatchDurationMs,
+      maxWatchDurationMs,
+      watchPercentMin,
+      watchPercentMax,
+      reloadEveryLoops,
+      useWarmup,
+      useSearchEntry,
+      searchQuery,
+      verifyViews
+    } = mergeLoopPayload(task.payload, "video.html5-main-video, video");
     const ctx = context || this.createDefaultContext(tab);
-    if (tab.loopTimer) {
-      clearInterval(tab.loopTimer);
-      tab.loopTimer = void 0;
-    }
+    this.clearTimer(tab);
     const rawReloadUrl = url?.trim() || page.url();
     if (url?.trim()) {
+      let parsed;
       try {
-        const parsed = new URL(rawReloadUrl);
-        if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
-          throw new Error(
-            `loopVideo: blocked "${parsed.protocol}" URL \u2014 only http:// and https:// are allowed`
-          );
-        }
-      } catch (err) {
-        if (err instanceof TypeError) {
-          throw new Error(`loopVideo: "${rawReloadUrl}" is not a valid URL`);
-        }
-        throw err;
-      }
-    }
-    function buildYouTubeLoopUrl(inputUrl) {
-      if (!useYouTubeLoopUrl) return inputUrl;
-      try {
-        const parsed = new URL(inputUrl);
-        if (parsed.hostname === "youtu.be") {
-          const videoId = parsed.pathname.slice(1).split("?")[0].split("&")[0];
-          return `https://www.youtube.com/watch?v=${videoId}&autoplay=1&playlist=${videoId}&loop=1`;
-        }
-        if (parsed.hostname === "www.youtube.com" || parsed.hostname === "youtube.com") {
-          if (parsed.pathname === "/watch") {
-            const videoId = parsed.searchParams.get("v");
-            if (videoId) {
-              return `https://www.youtube.com/watch?v=${videoId}&autoplay=1&playlist=${videoId}&loop=1`;
-            }
-          }
-        }
-        return inputUrl;
+        parsed = new URL(rawReloadUrl);
       } catch {
-        return inputUrl;
+        throw new Error(`loopVideo: "${rawReloadUrl}" is not a valid URL`);
+      }
+      if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+        throw new Error(`loopVideo: blocked "${parsed.protocol}" URL \u2014 only http:// and https:// are allowed`);
       }
     }
-    const reloadUrl = buildYouTubeLoopUrl(rawReloadUrl);
+    const reloadUrl = this.buildWatchUrl(rawReloadUrl, useYouTubeLoopUrl);
+    const videoId = this.extractVideoId(reloadUrl);
+    const isYouTube = !!videoId;
     tab.loopUrl = reloadUrl;
     if (clearSessionFirst && ctx.clearSessionData) {
       await ctx.clearSessionData(page);
     }
-    const isYouTubeUrl2 = /youtube\.com|youtu\.be/.test(reloadUrl);
-    const effectiveTimeout = isYouTubeUrl2 ? 12e4 : 3e4;
-    const effectiveWaitUntil = isYouTubeUrl2 ? "load" : "domcontentloaded";
-    let initialNavSuccess = false;
-    let initialNavAttempts = 0;
-    const maxInitialNavAttempts = 3;
-    while (!initialNavSuccess && initialNavAttempts < maxInitialNavAttempts) {
-      try {
-        if (page.url() !== reloadUrl) {
-          await page.goto(reloadUrl, { waitUntil: effectiveWaitUntil, timeout: effectiveTimeout });
-        }
-        if (ctx.handleYouTubeConsent) {
-          await ctx.handleYouTubeConsent(page);
-        }
-        initialNavSuccess = true;
-      } catch (navErr) {
-        initialNavAttempts++;
-        const message = navErr?.message ?? "";
-        const isRetryableError = /ERR_PROXY_CONNECTION_FAILED|ERR_TUNNEL_CONNECTION_FAILED|ERR_SOCKS_CONNECTION_FAILED|ERR_CONNECTION_REFUSED|ERR_CONNECTION_RESET|ERR_CONNECTION_CLOSED|ERR_TIMED_OUT|ERR_ADDRESS_UNREACHABLE|net::ERR|401|403|407|502|503|504/.test(message);
-        if (isRetryableError && initialNavAttempts < maxInitialNavAttempts) {
-          ctx.emitEvent("log", `Initial navigation failed (attempt ${initialNavAttempts}/${maxInitialNavAttempts}), marking proxy failed: ${navErr.message}`);
-          if (ctx.markProxyFailed) {
-            ctx.markProxyFailed(`Navigation failed: ${navErr.message}`);
+    const telemetry = attachViewTelemetry(page);
+    if (useWarmup && videoId) {
+      const usedClickPath = await warmUpToVideo(page, {
+        videoId,
+        useSearch: useSearchEntry,
+        searchQuery,
+        log: (m) => ctx.emitEvent("log", m)
+      });
+      ctx.emitEvent("log", `entry path: ${usedClickPath ? "click" : "direct"}`);
+      const referrer = await readReferrer(page);
+      if (!referrer) ctx.emitEvent("log", "warning: empty referrer on watch page");
+    } else {
+      await this.navigate(page, reloadUrl, isYouTube, ctx);
+    }
+    const resolved = await this.resolveSelector(page, initialSelector, ctx);
+    if (!resolved) throw new Error(this.describeMissingVideo(page.url()));
+    let activeSelector = resolved;
+    if (isYouTube) await this.waitForPlayerApi(page, ctx);
+    if (ctx.handleYouTubeConsent) await ctx.handleYouTubeConsent(page);
+    if (setVideoQuality && ctx.setVideoQuality) await ctx.setVideoQuality(page, setVideoQuality);
+    await this.enableFocusEmulation(page);
+    if (enableHumanBehavior) await this.armGesture(page, activeSelector);
+    let loopCount = 0;
+    let consecutiveErrors = 0;
+    let busy = false;
+    let stopped = false;
+    let everPlayed = false;
+    let lastTickAt = Date.now();
+    let watchStartedAt = 0;
+    let watchTargetMs = this.pickWatchTarget(
+      minWatchDurationMs,
+      maxWatchDurationMs,
+      watchPercentMin,
+      watchPercentMax
+    );
+    let lastDurationSec = 0;
+    tab.loopVideoState = { isRunning: true, loopCount: 0, stopRequested: false };
+    const stop = (reason) => {
+      stopped = true;
+      telemetry.detach();
+      this.clearTimer(tab);
+      tab.loopVideoState = { ...tab.loopVideoState, isRunning: false };
+      ctx.emitEvent("result", { taskId: task.id, stopped: true, loopsCompleted: loopCount, reason });
+    };
+    const schedule = (delayMs) => {
+      if (stopped || tab.closed || tab.loopVideoState?.stopRequested) return;
+      this.clearTimer(tab);
+      tab.loopTimer = setTimeout(() => {
+        void tick();
+      }, delayMs);
+    };
+    const skipAd = async () => {
+      await page.evaluate(() => {
+        const sels = [
+          ".ytp-ad-skip-button-modern",
+          ".ytp-ad-skip-button",
+          ".ytp-skip-ad-button",
+          "button.ytp-ad-skip-button-container",
+          ".ytp-ad-survey-answer-button"
+        ];
+        for (const s of sels) {
+          const el = document.querySelector(s);
+          if (el && el.offsetParent !== null) {
+            el.click();
+            return;
           }
-          await ctx.randomDelay(2e3, 5e3);
-          continue;
         }
-        throw navErr;
+      }).catch(() => {
+      });
+    };
+    const softReplay = async () => {
+      await page.evaluate(() => {
+        const p = document.getElementById("movie_player");
+        if (p && typeof p.seekTo === "function") {
+          p.seekTo(0, true);
+          p.playVideo();
+          return;
+        }
+        const v = document.querySelector("video");
+        if (v) {
+          v.currentTime = 0;
+          void v.play().catch(() => {
+          });
+        }
+      }).catch(() => {
+      });
+    };
+    const reloadMedia = async () => {
+      if (!videoId) {
+        await softReplay();
+        return;
+      }
+      await page.evaluate((id) => {
+        const p = document.getElementById("movie_player");
+        if (p && typeof p.loadVideoById === "function") p.loadVideoById(id, 0);
+      }, videoId).catch(() => {
+      });
+    };
+    const hardReload = async () => {
+      await page.bringToFront().catch(() => {
+      });
+      await this.navigate(page, tab.loopUrl, isYouTube, ctx);
+      const found = await this.resolveSelector(page, activeSelector, ctx);
+      if (found) activeSelector = found;
+      if (isYouTube) await this.waitForPlayerApi(page, ctx);
+      if (ctx.handleYouTubeConsent) await ctx.handleYouTubeConsent(page);
+      if (setVideoQuality && ctx.setVideoQuality) await ctx.setVideoQuality(page, setVideoQuality);
+      await this.enableFocusEmulation(page);
+      await this.armGesture(page, activeSelector);
+      everPlayed = false;
+    };
+    const resetWatch = (durationSec) => {
+      lastDurationSec = durationSec;
+      watchStartedAt = Date.now();
+      watchTargetMs = this.pickWatchTarget(
+        minWatchDurationMs,
+        maxWatchDurationMs,
+        watchPercentMin,
+        watchPercentMax,
+        durationSec
+      );
+    };
+    const completeLoop = async (reason) => {
+      const reported = telemetry.playbackPings() > 0 || telemetry.watchtimePings() > 0;
+      if (verifyViews && !reported && reason !== "error") {
+        consecutiveErrors++;
+        ctx.emitEvent("log", `no stats ping (${consecutiveErrors}) \u2014 retrying playback instead of counting`);
+        if (consecutiveErrors >= 3) {
+          if (ctx.clearSessionData) await ctx.clearSessionData(page);
+          await hardReload();
+          consecutiveErrors = 0;
+        } else {
+          await reloadMedia();
+        }
+        telemetry.reset();
+        resetWatch(lastDurationSec);
+        return;
+      }
+      telemetry.reset();
+      loopCount++;
+      tab.loopVideoState = { ...tab.loopVideoState, loopCount };
+      ctx.emitEvent("result", {
+        taskId: task.id,
+        loopCount,
+        status: "loop_completed",
+        reason,
+        playbackPings: telemetry.playbackPings(),
+        watchtimePings: telemetry.watchtimePings()
+      });
+      if (maxLoops > 0 && loopCount >= maxLoops) {
+        stop("max_loops_reached");
+        return;
+      }
+      await ctx.randomDelay(loopDelayMs, loopDelayMs + 2500);
+      if (reason === "error") {
+        consecutiveErrors++;
+        if (consecutiveErrors >= 4) {
+          if (ctx.clearSessionData) await ctx.clearSessionData(page);
+          await hardReload();
+          consecutiveErrors = 0;
+        } else {
+          await reloadMedia();
+        }
+      } else {
+        consecutiveErrors = 0;
+        if (reloadEveryLoops > 0 && loopCount % reloadEveryLoops === 0) await hardReload();
+        else await softReplay();
+      }
+      resetWatch(lastDurationSec);
+    };
+    const probe = () => page.evaluate((sel) => {
+      const p = document.getElementById("movie_player");
+      const v = document.querySelector(sel);
+      const errBox = document.querySelector(".ytp-error");
+      const errVisible = !!errBox && getComputedStyle(errBox).display !== "none" && (errBox.textContent || "").trim().length > 0;
+      let errorCode = 0;
+      try {
+        if (p && typeof p.getVideoData === "function") {
+          const d = p.getVideoData();
+          if (d && typeof d.errorCode === "number") errorCode = d.errorCode;
+        }
+      } catch {
+      }
+      if (!errorCode && v && v.error) errorCode = v.error.code;
+      return {
+        hasPlayer: !!p,
+        hasVideo: !!v,
+        playerState: p && typeof p.getPlayerState === "function" ? p.getPlayerState() : null,
+        hasErrorUi: errVisible,
+        errorCode,
+        currentTime: v ? v.currentTime : 0,
+        duration: v && Number.isFinite(v.duration) ? v.duration : 0,
+        readyState: v ? v.readyState : 0,
+        paused: v ? v.paused : true,
+        adShowing: !!p && p.classList.contains("ad-showing")
+      };
+    }, activeSelector);
+    const resume = async () => {
+      await page.evaluate(() => {
+        const p = document.getElementById("movie_player");
+        if (p && typeof p.playVideo === "function") {
+          p.playVideo();
+          return;
+        }
+        const v = document.querySelector("video");
+        if (v) void v.play().catch(() => {
+        });
+      }).catch(() => {
+      });
+    };
+    const tick = async () => {
+      if (busy) return;
+      if (stopped || tab.closed || tab.loopVideoState?.stopRequested) {
+        stop("stop_requested");
+        return;
+      }
+      busy = true;
+      const now = Date.now();
+      try {
+        const s = await probe();
+        if (s.adShowing) {
+          await skipAd();
+          if (watchStartedAt) watchStartedAt += now - lastTickAt;
+          ctx.emitEvent("log", "ad playing \u2014 watch clock frozen");
+          return;
+        }
+        if (!everPlayed) {
+          if (s.playerState === PS_PLAYING && s.readyState >= 2) {
+            everPlayed = true;
+          } else if (s.hasErrorUi || s.errorCode > 0) {
+            everPlayed = true;
+          } else {
+            return;
+          }
+        }
+        const wedged = s.hasPlayer && s.playerState === PS_CUED && s.readyState === 0 && s.duration === 0;
+        if (s.hasErrorUi || s.errorCode > 0 || wedged || !s.hasVideo) {
+          ctx.emitEvent("log", `Player error (code=${s.errorCode}, state=${s.playerState})`);
+          await completeLoop("error");
+          return;
+        }
+        if (s.playerState === PS_ENDED || s.duration > 0 && s.duration - s.currentTime < 1) {
+          await completeLoop("ended");
+          return;
+        }
+        if (s.duration > 0 && s.duration !== lastDurationSec) lastDurationSec = s.duration;
+        if (!watchStartedAt) resetWatch(s.duration);
+        if (Date.now() - watchStartedAt >= watchTargetMs) {
+          await completeLoop("target");
+          return;
+        }
+        if (s.paused || s.playerState === PS_PAUSED || s.playerState === PS_UNSTARTED) {
+          await resume();
+          await page.bringToFront().catch(() => {
+          });
+        }
+        if (enableHumanBehavior && ctx.simulateHumanInteraction && Math.random() < 0.45) {
+          await ctx.simulateHumanInteraction(page);
+        }
+        if (setVideoQuality && Math.random() < 0.15) {
+          await page.evaluate((q) => {
+            const p = document.getElementById("movie_player");
+            if (!p) return;
+            try {
+              p.setPlaybackQualityRange(q, q);
+            } catch {
+            }
+          }, this.qualityLevel(setVideoQuality)).catch(() => {
+          });
+        }
+      } catch (err) {
+        ctx.emitEvent("log", `Tick error: ${err.message}`);
+        consecutiveErrors++;
+        if (consecutiveErrors >= 6) {
+          try {
+            await hardReload();
+            consecutiveErrors = 0;
+          } catch (e) {
+            ctx.emitEvent("error", `Hard reload failed: ${e.message}`);
+          }
+        }
+      } finally {
+        lastTickAt = Date.now();
+        busy = false;
+        schedule(4e3 + Math.random() * 3e3);
+      }
+    };
+    const first = await probe().catch(() => null);
+    resetWatch(first?.duration ?? 0);
+    ctx.emitEvent("log", `Loop armed on ${reloadUrl} (watch window ${Math.round(watchTargetMs / 1e3)}s)`);
+    schedule(1500 + Math.random() * 2e3);
+    return { looping: true, selector: activeSelector, reloadUrl, loopsCompleted: 0 };
+  }
+  clearTimer(tab) {
+    if (tab.loopTimer) {
+      clearTimeout(tab.loopTimer);
+      clearInterval(tab.loopTimer);
+      tab.loopTimer = void 0;
+    }
+  }
+  buildWatchUrl(input, enabled) {
+    if (!enabled) return input;
+    try {
+      const parsed = new URL(input);
+      const id = parsed.hostname === "youtu.be" ? parsed.pathname.slice(1).split("?")[0].split("&")[0] : parsed.hostname.endsWith("youtube.com") && parsed.pathname === "/watch" ? parsed.searchParams.get("v") : null;
+      if (!id) return input;
+      return `https://www.youtube.com/watch?v=${id}&autoplay=1`;
+    } catch {
+      return input;
+    }
+  }
+  extractVideoId(url) {
+    try {
+      const parsed = new URL(url);
+      if (parsed.hostname === "youtu.be") {
+        return parsed.pathname.slice(1).split("?")[0].split("&")[0] || null;
+      }
+      if (parsed.hostname.endsWith("youtube.com") && parsed.pathname === "/watch") {
+        return parsed.searchParams.get("v");
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  }
+  qualityLevel(q) {
+    const map = {
+      auto: "highres",
+      "1080": "hd1080",
+      "720": "hd720",
+      "480": "large",
+      "360": "medium",
+      "240": "small",
+      "144": "tiny"
+    };
+    return map[q] || q;
+  }
+  pickWatchTarget(minMs, maxMs, pctMin, pctMax, durationSec) {
+    const shortView = Math.random() < 0.17;
+    const pct = shortView ? 0.3 + Math.random() * 0.3 : pctMin + Math.random() * Math.max(0, pctMax - pctMin);
+    if (!durationSec || !Number.isFinite(durationSec) || durationSec <= 0) {
+      return minMs + Math.random() * (maxMs - minMs);
+    }
+    const target = durationSec * 1e3 * pct;
+    return Math.min(Math.max(target, minMs), Math.max(maxMs, minMs));
+  }
+  isRetryable(message) {
+    if (/ERR_ABORTED/.test(message)) return false;
+    return /ERR_PROXY_CONNECTION_FAILED|ERR_TUNNEL_CONNECTION_FAILED|ERR_SOCKS_CONNECTION_FAILED|ERR_CONNECTION_REFUSED|ERR_CONNECTION_RESET|ERR_CONNECTION_CLOSED|ERR_TIMED_OUT|ERR_ADDRESS_UNREACHABLE|ERR_NAME_NOT_RESOLVED|401|403|407|502|503|504/.test(
+      message
+    );
+  }
+  async navigate(page, target, isYouTube, ctx) {
+    const maxAttempts = 3;
+    const timeout = isYouTube ? 9e4 : 3e4;
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      try {
+        await page.goto(target, { waitUntil: "domcontentloaded", timeout });
+        return;
+      } catch (err) {
+        const message = err?.message ?? "";
+        ctx.emitEvent("log", `Navigation failed (${attempt}/${maxAttempts}): ${message}`);
+        if (attempt === maxAttempts) {
+          const landed = await page.evaluate(() => !!document.querySelector("video")).catch(() => false);
+          if (landed) return;
+          if (this.isRetryable(message) && ctx.markProxyFailed) ctx.markProxyFailed(message);
+          throw err;
+        }
+        if (this.isRetryable(message) && ctx.markProxyFailed) ctx.markProxyFailed(message);
+        await ctx.randomDelay(2e3, 5e3);
       }
     }
-    if (!initialNavSuccess) {
-      throw new Error(`Failed to navigate after ${maxInitialNavAttempts} attempts`);
-    }
-    const videoSelectors = [
-      initialSelector,
+  }
+  async resolveSelector(page, preferred, ctx) {
+    const candidates = [
+      preferred,
       "video.html5-main-video",
-      'video[class*="html5-main-video"]',
-      "video.html5-video-player",
-      "video[data-is-autoplayable]",
       "#movie_player video",
-      ".html5-video-container video",
       "#movie_player .html5-main-video",
+      ".html5-video-container video",
       "ytd-player video",
       "#player video",
       "video"
-      // Fallback to any video element
     ];
-    let selector = initialSelector;
-    let videoElement = null;
-    let usedSelector = "";
-    for (const sel of videoSelectors) {
-      const exists = await page.evaluate((s) => {
-        const el = document.querySelector(s);
-        return el && el instanceof HTMLVideoElement;
-      }, sel);
-      if (exists) {
-        videoElement = sel;
-        usedSelector = sel;
-        break;
+    const deadline = Date.now() + 15e3;
+    let warned = false;
+    while (Date.now() < deadline) {
+      for (const sel of candidates) {
+        const ok = await page.evaluate((s) => {
+          const el = document.querySelector(s);
+          return !!el && el instanceof HTMLVideoElement;
+        }, sel).catch(() => false);
+        if (ok) return sel;
       }
-    }
-    if (!videoElement) {
-      ctx.emitEvent("log", "Video element not found immediately, waiting for player to initialize...");
-      const startWait = Date.now();
-      const maxWait = 15e3;
-      while (!videoElement && Date.now() - startWait < maxWait) {
-        await page.waitForTimeout(500);
-        const pageState = await page.evaluate(() => {
-          if (window.location.hostname.includes("google.com") && window.location.pathname.includes("/sorry/index")) {
-            return { type: "google_sorry", message: "Google blocking requests" };
-          }
-          const captchaSelectors = [
-            "#captcha-form",
-            ".captcha-box",
-            '[aria-label*="CAPTCHA"]',
-            '[aria-label*="captcha"]',
-            'iframe[src*="recaptcha"]',
-            'iframe[src*="google.com/recaptcha"]'
-          ];
-          for (const selector2 of captchaSelectors) {
-            if (document.querySelector(selector2)) {
-              return { type: "captcha", message: "CAPTCHA detected" };
-            }
-          }
-          const unavailableMessages = [
-            "Video unavailable",
-            "This video is not available",
-            "Please sign in to confirm your age",
-            "This content is not available",
-            "Video not available",
-            "Sign in to confirm you\u2019re not a bot",
-            "To continue to YouTube",
-            "Check your connection"
-          ];
-          const pageText = document.body.innerText || "";
-          for (const msg of unavailableMessages) {
-            if (pageText.includes(msg)) {
-              return { type: "unavailable", message: msg };
-            }
-          }
-          const consentSelectors = [
-            "tp-yt-paper-dialog",
-            "#consent-bump",
-            ".consent-bump",
-            '[data-testid="consent-bump"]',
-            "ytd-consent-lightspeed-button-renderer",
-            'div[role="dialog"]'
-          ];
-          for (const selector2 of consentSelectors) {
-            const element = document.querySelector(selector2);
-            if (element) {
-              const text = element.textContent?.toLowerCase() || "";
-              if (text.includes("confirm your age") || text.includes("sign in to confirm your age")) {
-                return { type: "consent", message: "Consent/age gate required" };
-              }
-              if (selector2 === "tp-yt-paper-dialog" || selector2 === "#consent-bump" || selector2 === ".consent-bump" || selector2 === '[data-testid="consent-bump"]' || selector2 === "ytd-consent-lightspeed-button-renderer") {
-                return { type: "consent", message: "Consent/age gate required" };
-              }
-            }
-          }
-          return null;
-        });
-        if (pageState) {
-          ctx.emitEvent("log", `Detected ${pageState.type}: ${pageState.message}`);
-          if (pageState.type === "google_sorry" || pageState.type === "captcha") {
-            break;
-          }
-        }
-        for (const sel of videoSelectors) {
-          const exists = await page.evaluate((s) => {
-            const el = document.querySelector(s);
-            return el && el instanceof HTMLVideoElement;
-          }, sel);
-          if (exists) {
-            videoElement = sel;
-            usedSelector = sel;
-            break;
-          }
-        }
+      if (!warned) {
+        warned = true;
+        ctx.emitEvent("log", "Video element not present yet \u2014 waiting for player\u2026");
       }
-    }
-    if (!videoElement) {
-      const pageUrl = page.url();
-      let errorMessage = `No <video> element found for any selector (tried: ${videoSelectors.join(", ")})`;
-      if (pageUrl.includes("google.com/sorry/index")) {
-        errorMessage += " - YouTube is blocking requests (showing Google sorry page). Proxy may be blocked or flagged.";
-      } else if (pageUrl.includes("youtube.com")) {
-        errorMessage += " - On YouTube but no video element found. May be age-restricted, unavailable, or blocked.";
-      } else {
-        errorMessage += ` - Current URL: ${pageUrl}`;
-      }
-      throw new Error(errorMessage);
-    }
-    selector = usedSelector;
-    if (isYouTubeUrl2) {
-      ctx.emitEvent("log", "Waiting for YouTube player API to initialize...");
-      await page.waitForFunction(() => {
-        const player = document.getElementById("movie_player") || document.querySelector(".html5-video-player");
-        return player && typeof player.setPlaybackQuality === "function";
-      }, { timeout: 15e3 }).catch(() => {
-        ctx.emitEvent("log", "YouTube player API not fully ready, continuing anyway...");
+      if (await this.pageFatalState(page) === "blocked") break;
+      await page.waitForTimeout(500).catch(() => {
       });
     }
-    if (setVideoQuality && ctx.setVideoQuality) {
-      await ctx.setVideoQuality(page, setVideoQuality);
-    }
-    if (ctx.handleYouTubeConsent) {
-      await ctx.handleYouTubeConsent(page);
-    }
-    let loopCount = 0;
-    let isStopped = false;
-    tab.loopVideoState = {
-      isRunning: true,
-      loopCount: 0,
-      stopRequested: false
-    };
-    const tick = async () => {
-      const contextValid = ctx.isTabValid ? ctx.isTabValid() : true;
-      if (!contextValid || tab.closed || tab.loopVideoState?.stopRequested) {
-        if (tab.loopTimer) {
-          clearInterval(tab.loopTimer);
-          tab.loopTimer = void 0;
+    return null;
+  }
+  async waitForPlayerApi(page, ctx) {
+    await page.waitForFunction(
+      () => {
+        const p = document.getElementById("movie_player");
+        return !!p && typeof p.playVideo === "function" && typeof p.seekTo === "function";
+      },
+      { timeout: 15e3 }
+    ).catch(() => ctx.emitEvent("log", "Player API not ready \u2014 continuing anyway"));
+  }
+  async clickConsent(page) {
+    await page.evaluate(() => {
+      const candidates = [
+        "ytd-consent-bump-v2-lightbox ytd-button-renderer:last-of-type button",
+        "tp-yt-paper-dialog ytd-button-renderer:last-of-type button",
+        'form[action*="consent"] button',
+        'button[aria-label*="Accept all"]',
+        'button[aria-label*="Accept everything"]',
+        "#consent-bump button:last-of-type"
+      ];
+      for (const sel of candidates) {
+        const el = document.querySelector(sel);
+        if (el && el.offsetParent !== null) {
+          el.click();
+          return;
         }
-        tab.loopVideoState = { ...tab.loopVideoState, isRunning: false };
-        ctx.emitEvent("result", { taskId: task.id, stopped: true, loopsCompleted: loopCount });
-        return;
       }
-      try {
-        let videoState = await page.evaluate((sel) => {
-          const el = document.querySelector(sel);
-          if (!el || !(el instanceof HTMLVideoElement)) {
-            return { state: "no-video", currentTime: 0, duration: 0 };
-          }
-          const video = el;
-          if (!video.duration || Number.isNaN(video.duration)) return { state: "no-video", currentTime: 0, duration: 0 };
-          if (video.error) {
-            return { state: "error", currentTime: video.currentTime, duration: video.duration };
-          }
-          const pageText = document.body.innerText || "";
-          if (pageText.toLowerCase().includes("something went wrong")) {
-            return { state: "error", currentTime: video.currentTime, duration: video.duration };
-          }
-          const remaining = video.duration - video.currentTime;
-          if (remaining < 0.75 || video.ended) return { state: "ended", currentTime: video.currentTime, duration: video.duration };
-          if (video.paused && !video.seeking) video.play().catch(() => {
-          });
-          return { state: "playing", currentTime: video.currentTime, duration: video.duration };
-        }, selector);
-        if (videoState.state === "no-video") {
-          ctx.emitEvent("log", "Video element not found with current selector, re-detecting...");
-          const videoSelectors2 = [
-            selector,
-            "video.html5-main-video",
-            'video[class*="html5-main-video"]',
-            "video.html5-video-player",
-            "video[data-is-autoplayable]",
-            "#movie_player video",
-            ".html5-video-container video",
-            "#movie_player .html5-main-video",
-            "ytd-player video",
-            "#player video",
-            "video"
-          ];
-          for (const sel of videoSelectors2) {
-            videoState = await page.evaluate((s) => {
-              const el = document.querySelector(s);
-              if (!el || !(el instanceof HTMLVideoElement)) {
-                return { state: "no-video", currentTime: 0, duration: 0 };
-              }
-              const video = el;
-              if (!video.duration || Number.isNaN(video.duration)) return { state: "no-video", currentTime: 0, duration: 0 };
-              if (video.error) {
-                return { state: "error", currentTime: video.currentTime, duration: video.duration };
-              }
-              const pageText = document.body.innerText || "";
-              if (pageText.toLowerCase().includes("something went wrong")) {
-                return { state: "error", currentTime: video.currentTime, duration: video.duration };
-              }
-              const remaining = video.duration - video.currentTime;
-              if (remaining < 0.75 || video.ended) return { state: "ended", currentTime: video.currentTime, duration: video.duration };
-              if (video.paused && !video.seeking) video.play().catch(() => {
-              });
-              return { state: "playing", currentTime: video.currentTime, duration: video.duration };
-            }, sel);
-            if (videoState.state !== "no-video") {
-              selector = sel;
-              break;
-            }
-          }
-        }
-        if ((videoState.state === "ended" || videoState.state === "error" || videoState.state === "no-video") && !tab.closed && !tab.loopVideoState?.stopRequested) {
-          if (tab.loopTimer) {
-            clearInterval(tab.loopTimer);
-            tab.loopTimer = void 0;
-          }
-          ctx.emitEvent("log", `Video ${videoState.state}, restarting tab for loop ${loopCount + 1}`);
-          await ctx.randomDelay(1500, 4e3);
-          await page.bringToFront().catch(() => {
-          });
-          if (enableHumanBehavior && ctx.simulateHumanInteraction && Math.random() < 0.7) {
-            await ctx.simulateHumanInteraction(page);
-          }
-          const target = tab.loopUrl;
-          if (rotateDeviceProfile) {
-            await page.evaluate(() => {
-              const deviceProfiles = [
-                // Mobile devices
-                {
-                  userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
-                  viewport: { width: 390, height: 844 },
-                  deviceScaleFactor: 3,
-                  isMobile: true
-                },
-                {
-                  userAgent: "Mozilla/5.0 (Linux; Android 14; SM-S901B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Mobile Safari/537.36",
-                  viewport: { width: 412, height: 915 },
-                  deviceScaleFactor: 3.5,
-                  isMobile: true
-                },
-                // Desktop devices
-                {
-                  userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
-                  viewport: { width: 1920, height: 1080 },
-                  deviceScaleFactor: 1,
-                  isMobile: false
-                },
-                {
-                  userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
-                  viewport: { width: 1440, height: 900 },
-                  deviceScaleFactor: 2,
-                  isMobile: false
-                },
-                {
-                  userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
-                  viewport: { width: 1366, height: 768 },
-                  deviceScaleFactor: 1,
-                  isMobile: false
-                }
-              ];
-              const profile = deviceProfiles[Math.floor(Math.random() * deviceProfiles.length)];
-              if ("navigator" in globalThis) {
-                Object.defineProperty(navigator, "userAgent", {
-                  get: () => profile.userAgent,
-                  configurable: true
-                });
-                Object.defineProperty(navigator, "platform", {
-                  get: () => profile.userAgent.includes("Windows") ? "Win32" : profile.userAgent.includes("Macintosh") ? "MacIntel" : profile.userAgent.includes("Linux") ? "Linux x86_64" : "Win32",
-                  configurable: true
-                });
-                Object.defineProperty(navigator, "hardwareConcurrency", {
-                  get: () => profile.isMobile ? 4 + Math.floor(Math.random() * 4) : 8 + Math.floor(Math.random() * 16),
-                  configurable: true
-                });
-                Object.defineProperty(navigator, "deviceMemory", {
-                  get: () => profile.isMobile ? 4 + Math.floor(Math.random() * 4) : 8 + Math.floor(Math.random() * 32),
-                  configurable: true
-                });
-              }
-              if ("screen" in globalThis) {
-                Object.defineProperty(screen, "width", {
-                  get: () => profile.viewport.width,
-                  configurable: true
-                });
-                Object.defineProperty(screen, "height", {
-                  get: () => profile.viewport.height,
-                  configurable: true
-                });
-                Object.defineProperty(screen, "availWidth", {
-                  get: () => profile.viewport.width,
-                  configurable: true
-                });
-                Object.defineProperty(screen, "availHeight", {
-                  get: () => profile.viewport.height - 40,
-                  configurable: true
-                });
-              }
-            });
-          }
-          try {
-            await page.evaluate(() => {
-              try {
-                const trackingKeys = ["yt-remote-", "yt-player-", "yt-", "google_ads", "_ga", "_gid", "_gat", "amp_", "__utma", "__utmb", "__utmc", "__utmz"];
-                Object.keys(localStorage).forEach((key) => {
-                  if (trackingKeys.some((tk) => key.toLowerCase().includes(tk.toLowerCase()))) {
-                    localStorage.removeItem(key);
-                  }
-                });
-              } catch {
-              }
-              try {
-                const trackingKeys = ["yt-remote-", "yt-player-", "yt-", "google_ads", "_ga", "_gid", "_gat", "amp_", "__utma", "__utmb", "__utmc", "__utmz"];
-                Object.keys(sessionStorage).forEach((key) => {
-                  if (trackingKeys.some((tk) => key.toLowerCase().includes(tk.toLowerCase()))) {
-                    sessionStorage.removeItem(key);
-                  }
-                });
-              } catch {
-              }
-            }).catch(() => {
-            });
-            let navigationSuccess = false;
-            let navAttempts = 0;
-            const maxNavAttempts = 3;
-            const isYouTubeUrl3 = /youtube\.com|youtu\.be/.test(target);
-            const navTimeout = isYouTubeUrl3 ? 9e4 : 3e4;
-            const navWaitUntil = isYouTubeUrl3 ? "load" : "domcontentloaded";
-            while (!navigationSuccess && navAttempts < maxNavAttempts) {
-              try {
-                await page.goto(target, { waitUntil: navWaitUntil, timeout: navTimeout });
-                navigationSuccess = true;
-              } catch (navErr) {
-                navAttempts++;
-                const message = navErr?.message ?? "";
-                const isRetryableError = /ERR_PROXY_CONNECTION_FAILED|ERR_TUNNEL_CONNECTION_FAILED|ERR_SOCKS_CONNECTION_FAILED|ERR_CONNECTION_REFUSED|ERR_CONNECTION_RESET|ERR_CONNECTION_CLOSED|ERR_TIMED_OUT|ERR_ADDRESS_UNREACHABLE|net::ERR|401|403|407|502|503|504/.test(message);
-                if (isRetryableError && navAttempts < maxNavAttempts) {
-                  ctx.emitEvent("log", `Navigation failed (attempt ${navAttempts}/${maxNavAttempts}), marking proxy failed: ${navErr.message}`);
-                  if (ctx.markProxyFailed) {
-                    ctx.markProxyFailed(`Navigation failed: ${navErr.message}`);
-                  }
-                  await ctx.randomDelay(2e3, 5e3);
-                  continue;
-                }
-                throw navErr;
-              }
-            }
-            if (!navigationSuccess) {
-              throw new Error(`Failed to navigate after ${maxNavAttempts} attempts`);
-            }
-            const videoSelectors2 = [
-              selector,
-              // Try the previously working selector first
-              "video.html5-main-video",
-              'video[class*="html5-main-video"]',
-              "video.html5-video-player",
-              "video[data-is-autoplayable]",
-              "#movie_player video",
-              ".html5-video-container video",
-              "#movie_player .html5-main-video",
-              "ytd-player video",
-              "#player video",
-              "video"
-              // Fallback to any video element
-            ];
-            let videoFound = false;
-            let usedSelector2 = selector;
-            for (const sel of videoSelectors2) {
-              const exists = await page.evaluate((s) => {
-                const el = document.querySelector(s);
-                return el && el instanceof HTMLVideoElement;
-              }, sel);
-              if (exists) {
-                videoFound = true;
-                usedSelector2 = sel;
-                break;
-              }
-            }
-            if (!videoFound) {
-              ctx.emitEvent("log", "Video element not found after reload, waiting for player to initialize...");
-              const startWait = Date.now();
-              const maxWait = 15e3;
-              while (!videoFound && Date.now() - startWait < maxWait) {
-                await page.waitForTimeout(500);
-                const pageState = await page.evaluate(() => {
-                  if (window.location.hostname.includes("google.com") && window.location.pathname.includes("/sorry/index")) {
-                    return { type: "google_sorry", message: "Google blocking requests" };
-                  }
-                  const captchaSelectors = [
-                    "#captcha-form",
-                    ".captcha-box",
-                    '[aria-label*="CAPTCHA"]',
-                    '[aria-label*="captcha"]',
-                    'iframe[src*="recaptcha"]',
-                    'iframe[src*="google.com/recaptcha"]'
-                  ];
-                  for (const selector2 of captchaSelectors) {
-                    if (document.querySelector(selector2)) {
-                      return { type: "captcha", message: "CAPTCHA detected" };
-                    }
-                  }
-                  const pageText = document.body.innerText || "";
-                  if (pageText.toLowerCase().includes("something went wrong")) {
-                    return { type: "error", message: "Something went wrong" };
-                  }
-                  const unavailableMessages = [
-                    "Video unavailable",
-                    "This video is not available",
-                    "Please sign in to confirm your age",
-                    "This content is not available",
-                    "Video not available",
-                    "Sign in to confirm you\u2019re not a bot",
-                    "To continue to YouTube",
-                    "Check your connection"
-                  ];
-                  for (const msg of unavailableMessages) {
-                    if (pageText.includes(msg)) {
-                      return { type: "unavailable", message: msg };
-                    }
-                  }
-                  const consentSelectors = [
-                    "tp-yt-paper-dialog",
-                    "#consent-bump",
-                    ".consent-bump",
-                    '[data-testid="consent-bump"]',
-                    "ytd-consent-lightspeed-button-renderer",
-                    'div[role="dialog"]'
-                  ];
-                  for (const selector2 of consentSelectors) {
-                    const element = document.querySelector(selector2);
-                    if (element) {
-                      const text = element.textContent?.toLowerCase() || "";
-                      if (text.includes("confirm your age") || text.includes("sign in to confirm your age")) {
-                        return { type: "consent", message: "Consent/age gate required" };
-                      }
-                      if (selector2 === "tp-yt-paper-dialog" || selector2 === "#consent-bump" || selector2 === ".consent-bump" || selector2 === '[data-testid="consent-bump"]' || selector2 === "ytd-consent-lightspeed-button-renderer") {
-                        return { type: "consent", message: "Consent/age gate required" };
-                      }
-                    }
-                  }
-                  return null;
-                });
-                if (pageState) {
-                  ctx.emitEvent("log", `Detected ${pageState.type}: ${pageState.message}`);
-                  if (pageState.type === "google_sorry" || pageState.type === "captcha") {
-                    break;
-                  }
-                }
-                for (const sel of videoSelectors2) {
-                  const exists = await page.evaluate((s) => {
-                    const el = document.querySelector(s);
-                    return el && el instanceof HTMLVideoElement;
-                  }, sel);
-                  if (exists) {
-                    videoFound = true;
-                    usedSelector2 = sel;
-                    break;
-                  }
-                }
-              }
-            }
-            if (!videoFound) {
-              const pageUrl = page.url();
-              let errorMessage = `No <video> element found after reload for any selector (tried: ${videoSelectors2.join(", ")})`;
-              if (pageUrl.includes("google.com/sorry/index")) {
-                errorMessage += " - YouTube is blocking requests (showing Google sorry page). Proxy may be blocked or flagged.";
-              } else if (pageUrl.includes("youtube.com")) {
-                errorMessage += " - On YouTube but no video element found. May be age-restricted, unavailable, or blocked.";
-              } else {
-                errorMessage += ` - Current URL: ${pageUrl}`;
-              }
-              throw new Error(errorMessage);
-            }
-            selector = usedSelector2;
-            if (ctx.handleYouTubeConsent) {
-              await ctx.handleYouTubeConsent(page);
-            }
-            if (isYouTubeUrl3) {
-              await page.waitForFunction(() => {
-                const player = document.getElementById("movie_player") || document.querySelector(".html5-video-player");
-                return player && typeof player.setPlaybackQuality === "function";
-              }, { timeout: 15e3 }).catch(() => {
-                ctx.emitEvent("log", "YouTube player API not fully ready after reload, continuing anyway...");
-              });
-            }
-            if (setVideoQuality && ctx.setVideoQuality) {
-              await ctx.setVideoQuality(page, setVideoQuality);
-            }
-            await page.evaluate((sel) => {
-              const el = document.querySelector(sel);
-              if (el && el instanceof HTMLVideoElement) {
-                el.play().catch(() => {
-                });
-              }
-            }, selector).catch(() => {
-            });
-            await page.evaluate((sel) => {
-              const el = document.querySelector(sel);
-              return !!(el && el instanceof HTMLVideoElement && !el.paused);
-            }, selector).then(async (playing) => {
-              if (!playing) {
-                await page.bringToFront().catch(() => {
-                });
-                await page.evaluate((sel) => {
-                  const el = document.querySelector(sel);
-                  if (el && el instanceof HTMLVideoElement) {
-                    el.play().then(() => {
-                    }).catch((e) => void 0);
-                  }
-                }, selector).catch(() => {
-                });
-              }
-            }).catch(() => {
-            });
-            let effectiveMinWatchDuration = minWatchDurationMs;
-            if (effectiveMinWatchDuration <= 0) {
-              effectiveMinWatchDuration = 6e4 + Math.floor(Math.random() * 3e4);
-            }
-            ctx.emitEvent("log", `View started - ensuring minimum watch duration of ${effectiveMinWatchDuration}ms with realistic scroll behavior`);
-            const totalDuration = effectiveMinWatchDuration;
-            let elapsedTime = 0;
-            const scrollIntervalBase = 8e3;
-            const scrollIntervalVariance = 4e3;
-            while (elapsedTime < totalDuration && !tab.closed && !tab.loopVideoState?.stopRequested) {
-              const remainingTime = totalDuration - elapsedTime;
-              const nextInterval = Math.min(
-                scrollIntervalBase + Math.floor(Math.random() * scrollIntervalVariance * 2) - scrollIntervalVariance,
-                remainingTime
-              );
-              if (nextInterval > 100) {
-                await ctx.randomDelay(nextInterval, nextInterval + 500);
-                elapsedTime += nextInterval;
-              }
-              if (elapsedTime >= totalDuration) {
-                break;
-              }
-              if (enableHumanBehavior && ctx.simulateHumanInteraction && Math.random() < 0.7) {
-                try {
-                  if (Math.random() < 0.3) {
-                    await page.evaluate(() => {
-                      const scrollPatterns = [
-                        () => window.scrollBy(0, 100),
-                        // Scroll down
-                        () => window.scrollBy(0, -50),
-                        // Scroll up slightly
-                        () => window.scrollBy(0, 200),
-                        // Scroll down more
-                        () => window.scrollBy(0, -100),
-                        // Scroll up
-                        () => {
-                        }
-                      ];
-                      const patternLength = Math.floor(Math.random() * 3) + 2;
-                      for (let i = 0; i < patternLength; i++) {
-                        const actionIndex = Math.floor(Math.random() * scrollPatterns.length);
-                        if (scrollPatterns[actionIndex]) {
-                          scrollPatterns[actionIndex]();
-                        }
-                        const scrollDelay = 300 + Math.random() * 700;
-                        return new Promise((resolve3) => setTimeout(resolve3, scrollDelay));
-                      }
-                    }).catch(() => {
-                    });
-                  } else {
-                    await ctx.simulateHumanInteraction(page);
-                  }
-                } catch (scrollErr) {
-                  ctx.emitEvent("log", `Scroll behavior error: ${scrollErr.message}`);
-                }
-              }
-              if (enableHumanBehavior && ctx.simulateHumanInteraction && Math.random() < 0.2) {
-                try {
-                  const visibilityState = await page.evaluate(() => {
-                    return {
-                      hidden: document.hidden,
-                      visibilityState: document.visibilityState,
-                      hasFocus: document.hasFocus()
-                    };
-                  });
-                  if (visibilityState.hidden || visibilityState.visibilityState !== "visible" || !visibilityState.hasFocus) {
-                    await page.bringToFront().catch(() => {
-                    });
-                    if (ctx.simulateHumanInteraction) {
-                      await ctx.simulateHumanInteraction(page);
-                    }
-                    await ctx.randomDelay(500, 1500);
-                  }
-                } catch (visibilityErr) {
-                  ctx.emitEvent("log", `Tab visibility check error: ${visibilityErr.message}`);
-                }
-              }
-            }
-            loopCount++;
-            tab.loopVideoState = { ...tab.loopVideoState, loopCount };
-            ctx.emitEvent("result", { taskId: task.id, loopCount, status: "loop_completed" });
-            if (maxLoops > 0 && loopCount >= maxLoops) {
-              ctx.emitEvent("log", `Reached max loops (${maxLoops}), stopping`);
-              isStopped = true;
-              tab.loopVideoState = { ...tab.loopVideoState, isRunning: false };
-              if (tab.loopTimer) {
-                clearInterval(tab.loopTimer);
-                tab.loopTimer = void 0;
-              }
-              ctx.emitEvent("result", { taskId: task.id, stopped: true, loopsCompleted: loopCount, reason: "max_loops_reached" });
-              return;
-            }
-            const baseDelay = loopDelayMs + Math.floor(Math.random() * 3e3);
-            const finalDelay = Math.random() < 0.05 ? baseDelay * 3 + Math.random() * 1e4 : baseDelay;
-            await ctx.randomDelay(finalDelay, finalDelay + 2e3);
-          } catch (err) {
-            ctx.emitEvent("error", `Loop navigation failed: ${err}`);
-          }
-          if (!tab.closed && !tab.loopVideoState?.stopRequested && !isStopped) {
-            const baseInterval2 = 8e3 + Math.random() * 4e3;
-            const interval2 = Math.random() < 5e-3 ? baseInterval2 * 8 : baseInterval2;
-            const finalInterval = Math.random() < 0.01 ? baseInterval2 * 0.2 : interval2;
-            tab.loopTimer = setInterval(tick, finalInterval);
-            if (enableHumanBehavior && ctx.simulateHumanInteraction) {
-              await ctx.simulateHumanInteraction(page);
-            }
-          }
-        }
-      } catch (err) {
-        ctx.emitEvent("log", `Tick check error: ${err}`);
-      }
-    };
-    await ctx.randomDelay(2e3, 5e3);
-    if (ctx.isTabValid && !ctx.isTabValid() && tab.closed) {
-      throw new Error("Tab closed before loop could start");
+    }).catch(() => {
+    });
+    await new Promise((r) => setTimeout(r, 800));
+  }
+  async pageFatalState(page) {
+    return page.evaluate(() => {
+      if (location.hostname.includes("google.com") && location.pathname.includes("/sorry/")) return "blocked";
+      if (document.querySelector("#captcha-form")) return "blocked";
+      const err = document.querySelector(".ytp-error");
+      if (err && getComputedStyle(err).display !== "none") return "error";
+      return null;
+    }).catch(() => null);
+  }
+  describeMissingVideo(pageUrl) {
+    if (pageUrl.includes("google.com/sorry/")) return "No <video> \u2014 Google sorry interstitial, proxy is flagged.";
+    if (pageUrl.includes("youtube.com")) return "No <video> \u2014 age-gated, unavailable, region-blocked, or player error.";
+    return `No <video>. Current URL: ${pageUrl}`;
+  }
+  async enableFocusEmulation(page) {
+    try {
+      const cdp = await page.context().newCDPSession(page);
+      await cdp.send("Emulation.setFocusEmulationEnabled", { enabled: true });
+    } catch {
     }
-    if (tab.closed) {
-      throw new Error("Tab closed before loop could start");
+  }
+  async armGesture(page, selector) {
+    try {
+      const box = await page.locator(selector).first().boundingBox();
+      if (!box) return;
+      const x = box.x + box.width / 2;
+      const y = box.y + box.height / 2;
+      await page.mouse.move(x, y, { steps: 8 });
+      await page.waitForTimeout(120 + Math.random() * 200);
+      await page.mouse.click(x, y);
+      await page.waitForTimeout(350);
+      await page.evaluate(() => {
+        const p = document.getElementById("movie_player");
+        if (p?.getPlayerState?.() === 2) p.playVideo();
+      }).catch(() => {
+      });
+    } catch {
     }
-    if (enableHumanBehavior && ctx.simulateHumanInteraction) {
-      await ctx.simulateHumanInteraction(page);
-    }
-    const baseInterval = 8e3 + Math.random() * 4e3;
-    const interval = Math.random() < 5e-3 ? baseInterval * 8 : baseInterval;
-    tab.loopTimer = setInterval(tick, interval);
-    if (enableHumanBehavior && ctx.simulateHumanInteraction) {
-      await ctx.simulateHumanInteraction(page);
-    }
-    ctx.emitEvent("log", `Started video loop on ${reloadUrl}`);
-    return { looping: true, selector, reloadUrl, loopsCompleted: loopCount };
   }
   createDefaultContext(tab) {
-    const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const humanMouseMove = async (page, w, h) => {
-      const points = 3 + Math.floor(Math.random() * 5);
-      const startX = Math.random() * w * 0.8 + w * 0.1;
-      const startY = Math.random() * h * 0.8 + h * 0.1;
-      const endX = Math.random() * w * 0.8 + w * 0.1;
-      const endY = Math.random() * h * 0.8 + h * 0.1;
-      const controlX1 = startX + (Math.random() - 0.5) * 200;
-      const controlY1 = startY + (Math.random() - 0.5) * 200;
-      const controlX2 = endX + (Math.random() - 0.5) * 200;
-      const controlY2 = endY + (Math.random() - 0.5) * 200;
+      const points = 3 + Math.floor(Math.random() * 4);
+      const sx = Math.random() * w * 0.8 + w * 0.1;
+      const sy = Math.random() * h * 0.8 + h * 0.1;
+      const ex = Math.random() * w * 0.8 + w * 0.1;
+      const ey = Math.random() * h * 0.8 + h * 0.1;
+      const c1x = sx + (Math.random() - 0.5) * 200;
+      const c1y = sy + (Math.random() - 0.5) * 200;
+      const c2x = ex + (Math.random() - 0.5) * 200;
+      const c2y = ey + (Math.random() - 0.5) * 200;
       for (let i = 0; i <= points; i++) {
         const t = i / points;
-        const x = Math.pow(1 - t, 3) * startX + 3 * Math.pow(1 - t, 2) * t * controlX1 + 3 * (1 - t) * Math.pow(t, 2) * controlX2 + Math.pow(t, 3) * endX;
-        const y = Math.pow(1 - t, 3) * startY + 3 * Math.pow(1 - t, 2) * t * controlY1 + 3 * (1 - t) * Math.pow(t, 2) * controlY2 + Math.pow(t, 3) * endY;
-        const stepCount = Math.random() < 0.7 ? Math.floor(Math.random() * 10) + 5 : 1;
-        await page.mouse.move(x, y, { steps: stepCount }).catch(() => {
+        const x = Math.pow(1 - t, 3) * sx + 3 * Math.pow(1 - t, 2) * t * c1x + 3 * (1 - t) * Math.pow(t, 2) * c2x + Math.pow(t, 3) * ex;
+        const y = Math.pow(1 - t, 3) * sy + 3 * Math.pow(1 - t, 2) * t * c1y + 3 * (1 - t) * Math.pow(t, 2) * c2y + Math.pow(t, 3) * ey;
+        await page.mouse.move(x, y, { steps: Math.random() < 0.7 ? 5 + Math.floor(Math.random() * 8) : 1 }).catch(() => {
         });
-        const baseDelay = 20 + Math.random() * 80;
-        const delayVariation = Math.pow(Math.random(), 2) * 100;
-        const delay = baseDelay + delayVariation;
-        await new Promise((r) => setTimeout(r, delay));
-      }
-    };
-    const humanScroll = async (page) => {
-      const scrollRange = Math.random() < 0.8 ? 200 : 500;
-      const scrollAmount = (Math.random() - 0.5) * scrollRange;
-      const stepCount = Math.floor(Math.random() * 5) + 2;
-      for (let i = 0; i < stepCount; i++) {
-        const stepAmount = scrollAmount / stepCount + (Math.random() - 0.5) * 20;
-        await page.evaluate((amt) => window.scrollBy(0, amt), stepAmount).catch(() => {
-        });
-        const baseDelay = 30 + Math.random() * 100;
-        const delayVariation = Math.pow(Math.random(), 1.5) * 50;
-        const delay = baseDelay + delayVariation;
-        await new Promise((r) => setTimeout(r, delay));
+        await new Promise((r) => setTimeout(r, 20 + Math.random() * 90));
       }
     };
     return {
       isTabValid: () => !tab.closed,
-      emitEvent: (kind, data) => {
-        console.log(`[${kind}]`, data);
-      },
+      emitEvent: (kind, data) => console.log(`[${kind}]`, data),
       randomDelay: (minMs, maxMs) => {
-        const range = maxMs - minMs;
-        const skew = Math.pow(Math.random(), 3);
-        const delay = Math.floor(minMs + skew * range);
+        const range = Math.max(0, maxMs - minMs);
+        const delay = Math.floor(minMs + Math.pow(Math.random(), 3) * range);
         return new Promise((resolve3) => setTimeout(resolve3, delay));
       },
       simulateHumanInteraction: async (page) => {
         try {
-          const viewportWidth = 1920;
-          const viewportHeight = 1080;
-          await humanMouseMove(page, viewportWidth, viewportHeight);
-          if (Math.random() < 0.3) {
-            await humanScroll(page);
-          }
-          if (Math.random() < 0.1) {
-            await page.keyboard.press("Space").catch(() => {
+          const size = page.viewportSize?.() ?? { width: 1920, height: 1080 };
+          await humanMouseMove(page, size.width, size.height);
+          if (Math.random() < 0.25) {
+            await page.evaluate((a) => window.scrollBy(0, a), (Math.random() - 0.5) * 160).catch(() => {
             });
           }
-          if (Math.random() < 0.15) {
-            await page.evaluate(() => {
-              window.dispatchEvent(new Event("blur"));
-              setTimeout(() => window.dispatchEvent(new Event("focus")), 100 + Math.random() * 500);
+          if (Math.random() < 0.2) {
+            await page.mouse.move(size.width * 0.5, size.height * 0.72, { steps: 6 }).catch(() => {
             });
           }
-        } catch (e) {
+        } catch {
         }
       },
       handleYouTubeConsent: async (page) => {
-        await page.evaluate(() => {
-          const selectors = [
-            // Main consent dialog
-            'button[aria-label*="Accept all"]',
-            'button[aria-label*="Accept everything"]',
-            'button[aria-label*="I agree"]',
-            'button[aria-label*="Agree"]',
-            'button:contains("Accept all")',
-            'button:contains("Accept everything")',
-            'button:contains("I agree")',
-            'button:contains("Agree")',
-            'ytd-button-renderer:contains("Accept all")',
-            'ytd-button-renderer:contains("I agree")',
-            'ytd-button-renderer:contains("Accept")',
-            'ytd-button-renderer:contains("Agree")',
-            // Material design buttons
-            'tp-yt-paper-button[aria-label*="Accept"]',
-            'tp-yt-paper-button[aria-label*="Agree"]',
-            'tp-yt-paper-button:contains("Accept all")',
-            'tp-yt-paper-button:contains("I agree")',
-            // IDs
-            "#accept-button",
-            "#agree-button",
-            '#yDmH0d button[aria-label*="Accept"]',
-            // Cookie consent (EU)
-            'button[aria-label*="Accept cookies"]',
-            'button:contains("Accept cookies")'
-          ];
-          const allButtons = document.querySelectorAll('button, [role="button"], tp-yt-paper-button, ytd-button-renderer');
-          allButtons.forEach((button) => {
-            const text = button.textContent?.toLowerCase() || "";
-            if (text.includes("accept") || text.includes("agree") || text.includes("consent") || text.includes("continue") || text.includes("allow")) {
-              try {
-                button.click();
-              } catch (e) {
-              }
-            }
-          });
-          const workingSelectors = [
-            'button[aria-label*="Accept all"]',
-            'button[aria-label*="Accept everything"]',
-            'button[aria-label*="I agree"]',
-            'button[aria-label*="Agree"]',
-            "#accept-button",
-            "#agree-button",
-            'ytd-button-renderer[aria-label*="Accept all"]',
-            'ytd-button-renderer[aria-label*="I agree"]'
-          ];
-          workingSelectors.forEach((selector) => {
-            try {
-              const elements = document.querySelectorAll(selector);
-              elements.forEach((el) => {
-                try {
-                  el.click();
-                } catch (e) {
-                }
-              });
-            } catch (e) {
-            }
-          });
-        }).catch(() => {
-        });
-        await new Promise((resolve3) => setTimeout(resolve3, 1500));
+        await this.clickConsent(page);
       },
       clearSessionData: async (page) => {
-        await page.context().clearCookies();
-        await page.evaluate(() => {
+        await page.context().clearCookies().catch(() => {
+        });
+        await page.evaluate(async () => {
           try {
             localStorage.clear();
             sessionStorage.clear();
           } catch {
           }
-        });
-        await page.evaluate(() => {
           try {
             if ("indexedDB" in window) {
-              indexedDB.databases().then((dbs) => {
-                dbs.forEach((db) => {
-                  if (db.name) {
-                    indexedDB.deleteDatabase(db.name);
-                  }
-                });
-              });
+              const dbs = await indexedDB.databases();
+              for (const db of dbs) if (db.name) indexedDB.deleteDatabase(db.name);
             }
           } catch {
           }
-        });
-        await page.evaluate(() => {
           try {
-            if ("caches" in window) {
-              caches.keys().then((names) => {
-                names.forEach((name) => caches.delete(name));
-              });
-            }
+            if ("caches" in window) for (const n of await caches.keys()) await caches.delete(n);
           } catch {
           }
-        });
-        await page.evaluate(() => {
-          try {
-            if ("serviceWorker" in navigator) {
-              navigator.serviceWorker.getRegistrations().then((registrations) => {
-                registrations.forEach((reg) => reg.unregister());
-              });
-            }
-          } catch {
-          }
+        }).catch(() => {
         });
       },
       setVideoQuality: async (page, quality) => {
         await setPersistentVideoQuality(page, quality);
       },
-      markProxyFailed: (reason) => {
-        console.log(`[proxy-failed] ${reason}`);
-      }
+      markProxyFailed: (reason) => console.log(`[proxy-failed] ${reason}`)
     };
   }
 };
@@ -26990,53 +25319,23 @@ var StopLoopVideoTaskHandler = class {
     return taskType === "stopLoopVideo";
   }
   async execute(tab, task, context) {
-    const selector = task.payload?.selector || "video.html5-main-video, video";
     const ctx = context || {
-      isTabValid: () => true,
+      isTabValid: () => !tab.closed,
       emitEvent: (kind, data) => console.log(`[${kind}]`, data),
-      randomDelay: (minMs, maxMs) => Promise.resolve(),
-      simulateHumanInteraction: async (page) => {
-        try {
-          await page.mouse.move(
-            Math.random() * 500 + 100,
-            Math.random() * 500 + 100,
-            {
-              steps: 5,
-              duration: 500 + Math.random() * 1e3
-            }
-          );
-          await page.evaluate(async (sel) => {
-            const el = document.querySelector(sel);
-            if (el) {
-              el.scrollIntoView({
-                behavior: "smooth",
-                block: "center"
-              });
-            }
-          }, selector);
-          await page.click(selector);
-          await page.waitForTimeout(Math.random() * 2e3 + 1e3);
-        } catch {
-        }
-      },
-      handleYouTubeConsent: async () => {
-      },
-      clearSessionData: async () => {
-      },
-      setVideoQuality: async () => {
-      }
+      randomDelay: () => Promise.resolve()
     };
     if (tab.loopTimer) {
+      clearTimeout(tab.loopTimer);
       clearInterval(tab.loopTimer);
       tab.loopTimer = void 0;
     }
-    tab.loopVideoState = {
-      ...tab.loopVideoState,
-      stopRequested: true,
-      isRunning: false
-    };
+    tab.loopVideoState = { ...tab.loopVideoState, stopRequested: true, isRunning: false };
     ctx.emitEvent("log", "Stopped video loop");
-    ctx.emitEvent("result", { taskId: task.id, stopped: true, loopsCompleted: tab.loopVideoState?.loopCount || 0 });
+    ctx.emitEvent("result", {
+      taskId: task.id,
+      stopped: true,
+      loopsCompleted: tab.loopVideoState?.loopCount || 0
+    });
     return { stopped: true, loopsCompleted: tab.loopVideoState?.loopCount || 0 };
   }
 };
@@ -27515,17 +25814,17 @@ var traceManager = new TraceManagerImpl({
 });
 
 // src/main/automation/profileStore.ts
-var fs5 = __toESM(require("fs"));
-var path10 = __toESM(require("path"));
+var fs6 = __toESM(require("fs"));
+var path11 = __toESM(require("path"));
 
 // src/main/security/secureKeyStore.ts
 var import_electron4 = require("electron");
-var fs2 = __toESM(require("fs"));
-var path4 = __toESM(require("path"));
+var fs3 = __toESM(require("fs"));
+var path5 = __toESM(require("path"));
 var import_crypto2 = require("crypto");
 var KEY_FILE_NAME = "profile-store.key";
 function keyFilePath() {
-  return path4.join(import_electron4.app.getPath("userData"), KEY_FILE_NAME);
+  return path5.join(import_electron4.app.getPath("userData"), KEY_FILE_NAME);
 }
 function getOrCreateEncryptionKey() {
   if (!import_electron4.safeStorage.isEncryptionAvailable()) {
@@ -27536,8 +25835,8 @@ function getOrCreateEncryptionKey() {
   }
   const filePath = keyFilePath();
   try {
-    if (fs2.existsSync(filePath)) {
-      const encrypted = fs2.readFileSync(filePath);
+    if (fs3.existsSync(filePath)) {
+      const encrypted = fs3.readFileSync(filePath);
       const decrypted = import_electron4.safeStorage.decryptString(encrypted);
       return Buffer.from(decrypted, "base64");
     }
@@ -27547,8 +25846,8 @@ function getOrCreateEncryptionKey() {
   const key = (0, import_crypto2.randomBytes)(32);
   try {
     const encrypted = import_electron4.safeStorage.encryptString(key.toString("base64"));
-    fs2.mkdirSync(path4.dirname(filePath), { recursive: true });
-    fs2.writeFileSync(filePath, encrypted);
+    fs3.mkdirSync(path5.dirname(filePath), { recursive: true });
+    fs3.writeFileSync(filePath, encrypted);
   } catch (error) {
     logger_default.error("Failed to persist encrypted profile store key \u2014 encryption will not survive a restart.", error);
   }
@@ -27563,8 +25862,8 @@ var PlaintextProfileStore = class {
   filePath;
   async load() {
     try {
-      if (!fs5.existsSync(this.filePath)) return [];
-      const content = await fs5.promises.readFile(this.filePath, "utf8");
+      if (!fs6.existsSync(this.filePath)) return [];
+      const content = await fs6.promises.readFile(this.filePath, "utf8");
       const parsed = JSON.parse(content);
       return Array.isArray(parsed) ? parsed : [];
     } catch (error) {
@@ -27573,7 +25872,7 @@ var PlaintextProfileStore = class {
     }
   }
   async save(profiles) {
-    await fs5.promises.writeFile(this.filePath, JSON.stringify(profiles, null, 2), "utf8");
+    await fs6.promises.writeFile(this.filePath, JSON.stringify(profiles, null, 2), "utf8");
   }
 };
 var EncryptedProfileStore = class {
@@ -27620,14 +25919,14 @@ async function createProfileStore(options) {
   const encryptedStore = new EncryptedProfileStore(key);
   try {
     const alreadyEncrypted = await encryptedStore.load();
-    if (alreadyEncrypted.length === 0 && fs5.existsSync(options.plaintextFilePath)) {
+    if (alreadyEncrypted.length === 0 && fs6.existsSync(options.plaintextFilePath)) {
       const legacyProfiles = await plaintextStore.load();
       if (legacyProfiles.length > 0) {
         await encryptedStore.save(legacyProfiles);
         const migratedPath = `${options.plaintextFilePath}.migrated`;
-        await fs5.promises.rename(options.plaintextFilePath, migratedPath);
+        await fs6.promises.rename(options.plaintextFilePath, migratedPath);
         logger_default.info(
-          `Migrated ${legacyProfiles.length} profile(s) from plaintext ${path10.basename(options.plaintextFilePath)} into encrypted storage. The old file was renamed to ${path10.basename(migratedPath)}.`
+          `Migrated ${legacyProfiles.length} profile(s) from plaintext ${path11.basename(options.plaintextFilePath)} into encrypted storage. The old file was renamed to ${path11.basename(migratedPath)}.`
         );
       }
     }
@@ -27640,7 +25939,24 @@ async function createProfileStore(options) {
 
 // src/main/automation/BrowserController.ts
 var import_node_crypto3 = require("node:crypto");
-var path11 = __toESM(require("path"));
+var path12 = __toESM(require("path"));
+
+// src/main/automation/antidetection/delays.ts
+function poissonSample(lambda) {
+  if (!Number.isFinite(lambda) || lambda <= 0) return 0;
+  const L = Math.exp(-lambda);
+  let k = 0;
+  let p = 1;
+  while (p > L && k < 1e4) {
+    k += 1;
+    p *= Math.random();
+  }
+  return k;
+}
+function poissonDelayMs(meanMs, minMs, maxMs) {
+  const sample = poissonSample(meanMs);
+  return Math.max(minMs, Math.min(maxMs, sample));
+}
 
 // src/main/automation/inputSimulation.ts
 var InputSimulation = class {
@@ -27664,7 +25980,7 @@ var getAppPath3 = () => {
     if (import_electron6.app.isPackaged) {
       const exePath = import_electron6.app.getPath("exe");
       if (exePath) {
-        return path11.dirname(exePath);
+        return path12.dirname(exePath);
       }
       return import_electron6.app.getAppPath();
     }
@@ -27678,7 +25994,7 @@ var getAppPath3 = () => {
     return process.cwd();
   } catch (e) {
     try {
-      return path11.resolve(".");
+      return path12.resolve(".");
     } catch {
       return require("os").tmpdir();
     }
@@ -27692,7 +26008,7 @@ var BrowserController = class extends import_node_events3.EventEmitter {
   browser = null;
   startedAt = Date.now();
   browserReadyAt = null;
-  profileStorePath = path11.join(getAppPath3(), "profiles.json");
+  profileStorePath = path12.join(getAppPath3(), "profiles.json");
   profileStore = null;
   profiles = [];
   profileSchedulerTimer = null;
@@ -28296,10 +26612,10 @@ var getAppPath4 = () => {
       if (appPath) {
         return appPath;
       }
-    } catch (e) {
+    } catch {
     }
     return process.cwd();
-  } catch (e) {
+  } catch {
     try {
       return import_node_path8.default.resolve(".");
     } catch {
@@ -28322,7 +26638,6 @@ async function createWindow() {
     },
     titleBarStyle: "hiddenInset",
     show: true
-    // Show immediately for debugging
   });
   logger_default.info("BrowserWindow created");
   mainWindow.once("ready-to-show", () => {
@@ -28331,16 +26646,16 @@ async function createWindow() {
     mainWindow?.focus();
     logger_default.info("Window was shown");
   });
-  mainWindow.webContents.on("did-fail-load", (event, errorCode, errorDescription, validatedURL, isMainFrame) => {
+  mainWindow.webContents.on("did-fail-load", (_event, errorCode, errorDescription, validatedURL) => {
     logger_default.error("Failed to load URL:", validatedURL, errorCode, errorDescription);
   });
-  mainWindow.webContents.on("did-frame-finish-load", (event, isMainFrame) => {
+  mainWindow.webContents.on("did-frame-finish-load", (_event, isMainFrame) => {
     if (isMainFrame) {
       logger_default.info("Main frame finished loading");
     }
   });
-  mainWindow.webContents.on("crashed", (event) => {
-    logger_default.error("Renderer process crashed");
+  mainWindow.webContents.on("render-process-gone", (_event, details) => {
+    logger_default.error(`Renderer process gone: ${details.reason} (exitCode ${details.exitCode})`);
   });
   mainWindow.webContents.on("unresponsive", () => {
     logger_default.warn("Renderer process became unresponsive");

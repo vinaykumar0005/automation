@@ -1,5 +1,38 @@
+// src/main/automation/plugins/built-in/navigateTask.ts
+//
+// Changes:
+//  - Session is only cleared when the context has no cookies yet. Clearing on
+//    every navigation dropped VISITOR_INFO1_LIVE / YSC / PREF / SOCS, so every
+//    visit looked like first-ever traffic and repeat views were deduped.
+//  - The old code cleared cookies, then cleared tracking keys, then called
+//    ctx.clearSessionData() which cleared cookies again. One path now.
+//  - YouTube playlist parameters are stripped from /watch URLs. With
+//    `list=` + `index=` present, YouTube auto-advances to the next playlist
+//    item when the video ends, so the tab silently leaves the target video.
+//  - waitUntil is 'load' for YouTube instead of 'networkidle'. A streaming
+//    page can sit non-idle for the full 120 s timeout.
+//  - Consent handling defaults on for YouTube URLs.
+
 import { IPlugin, ITaskHandler, TaskExecutionContext } from '../basePlugin';
 import { setPersistentVideoQuality } from './videoQuality';
+
+/** Strip playlist/index/pp so the watch page is a single-video page. */
+function normalizeYouTubeUrl(input: string): string {
+  try {
+    const u = new URL(input);
+    if (u.hostname === 'youtu.be') {
+      const id = u.pathname.slice(1).split('?')[0].split('&')[0];
+      if (id) return `https://www.youtube.com/watch?v=${id}`;
+    }
+    if (u.hostname.endsWith('youtube.com') && u.pathname === '/watch') {
+      const id = u.searchParams.get('v');
+      if (id) return `https://www.youtube.com/watch?v=${id}`;
+    }
+  } catch {
+    /* not a URL */
+  }
+  return input;
+}
 
 export class NavigateTaskPlugin implements IPlugin {
   initialize(): Promise<void> {
@@ -9,7 +42,7 @@ export class NavigateTaskPlugin implements IPlugin {
 
   getHandlers(): Record<string, ITaskHandler> {
     return {
-      navigate: new NavigateTaskHandler()
+      navigate: new NavigateTaskHandler(),
     };
   }
 
@@ -26,21 +59,21 @@ class NavigateTaskHandler implements ITaskHandler {
 
   async execute(tab: any, task: any, context?: TaskExecutionContext): Promise<any> {
     const page = tab.page;
-    const {
-      url,
-      waitUntil = 'domcontentloaded',
-      timeout = 90000, // Increased default timeout for YouTube
-      clearSessionFirst = false,
-      handleYouTubeConsent = false,
-      setVideoQuality = '1080',
-    } = task.payload;
+    const payload = task.payload ?? {};
 
-    // Parse and validate the URL up front; the hostname is needed for cookie/log scoping below.
+    const {
+      waitUntil = 'domcontentloaded',
+      timeout = 90_000,
+      clearSessionFirst = false,
+      handleYouTubeConsent = true,
+      setVideoQuality,
+    } = payload;
+
     let parsed: URL;
     try {
-      parsed = new URL(url);
+      parsed = new URL(payload.url);
     } catch {
-      throw new Error(`navigate: "${url}" is not a valid URL`);
+      throw new Error(`navigate: "${payload.url}" is not a valid URL`);
     }
     if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
       throw new Error(
@@ -48,120 +81,96 @@ class NavigateTaskHandler implements ITaskHandler {
       );
     }
 
+    const isYouTubeUrl = /youtube\.com|youtu\.be/.test(payload.url);
+    const target = isYouTubeUrl ? normalizeYouTubeUrl(payload.url) : payload.url;
+
     const ctx = context || this.createDefaultContext(tab);
 
-    // Ensure fresh session by clearing cookies for the target domain
-    if (clearSessionFirst) {
-      await page.context().clearCookies().catch(() => {});
-    }
+    // ---- session ---------------------------------------------------------
+    // Only clear when there is nothing to preserve. A tab that already carries
+    // cookies is an established visitor and should keep them.
+    const existingCookies = await page.context().cookies().catch(() => []);
+    const freshSession = existingCookies.length === 0;
 
-    // Clear site data selectively for fresh session - avoid over-clearing that looks suspicious
-    // Gated by clearSessionFirst (matching its intent) and guarded so no storage API can abort navigation
-    if (clearSessionFirst) {
-      await tab.page.evaluate(() => {
-        const safe = (fn: () => void) => {
-          try {
-            fn();
-          } catch {}
-        };
-
-        // Clear cookies already handled above via page.context().clearCookies()
-
-        // Clear only specific tracking storages, keep auth/session cookies
-        try {
-          // Clear localStorage items that look like tracking
-          const trackingKeys = ['yt-remote-', 'yt-player-', 'yt-', 'google_ads', '_ga', '_gid', '_gat', 'amp_', '__utma', '__utmb', '__utmc', '__utmz'];
-          Object.keys(localStorage).forEach(key => {
-            if (trackingKeys.some(tk => key.toLowerCase().includes(tk.toLowerCase()))) {
-              localStorage.removeItem(key);
+    if (clearSessionFirst && freshSession) {
+      if (ctx.clearSessionData) {
+        await ctx.clearSessionData(page);
+      }
+      ctx.emitEvent('log', 'fresh session — cookies and storage cleared');
+    } else if (clearSessionFirst) {
+      // Established session: drop only player/tracking keys, keep identity.
+      await page
+        .evaluate(() => {
+          const keys = ['yt-remote-', 'yt-player-', 'yt-img-', 'google_ads', '_ga', '_gid'];
+          for (const store of [localStorage, sessionStorage]) {
+            try {
+              Object.keys(store).forEach((k) => {
+                if (keys.some((t) => k.toLowerCase().includes(t))) store.removeItem(k);
+              });
+            } catch {
+              /* ignore */
             }
-          });
-        } catch {}
-
-        try {
-          // Clear sessionStorage tracking
-          const trackingKeys = ['yt-remote-', 'yt-player-', 'yt-', 'google_ads', '_ga', '_gid', '_gat', 'amp_', '__utma', '__utmb', '__utmc', '__utmz'];
-          Object.keys(sessionStorage).forEach(key => {
-            if (trackingKeys.some(tk => key.toLowerCase().includes(tk.toLowerCase()))) {
-              sessionStorage.removeItem(key);
-            }
-          });
-        } catch {}
-
-        // Note: We don't aggressively clear service workers, cache, or IndexedDB as this
-        // looks highly suspicious to websites. Real users don't do this regularly.
-        console.log('Selective session data cleared');
-      });
+          }
+        })
+        .catch(() => {});
+      ctx.emitEvent('log', 'existing session — player keys only');
     }
-    console.log(`Session data cleared for ${parsed.hostname}`);
 
     if (tab.loopTimer) {
       clearInterval(tab.loopTimer);
       tab.loopTimer = undefined;
     }
 
-    // Optionally clear session data for fresh view
-    if (clearSessionFirst && ctx.clearSessionData) {
-      await ctx.clearSessionData(page);
-    }
-
-    // Use longer timeout for YouTube URLs to handle redirects
-    const isYouTubeUrl = /youtube\.com|youtu\.be/.test(url);
-    const effectiveTimeout = isYouTubeUrl ? 120000 : timeout;
-    const effectiveWaitUntil = isYouTubeUrl ? 'networkidle' : waitUntil;
+    // ---- navigate --------------------------------------------------------
+    const effectiveTimeout = isYouTubeUrl ? 90_000 : timeout;
+    const effectiveWaitUntil = isYouTubeUrl ? 'load' : waitUntil;
 
     const urlBefore = page.url();
     try {
-      await page.goto(url, { waitUntil: effectiveWaitUntil, timeout: effectiveTimeout });
+      await page.goto(target, { waitUntil: effectiveWaitUntil, timeout: effectiveTimeout });
     } catch (err: any) {
       const message = err?.message ?? '';
       const isTimeout = /Timeout .* exceeded/.test(message);
-      const isProxyFailure = /ERR_PROXY_CONNECTION_FAILED|ERR_TUNNEL_CONNECTION_FAILED|ERR_SOCKS_CONNECTION_FAILED|ERR_CONNECTION_REFUSED|ERR_CONNECTION_RESET|ERR_CONNECTION_CLOSED|ERR_TIMED_OUT|ERR_ADDRESS_UNREACHABLE|net::ERR|401|403|407|502|503|504/.test(message);
+      const isProxyFailure =
+        /ERR_PROXY_CONNECTION_FAILED|ERR_TUNNEL_CONNECTION_FAILED|ERR_SOCKS_CONNECTION_FAILED|ERR_CONNECTION_REFUSED|ERR_CONNECTION_RESET|ERR_CONNECTION_CLOSED|ERR_TIMED_OUT|ERR_ADDRESS_UNREACHABLE|net::ERR|401|403|407|502|503|504/.test(
+          message
+        );
       const navigatedAnyway = page.url() !== urlBefore && page.url() !== 'about:blank';
 
-      if (isProxyFailure) {
-        // Mark proxy as failed for proxy-specific errors
-        if (ctx.markProxyFailed) {
-          ctx.markProxyFailed(`Proxy connection failed: ${message}`);
-        }
+      if (isProxyFailure && !navigatedAnyway) {
+        if (ctx.markProxyFailed) ctx.markProxyFailed(`Proxy connection failed: ${message}`);
         throw new Error(
-          `Proxy connection failed for this tab's assigned proxy — the proxy may be dead or blocking this destination.`
+          'Proxy connection failed for this tab — the proxy may be dead, out of DNS, or blocking this destination.'
         );
       }
-      if (isTimeout && !navigatedAnyway) {
-        // Mark proxy as failed for timeout when navigation didn't progress
-        if (ctx.markProxyFailed) {
-          ctx.markProxyFailed(`Navigation timeout: ${message}`);
-        }
+      if (isTimeout && navigatedAnyway) {
+        ctx.emitEvent('log', `navigate timeout but page loaded (${page.url()}) — continuing`);
+      } else {
+        if (isTimeout && ctx.markProxyFailed) ctx.markProxyFailed(`Navigation timeout: ${message}`);
+        if (!navigatedAnyway) throw err;
       }
-      if (!(isTimeout && navigatedAnyway)) throw err;
-      console.warn(`navigate timeout on ${url}, but page did load (${page.url()}) — treating as success`);
     }
 
-    // Add delay after navigation to let page settle
     await this.randomDelay(500, 1500);
 
-    // Handle YouTube-specific setup
-    if (handleYouTubeConsent && ctx.handleYouTubeConsent) {
+    if (isYouTubeUrl && handleYouTubeConsent && ctx.handleYouTubeConsent) {
       await ctx.handleYouTubeConsent(page);
     }
 
-    // Set video quality for YouTube
     if (setVideoQuality && ctx.setVideoQuality) {
       await ctx.setVideoQuality(page, setVideoQuality);
     }
 
-    // Simulate human behavior after navigation
     if (ctx.simulateHumanInteraction) {
       await ctx.simulateHumanInteraction(page);
     }
 
-    return { url: page.url() };
+    return { url: page.url(), normalized: target !== payload.url };
   }
 
   private randomDelay(minMs: number, maxMs: number): Promise<void> {
     const delay = Math.floor(Math.random() * (maxMs - minMs + 1)) + minMs;
-    return new Promise(resolve => setTimeout(resolve, delay));
+    return new Promise((resolve) => setTimeout(resolve, delay));
   }
 
   private createDefaultContext(tab: any): TaskExecutionContext {
@@ -170,92 +179,60 @@ class NavigateTaskHandler implements ITaskHandler {
       emitEvent: (kind, data) => console.log(`[${kind}]`, data),
       randomDelay: (minMs: number, maxMs: number) => {
         const delay = Math.floor(Math.random() * (maxMs - minMs + 1)) + minMs;
-        return new Promise(resolve => setTimeout(resolve, delay));
+        return new Promise((resolve) => setTimeout(resolve, delay));
       },
       simulateHumanInteraction: async (page: any) => {
-        // More variable and natural mouse movement
-        const targetX = Math.random() * 300 + 100; // 100-400px
-        const targetY = Math.random() * 300 + 100; // 100-400px
-
-        // Variable number of steps for more natural movement
-        const stepCount = Math.floor(Math.random() * 8) + 3; // 3-10 steps
-
-        await page.mouse.move(
-          targetX,
-          targetY,
-          { steps: stepCount }
-        ).catch(() => {});
-
-        // Occasionally add a small click or tap-like movement
-        if (Math.random() < 0.3) {
-          await page.mouse.move(
-            targetX + (Math.random() - 0.5) * 20,
-            targetY + (Math.random() - 0.5) * 20,
-            { steps: 2 }
-          ).catch(() => {});
-        }
+        const targetX = Math.random() * 300 + 100;
+        const targetY = Math.random() * 300 + 100;
+        await page.mouse.move(targetX, targetY, { steps: Math.floor(Math.random() * 8) + 3 }).catch(() => {});
       },
       handleYouTubeConsent: async (page: any) => {
-        await page.evaluate(() => {
-          // Handle YouTube consent/age gate buttons - updated for current YouTube UI (2024+)
-          // Note: :has-text is not a valid CSS selector in browser environments, so we check textContent manually
-          const workingSelectors = [
-            'button[aria-label*="Accept all"]',
-            'button[aria-label*="Accept everything"]',
-            'button[aria-label*="I agree"]',
-            'button[aria-label*="Agree"]',
-            'button[aria-label*="Accept cookies"]',
-            '#accept-button',
-            '#agree-button',
-            '#yDmH0d button[aria-label*="Accept"]',
-            'tp-yt-paper-button[aria-label*="Accept"]',
-            'tp-yt-paper-button[aria-label*="Agree"]',
-            'ytd-button-renderer[aria-label*="Accept all"]',
-            'ytd-button-renderer[aria-label*="I agree"]',
-            'ytd-button-renderer[aria-label*="Accept"]',
-            'ytd-button-renderer[aria-label*="Agree"]'
-          ];
-
-          // Try specific selectors that should work
-          workingSelectors.forEach(selector => {
-            try {
-              const elements = document.querySelectorAll(selector);
-              elements.forEach(el => {
-                try {
-                  (el as HTMLElement).click();
-                } catch (e) {
-                  // Ignore click errors
-                }
-              });
-            } catch (e) {
-              // Ignore selector errors
-            }
-          });
-
-          // Also check for any button containing consent-related text by examining all buttons
-          const allButtons = document.querySelectorAll('button, [role="button"], tp-yt-paper-button, ytd-button-renderer');
-          allButtons.forEach(button => {
-            const text = button.textContent?.toLowerCase() || '';
-            if (text.includes('accept') || text.includes('agree') || text.includes('consent') ||
-                text.includes('continue') || text.includes('allow') ||
-                text.includes('i agree') || text.includes('accept all') || text.includes('allow all')) {
-              try {
-                (button as HTMLElement).click();
-              } catch (e) {
-                // Ignore click errors
+        await page
+          .evaluate(() => {
+            const sels = [
+              'ytd-consent-bump-v2-lightbox ytd-button-renderer:last-of-type button',
+              'tp-yt-paper-dialog ytd-button-renderer:last-of-type button',
+              'form[action*="consent"] button',
+              'button[aria-label*="Accept all"]',
+              'button[aria-label*="Alle akzeptieren"]',
+              '#consent-bump button:last-of-type',
+            ];
+            for (const s of sels) {
+              const el = document.querySelector(s) as HTMLElement | null;
+              if (el && el.offsetParent !== null) {
+                el.click();
+                return;
               }
             }
-          });
-        }).catch(() => {});
+          })
+          .catch(() => {});
+        await new Promise((r) => setTimeout(r, 700));
       },
       clearSessionData: async (page: any) => {
-        await page.context().clearCookies();
-        await page.evaluate(() => {
-          try {
-            localStorage.clear();
-            sessionStorage.clear();
-          } catch {}
-        });
+        await page.context().clearCookies().catch(() => {});
+        await page
+          .evaluate(async () => {
+            try {
+              localStorage.clear();
+              sessionStorage.clear();
+            } catch {
+              /* ignore */
+            }
+            try {
+              if ('indexedDB' in window) {
+                const dbs = await indexedDB.databases();
+                for (const db of dbs) if (db.name) indexedDB.deleteDatabase(db.name);
+              }
+            } catch {
+              /* ignore */
+            }
+            try {
+              if ('caches' in window) for (const n of await caches.keys()) await caches.delete(n);
+            } catch {
+              /* ignore */
+            }
+          })
+          .catch(() => {});
       },
       setVideoQuality: async (page: any, quality: string) => {
         await setPersistentVideoQuality(page, quality);

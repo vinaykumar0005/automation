@@ -435,3 +435,82 @@ Error: ERR_FILE_NOT_FOUND (-6) loading 'file:///F:/automation/modified-automatio
 2026-10-31T17:59:14.556Z [info] Loaded dev server URL:
 2026-10-31T18:00:00.565Z [info] Window is ready to show
 2026-10-31T18:00:00.585Z [info] Window was shown
+2026-11-02T18:09:07.451Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-11-02T18:09:07.678Z [info] PluginManager initialized with 1 plugins
+2026-11-02T18:09:23.128Z [info] Loaded 3 proxies from proxies.txt (validating in background)
+2026-11-02T18:09:23.129Z [info] Creating BrowserWindow
+2026-11-02T18:09:24.040Z [info] BrowserWindow created
+2026-11-02T18:09:24.354Z [info] Loading URL or file
+2026-11-02T18:09:33.455Z [info] Window is ready to show
+2026-11-02T18:09:33.480Z [info] Window was shown
+2026-11-02T18:09:33.481Z [info] Main frame finished loading
+2026-11-02T18:09:33.481Z [info] Loaded dev server URL:
+2026-11-02T18:13:24.681Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-11-02T18:13:25.215Z [info] PluginManager initialized with 1 plugins
+2026-11-05T16:16:37.732Z [info] Loaded 3 proxies from proxies.txt (validating in background)
+2026-11-05T16:16:37.732Z [info] Creating BrowserWindow
+2026-11-05T16:16:51.761Z [info] BrowserWindow created
+2026-11-05T16:16:56.444Z [info] Loading URL or file
+2026-11-05T16:17:19.201Z [info] Main frame finished loading
+2026-11-05T16:17:19.202Z [info] Loaded dev server URL:
+2026-11-05T16:17:57.701Z [info] Window is ready to show
+2026-11-05T16:17:57.703Z [info] Window was shown
+2026-11-05T16:35:59.937Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-11-05T16:36:01.857Z [info] PluginManager initialized with 1 plugins
+2026-11-05T16:36:18.420Z [info] Loaded 3 proxies from proxies.txt (validating in background)
+2026-11-05T16:36:18.421Z [info] Creating BrowserWindow
+2026-11-05T16:36:23.783Z [info] BrowserWindow created
+2026-11-05T16:36:24.747Z [info] Loading URL or file
+2026-11-05T16:36:50.708Z [info] Renderer process became responsive again
+2026-11-05T16:36:54.194Z [info] Window is ready to show
+2026-11-05T16:36:54.268Z [info] Window was shown
+2026-11-05T16:36:54.269Z [info] Main frame finished loading
+2026-11-05T16:36:54.270Z [info] Loaded dev server URL:
+2026-11-05T17:48:46.212Z [info] Browser launched via patchright+channel:chrome
+2026-11-05T17:48:47.339Z [info] Codecs h264="probably" aac="probably" vp9="probably" av1="probably" widevine=false
+2026-11-05T17:48:47.454Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-11-05T17:48:47.513Z [info] PluginManager initialized with 1 plugins
+2026-11-05T17:49:03.006Z [info] Loaded 3 proxies from proxies.txt (validating in background)
+2026-11-05T17:49:03.007Z [info] Creating BrowserWindow
+2026-11-05T17:49:05.384Z [info] BrowserWindow created
+2026-11-05T17:49:06.178Z [info] Loading URL or file
+2026-11-05T17:49:20.354Z [info] Window is ready to show
+2026-11-05T17:49:20.378Z [info] Window was shown
+2026-11-05T17:49:20.386Z [info] Main frame finished loading
+2026-11-05T17:49:20.387Z [info] Loaded dev server URL:
+2026-11-05T17:56:07.343Z [info] Browser launched via patchright+channel:chrome
+2026-11-05T17:56:11.266Z [info] Codecs h264="probably" aac="probably" vp9="probably" av1="probably" widevine=true
+2026-11-05T17:56:11.344Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-11-05T17:56:11.405Z [info] PluginManager initialized with 1 plugins
+2026-11-05T17:56:26.594Z [info] Loaded 3 proxies from proxies.txt (validating in background)
+2026-11-05T17:56:26.594Z [info] Creating BrowserWindow
+2026-11-05T17:56:28.905Z [info] BrowserWindow created
+2026-11-05T17:56:29.974Z [info] Loading URL or file
+2026-11-05T17:56:40.629Z [info] Window is ready to show
+2026-11-05T17:56:40.630Z [info] Window was shown
+2026-11-05T17:56:40.742Z [info] Main frame finished loading
+2026-11-05T17:56:40.743Z [info] Loaded dev server URL:
+2026-11-14T17:21:49.790Z [info] Browser launched via patchright+channel:chrome
+2026-11-14T17:21:56.432Z [info] Codecs h264="probably" aac="probably" vp9="probably" av1="probably" widevine=true
+2026-11-14T17:21:56.861Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-11-14T17:21:57.255Z [info] PluginManager initialized with 1 plugins
+2026-11-14T17:22:12.639Z [info] Loaded 3 proxies from proxies.txt (validating in background)
+2026-11-14T17:22:12.641Z [info] Creating BrowserWindow
+2026-11-14T17:22:14.204Z [info] BrowserWindow created
+2026-11-14T17:22:14.818Z [info] Loading URL or file
+2026-11-14T17:22:29.798Z [info] Window is ready to show
+2026-11-14T17:22:29.800Z [info] Window was shown
+2026-11-14T17:22:30.048Z [info] Main frame finished loading
+2026-11-14T17:22:30.049Z [info] Loaded dev server URL:
+2026-11-14T17:38:36.309Z [info] Browser launched via patchright+channel:chrome
+2026-11-14T17:39:00.335Z [info] Codecs h264="probably" aac="probably" vp9="probably" av1="probably" widevine=true
+2026-11-14T17:39:00.522Z [info] Registered 10 built-in task handlers: navigate, waitForSelector, loopVideo, stopLoopVideo, fillForm, extractText, click, checkIpLeak, watchDuration, screenshot
+2026-11-14T17:39:00.939Z [info] PluginManager initialized with 1 plugins
+2026-11-14T17:39:16.451Z [info] Loaded 3 proxies from proxies.txt (validating in background)
+2026-11-14T17:39:16.452Z [info] Creating BrowserWindow
+2026-11-14T17:39:20.835Z [info] BrowserWindow created
+2026-11-14T17:39:22.054Z [info] Loading URL or file
+2026-11-14T17:39:41.952Z [info] Main frame finished loading
+2026-11-14T17:39:41.953Z [info] Loaded dev server URL:
+2026-11-14T17:43:25.982Z [info] Window is ready to show
+2026-11-14T17:43:26.023Z [info] Window was shown

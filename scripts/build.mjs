@@ -8,7 +8,7 @@ const mainCtx = await esbuild.context({
   platform: 'node',
   target: 'node20',
   outfile: 'build/main/index.js',
-  external: ['electron', 'playwright'],
+  external: ['electron', 'playwright', 'playwright-core', 'patchright', 'patchright-core', 'chromium-bidi', 'chromium-bidi/*'],
   format: 'cjs',
 });
 

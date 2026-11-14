@@ -1,4 +1,10 @@
 // src/main/automation/plugins/built-in/watchDurationTask.ts
+//
+// Fix: `isYouTubeUrl` was declared inside the `if (page.url() !== targetUrl)`
+// block but used further down, outside it. Hoisted to the top of the handler.
+// Also switched the YouTube wait condition from 'networkidle' to 'load' — an
+// actively streaming page can sit non-idle for the whole 90 s timeout.
+
 import { IPlugin, ITaskHandler, TaskExecutionContext } from '../basePlugin';
 import { setPersistentVideoQuality } from './videoQuality';
 
@@ -59,16 +65,17 @@ class WatchDurationTaskHandler implements ITaskHandler {
     const duration = Math.floor(watchMin + Math.random() * (watchMax - watchMin));
     const targetUrl = url?.trim() || page.url();
 
+    // Hoisted: also used after the navigation block below.
+    const isYouTubeUrl = /youtube\.com|youtu\.be/.test(targetUrl);
+
     // Optionally clear session data for fresh view
     if (clearSessionFirst && ctx.clearSessionData) {
       await ctx.clearSessionData(page);
     }
 
     if (page.url() !== targetUrl) {
-      // Use longer timeout for YouTube URLs to handle redirects
-      const isYouTubeUrl = /youtube\.com|youtu\.be/.test(targetUrl);
-      const effectiveTimeout = isYouTubeUrl ? 90000 : 30_000;
-      const effectiveWaitUntil = isYouTubeUrl ? 'networkidle' : 'domcontentloaded';
+      const effectiveTimeout = isYouTubeUrl ? 90_000 : 30_000;
+      const effectiveWaitUntil = isYouTubeUrl ? 'load' : 'domcontentloaded';
       await page.goto(targetUrl, { waitUntil: effectiveWaitUntil, timeout: effectiveTimeout });
 
       // Handle YouTube consent after navigation
@@ -87,12 +94,19 @@ class WatchDurationTaskHandler implements ITaskHandler {
 
     // Wait for YouTube player API to be ready
     if (isYouTubeUrl) {
-      await page.waitForFunction(() => {
-        const player = document.getElementById('movie_player') as any || document.querySelector('.html5-video-player') as any;
-        return player && typeof player.setPlaybackQuality === 'function';
-      }, { timeout: 15000 }).catch(() => {
-        ctx.emitEvent('log', 'YouTube player API not fully ready, continuing anyway...');
-      });
+      await page
+        .waitForFunction(
+          () => {
+            const player =
+              (document.getElementById('movie_player') as any) ||
+              (document.querySelector('.html5-video-player') as any);
+            return player && typeof player.setPlaybackQuality === 'function';
+          },
+          { timeout: 15_000 }
+        )
+        .catch(() => {
+          ctx.emitEvent('log', 'YouTube player API not fully ready, continuing anyway...');
+        });
     }
 
     // Set video quality for YouTube
@@ -137,70 +151,70 @@ class WatchDurationTaskHandler implements ITaskHandler {
       emitEvent: (kind, data) => console.log(`[${kind}]`, data),
       randomDelay: (minMs: number, maxMs: number) => {
         const delay = Math.floor(Math.random() * (maxMs - minMs + 1)) + minMs;
-        return new Promise(resolve => setTimeout(resolve, delay));
+        return new Promise((resolve) => setTimeout(resolve, delay));
       },
       simulateHumanInteraction: async (page: any) => {
-        await page.mouse.move(
-          Math.random() * 100 + 50,
-          Math.random() * 100 + 50,
-          { steps: 5 }
-        ).catch(() => {});
+        await page.mouse
+          .move(Math.random() * 100 + 50, Math.random() * 100 + 50, { steps: 5 })
+          .catch(() => {});
       },
       handleYouTubeConsent: async (page: any) => {
-        await page.evaluate(() => {
-          // Handle YouTube consent/age gate buttons - updated for current YouTube UI (2024+)
-// Note: :has-text is not a valid CSS selector in browser environments, so we check textContent manually
-          const workingSelectors = [
-            'button[aria-label*="Accept all"]',
-            'button[aria-label*="Accept everything"]',
-            'button[aria-label*="I agree"]',
-            'button[aria-label*="Agree"]',
-            'button[aria-label*="Accept cookies"]',
-            '#accept-button',
-            '#agree-button',
-            '#yDmH0d button[aria-label*="Accept"]',
-            'tp-yt-paper-button[aria-label*="Accept"]',
-            'tp-yt-paper-button[aria-label*="Agree"]',
-            'ytd-button-renderer[aria-label*="Accept all"]',
-            'ytd-button-renderer[aria-label*="I agree"]',
-            'ytd-button-renderer[aria-label*="Accept"]',
-            'ytd-button-renderer[aria-label*="Agree"]'
-          ];
+        await page
+          .evaluate(() => {
+            const workingSelectors = [
+              'button[aria-label*="Accept all"]',
+              'button[aria-label*="Accept everything"]',
+              'button[aria-label*="I agree"]',
+              'button[aria-label*="Agree"]',
+              'button[aria-label*="Accept cookies"]',
+              '#accept-button',
+              '#agree-button',
+              '#yDmH0d button[aria-label*="Accept"]',
+              'tp-yt-paper-button[aria-label*="Accept"]',
+              'tp-yt-paper-button[aria-label*="Agree"]',
+              'ytd-button-renderer[aria-label*="Accept all"]',
+              'ytd-button-renderer[aria-label*="I agree"]',
+              'ytd-button-renderer[aria-label*="Accept"]',
+              'ytd-button-renderer[aria-label*="Agree"]',
+            ];
 
-          // Try specific selectors that should work
-          workingSelectors.forEach(selector => {
-            try {
-              const elements = document.querySelectorAll(selector);
-              elements.forEach(el => {
-                try {
-                  (el as HTMLElement).click();
-                } catch (e) {
-                  // Ignore click errors
-                }
-              });
-            } catch (e) {
-              // Ignore selector errors
-            }
-          });
-
-          // Also check for any button containing consent-related text by examining all buttons
-          const allButtons = document.querySelectorAll('button, [role="button"], tp-yt-paper-button, ytd-button-renderer');
-          allButtons.forEach(button => {
-            const text = button.textContent?.toLowerCase() || '';
-            if (text.includes('accept') || text.includes('agree') || text.includes('consent') ||
-                text.includes('continue') || text.includes('allow') ||
-                text.includes('i agree') || text.includes('accept all') || text.includes('allow all')) {
+            workingSelectors.forEach((s) => {
               try {
-                (button as HTMLElement).click();
-              } catch (e) {
-                // Ignore click errors
+                document.querySelectorAll(s).forEach((el) => {
+                  try {
+                    (el as HTMLElement).click();
+                  } catch {
+                    /* ignore */
+                  }
+                });
+              } catch {
+                /* ignore */
               }
-            }
-          });
-        }).catch(() => {});
+            });
 
-        // Wait a bit for consent to be processed
-        await new Promise(resolve => setTimeout(resolve, 1500));
+            const allButtons = document.querySelectorAll(
+              'button, [role="button"], tp-yt-paper-button, ytd-button-renderer'
+            );
+            allButtons.forEach((button) => {
+              const text = button.textContent?.toLowerCase() || '';
+              if (
+                text.includes('accept') ||
+                text.includes('agree') ||
+                text.includes('consent') ||
+                text.includes('continue') ||
+                text.includes('allow')
+              ) {
+                try {
+                  (button as HTMLElement).click();
+                } catch {
+                  /* ignore */
+                }
+              }
+            });
+          })
+          .catch(() => {});
+
+        await new Promise((resolve) => setTimeout(resolve, 1500));
       },
       clearSessionData: async (page: any) => {
         await page.context().clearCookies();
@@ -208,7 +222,9 @@ class WatchDurationTaskHandler implements ITaskHandler {
           try {
             localStorage.clear();
             sessionStorage.clear();
-          } catch {}
+          } catch {
+            /* ignore */
+          }
         });
       },
       setVideoQuality: async (page: any, quality: string) => {

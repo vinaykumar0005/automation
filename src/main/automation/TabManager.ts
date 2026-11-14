@@ -1,45 +1,34 @@
 // src/main/automation/TabManager.ts
 /// <reference lib="dom" />
-import { Browser, BrowserContext, Page, chromium } from 'playwright';
+//
+// TYPE NOTE: patchright-core bundles its own copy of the playwright-core types,
+// so its Browser/BrowserContext are nominally distinct from playwright's. The
+// browser handle is `any`; everything else uses playwright's types.
+//
+// CHANGE: viewport is now explicit. Playwright rejects `deviceScaleFactor`
+// together with `viewport: null`, which is why every createTab failed with
+// '"deviceScaleFactor" option is not supported with null "viewport"'. The
+// outerWidth === innerWidth tell that null viewport would have avoided is
+// covered by the hardened init script, which reports the fingerprint geometry.
+//
+// CHANGE: the codec/Widevine probe now runs on a real https origin. EME needs a
+// secure context, so on about:blank `requestMediaKeySystemAccess` always failed
+// and widevine reported false even with real Chrome.
+
+import { BrowserContext, Page } from 'playwright';
+// @ts-ignore — patchright is API-identical to playwright at runtime
+import { chromium as stealthChromium } from 'patchright';
 import { EventEmitter } from 'node:events';
 import { randomUUID } from 'node:crypto';
+import * as fs from 'node:fs/promises';
+import * as path from 'node:path';
 import { TabState, TabTask, TabEvent } from './types';
 import { ProxyManager } from './ProxyManager';
 import logger from '../logging/logger';
 import { IPluginManager, TaskExecutionContext } from './plugins/basePlugin';
 import { setPersistentVideoQuality } from './plugins/built-in/videoQuality';
 import { configService } from '../config/configService';
-import {
-  resolveOptions,
-  trustedClick,
-  trustedConsentClick,
-  resetSession,
-  humanDelay,
-  bezierPath,
-  randomInt,
-  applyFontProtection,
-  applyAudioVideoProtection,
-  applyNetworkProtection,
-  applyPlaywrightEvasion,
-  applyEnvironmentalConsistency,
-  applyAdvancedCanvasWebGL,
-  applyHeaderRandomization,
-  applyBehavioralBiometrics,
-  applyAdvancedCanvasFingerprinting,
-  applyWebGPUProtection,
-  applyNetworkTrafficShaping,
-  applyMemoryAnalyticsProtection,
-  applySensorSpoofing,
-  applyPluginEnumerationSpoofing,
-  applyStorageApiProtection,
-  applyCSSMediaQueryProtection,
-  applyFontRenderingVariance,
-  applyContentAwareEngagement,
-  applyAdvancedSessionLifecycle,
-  type ResolvedOptions,
-  type TrustedClickOptions,
-  type ResetSessionOptions,
-} from './antidetection';
+import { applyHardening, readFingerprintReport, type HardenedFingerprint } from './antidetection/hardened';
 
 interface ManagedTab {
   state: TabState;
@@ -47,306 +36,92 @@ interface ManagedTab {
   page: Page;
   closed: boolean;
   loopTimer?: NodeJS.Timeout;
-  /** URL to navigate back to when the video finishes — reloads the tab as a brand-new session instead of just rewinding. */
   loopUrl?: string;
+  loopVideoState?: { isRunning: boolean; loopCount: number; stopRequested?: boolean };
 }
 
-// A comprehensive pool of realistic fingerprints to avoid automation detection
-// Each fingerprint includes realistic combinations of UA, viewport, locale, timezone, etc.
-// IMPORTANT: WebGL vendor/renderer MUST match the actual hardware for the platform
-const FINGERPRINT_POOL: Array<{
-  userAgent: string;
+interface Profile {
+  uaFullVersion: string;
   locale: string;
+  country: string;
   timezoneId: string;
+  timezoneOffsetMinutes: number;
   viewportWidth: number;
   viewportHeight: number;
   deviceScaleFactor: number;
+  platform: string;
+  platformVersion: string;
   isMobile: boolean;
   hasTouch: boolean;
-  platform: string;
-  webglVendor: string;
-  webglRenderer: string;
+  maxTouchPoints: number;
   hardwareConcurrency: number;
   deviceMemory: number;
-  cpuClass?: string;
-  maxTouchPoints?: number;
-}> = [
-  // Windows 10/11 Chrome - 1920x1080 - NVIDIA RTX 3080
-  {
-    userAgent:
-      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
-    locale: 'en-US',
-    timezoneId: 'America/New_York',
-    viewportWidth: 1920,
-    viewportHeight: 1080,
-    deviceScaleFactor: 1,
-    isMobile: false,
-    hasTouch: false,
-    platform: 'Win32',
-    webglVendor: 'Google Inc. (NVIDIA)',
-    webglRenderer: 'ANGLE (NVIDIA, NVIDIA GeForce RTX 3080 Direct3D11 vs_5_0 ps_5_0)',
-    hardwareConcurrency: 16,
-    deviceMemory: 32,
-    cpuClass: 'x86',
-    maxTouchPoints: 0,
-  },
-  // Windows 10/11 Chrome - 1366x768 - AMD Radeon
-  {
-    userAgent:
-      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
-    locale: 'en-GB',
-    timezoneId: 'Europe/London',
-    viewportWidth: 1366,
-    viewportHeight: 768,
-    deviceScaleFactor: 1,
-    isMobile: false,
-    hasTouch: false,
-    platform: 'Win32',
-    webglVendor: 'Google Inc. (AMD)',
-    webglRenderer: 'ANGLE (AMD, AMD Radeon RX 6800 XT Direct3D11 vs_5_0 ps_5_0)',
-    hardwareConcurrency: 8,
-    deviceMemory: 16,
-    cpuClass: 'x86',
-    maxTouchPoints: 0,
-  },
-  // Windows 11 Chrome - 1600x900 - Intel UHD
-  {
-    userAgent:
-      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
-    locale: 'en-CA',
-    timezoneId: 'America/Toronto',
-    viewportWidth: 1600,
-    viewportHeight: 900,
-    deviceScaleFactor: 1,
-    isMobile: false,
-    hasTouch: false,
-    platform: 'Win32',
-    webglVendor: 'Google Inc. (Intel)',
-    webglRenderer: 'ANGLE (Intel, Intel UHD Graphics 770 Direct3D11 vs_5_0 ps_5_0)',
-    hardwareConcurrency: 12,
-    deviceMemory: 16,
-    cpuClass: 'x86',
-    maxTouchPoints: 0,
-  },
-  // macOS Chrome - 1440x900 - M1 Pro
-  {
-    userAgent:
-      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
-    locale: 'en-US',
-    timezoneId: 'America/Los_Angeles',
-    viewportWidth: 1440,
-    viewportHeight: 900,
-    deviceScaleFactor: 2,
-    isMobile: false,
-    hasTouch: false,
-    platform: 'MacIntel',
-    webglVendor: 'Google Inc. (Apple)',
-    webglRenderer: 'ANGLE (Apple, Apple M1 Pro Metal vs_1_2 ps_1_2)',
-    hardwareConcurrency: 10,
-    deviceMemory: 16,
-    cpuClass: undefined,
-    maxTouchPoints: 0,
-  },
-  // macOS Chrome - 1512x982 - M2 (Retina)
-  {
-    userAgent:
-      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
-    locale: 'en-GB',
-    timezoneId: 'Europe/London',
-    viewportWidth: 1512,
-    viewportHeight: 982,
-    deviceScaleFactor: 2,
-    isMobile: false,
-    hasTouch: false,
-    platform: 'MacIntel',
-    webglVendor: 'Google Inc. (Apple)',
-    webglRenderer: 'ANGLE (Apple, Apple M2 Metal vs_1_2 ps_1_2)',
-    hardwareConcurrency: 8,
-    deviceMemory: 16,
-    cpuClass: undefined,
-    maxTouchPoints: 0,
-  },
-  // macOS Chrome - 1280x800 - M3 (MacBook Air)
-  {
-    userAgent:
-      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
-    locale: 'en-AU',
-    timezoneId: 'Australia/Sydney',
-    viewportWidth: 1280,
-    viewportHeight: 800,
-    deviceScaleFactor: 2,
-    isMobile: false,
-    hasTouch: false,
-    platform: 'MacIntel',
-    webglVendor: 'Google Inc. (Apple)',
-    webglRenderer: 'ANGLE (Apple, Apple M3 Metal vs_1_2 ps_1_2)',
-    hardwareConcurrency: 8,
-    deviceMemory: 8,
-    cpuClass: undefined,
-    maxTouchPoints: 0,
-  },
-  // Linux Chrome - 1920x1080 - NVIDIA GTX 1660
-  {
-    userAgent:
-      'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
-    locale: 'en-US',
-    timezoneId: 'America/Chicago',
-    viewportWidth: 1920,
-    viewportHeight: 1080,
-    deviceScaleFactor: 1,
-    isMobile: false,
-    hasTouch: false,
-    platform: 'Linux x86_64',
-    webglVendor: 'Google Inc. (NVIDIA)',
-    webglRenderer: 'ANGLE (NVIDIA, NVIDIA GeForce GTX 1660 OpenGL 4.6)',
-    hardwareConcurrency: 6,
-    deviceMemory: 16,
-    cpuClass: undefined,
-    maxTouchPoints: 0,
-  },
-  // Linux Chrome - 1366x768 - AMD Radeon
-  {
-    userAgent:
-      'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
-    locale: 'de-DE',
-    timezoneId: 'Europe/Berlin',
-    viewportWidth: 1366,
-    viewportHeight: 768,
-    deviceScaleFactor: 1,
-    isMobile: false,
-    hasTouch: false,
-    platform: 'Linux x86_64',
-    webglVendor: 'Google Inc. (AMD)',
-    webglRenderer: 'ANGLE (AMD, AMD Radeon RX 6700 XT OpenGL 4.6)',
-    hardwareConcurrency: 8,
-    deviceMemory: 16,
-    cpuClass: undefined,
-    maxTouchPoints: 0,
-  },
-  // Windows Edge - 1920x1080
-  {
-    userAgent:
-      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0',
-    locale: 'en-US',
-    timezoneId: 'America/New_York',
-    viewportWidth: 1920,
-    viewportHeight: 1080,
-    deviceScaleFactor: 1,
-    isMobile: false,
-    hasTouch: false,
-    platform: 'Win32',
-    webglVendor: 'Google Inc. (NVIDIA)',
-    webglRenderer: 'ANGLE (NVIDIA, NVIDIA GeForce RTX 3070 Direct3D11 vs_5_0 ps_5_0)',
-    hardwareConcurrency: 16,
-    deviceMemory: 32,
-    cpuClass: 'x86',
-    maxTouchPoints: 0,
-  },
-  // Windows Firefox - 1920x1080 (for variety)
-  {
-    userAgent:
-      'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:130.0) Gecko/20100101 Firefox/130.0',
-    locale: 'en-US',
-    timezoneId: 'America/Denver',
-    viewportWidth: 1920,
-    viewportHeight: 1080,
-    deviceScaleFactor: 1,
-    isMobile: false,
-    hasTouch: false,
-    platform: 'Win32',
-    webglVendor: 'Mozilla',
-    webglRenderer: 'NVIDIA Corporation -- NVIDIA GeForce RTX 3080/PCIe/SSE2',
-    hardwareConcurrency: 16,
-    deviceMemory: 32,
-    cpuClass: undefined,
-    maxTouchPoints: 0,
-  },
-  // Windows Chrome - 1536x864 (common laptop)
-  {
-    userAgent:
-      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
-    locale: 'fr-FR',
-    timezoneId: 'Europe/Paris',
-    viewportWidth: 1536,
-    viewportHeight: 864,
-    deviceScaleFactor: 1.25,
-    isMobile: false,
-    hasTouch: false,
-    platform: 'Win32',
-    webglVendor: 'Google Inc. (Intel)',
-    webglRenderer: 'ANGLE (Intel, Intel Iris Xe Graphics Direct3D11 vs_5_0 ps_5_0)',
-    hardwareConcurrency: 12,
-    deviceMemory: 16,
-    cpuClass: 'x86',
-    maxTouchPoints: 0,
-  },
-  // Windows Chrome - 1440x900 (common laptop)
-  {
-    userAgent:
-      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
-    locale: 'es-ES',
-    timezoneId: 'Europe/Madrid',
-    viewportWidth: 1440,
-    viewportHeight: 900,
-    deviceScaleFactor: 1,
-    isMobile: false,
-    hasTouch: false,
-    platform: 'Win32',
-    webglVendor: 'Google Inc. (AMD)',
-    webglRenderer: 'ANGLE (AMD, AMD Radeon 680M Direct3D11 vs_5_0 ps_5_0)',
-    hardwareConcurrency: 8,
-    deviceMemory: 16,
-    cpuClass: 'x86',
-    maxTouchPoints: 0,
-  },
+  webglVendor: string;
+  webglRenderer: string;
+}
+
+const CHROME_CANDIDATES = [
+  'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+  'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+  `${process.env.LOCALAPPDATA ?? ''}\\Google\\Chrome\\Application\\chrome.exe`,
+  '/usr/bin/google-chrome',
+  '/usr/bin/google-chrome-stable',
+  '/opt/google/chrome/chrome',
+  '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
 ];
 
-// Track used fingerprints per session to ensure variety
-const usedFingerprints = new Map<string, number>();
+const UA_VERSION = '141.0.7390.55';
 
-function pickFingerprint(tabId?: string): typeof FINGERPRINT_POOL[0] {
-  // If we have a tabId, try to pick a fingerprint that hasn't been used much
-  if (tabId) {
-    const available = FINGERPRINT_POOL.filter((_, index) => {
-      const count = usedFingerprints.get(`${tabId}-${index}`) || 0;
-      return count < 3; // Max 3 uses per fingerprint per tab
-    });
-
-    if (available.length > 0) {
-      const picked = available[Math.floor(Math.random() * available.length)];
-      const index = FINGERPRINT_POOL.indexOf(picked);
-      const key = `${tabId}-${index}`;
-      usedFingerprints.set(key, (usedFingerprints.get(key) || 0) + 1);
-      return picked;
-    }
+function uaFor(platform: string): string {
+  if (platform === 'MacIntel') {
+    return `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${UA_VERSION} Safari/537.36`;
   }
+  if (platform === 'Linux x86_64') {
+    return `Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${UA_VERSION} Safari/537.36`;
+  }
+  return `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${UA_VERSION} Safari/537.36`;
+}
 
-  // Fallback: random selection
-  const picked = FINGERPRINT_POOL[Math.floor(Math.random() * FINGERPRINT_POOL.length)];
+const PROFILES: Profile[] = [
+  { uaFullVersion: UA_VERSION, locale: 'en-US', country: 'US', timezoneId: 'America/New_York', timezoneOffsetMinutes: 300, viewportWidth: 1920, viewportHeight: 1080, deviceScaleFactor: 1, platform: 'Win32', platformVersion: '15.0.0', isMobile: false, hasTouch: false, maxTouchPoints: 0, hardwareConcurrency: 12, deviceMemory: 16, webglVendor: 'Google Inc. (NVIDIA)', webglRenderer: 'ANGLE (NVIDIA, NVIDIA GeForce RTX 3060 Direct3D11 vs_5_0 ps_5_0)' },
+  { uaFullVersion: UA_VERSION, locale: 'en-US', country: 'US', timezoneId: 'America/Chicago', timezoneOffsetMinutes: 360, viewportWidth: 1536, viewportHeight: 864, deviceScaleFactor: 1.25, platform: 'Win32', platformVersion: '15.0.0', isMobile: false, hasTouch: false, maxTouchPoints: 0, hardwareConcurrency: 8, deviceMemory: 8, webglVendor: 'Google Inc. (Intel)', webglRenderer: 'ANGLE (Intel, Intel Iris Xe Graphics Direct3D11 vs_5_0 ps_5_0)' },
+  { uaFullVersion: UA_VERSION, locale: 'en-US', country: 'US', timezoneId: 'America/Los_Angeles', timezoneOffsetMinutes: 480, viewportWidth: 1440, viewportHeight: 900, deviceScaleFactor: 2, platform: 'MacIntel', platformVersion: '15.0.0', isMobile: false, hasTouch: false, maxTouchPoints: 0, hardwareConcurrency: 10, deviceMemory: 16, webglVendor: 'Google Inc. (Apple)', webglRenderer: 'ANGLE (Apple, Apple M1 Metal vs_1_2 ps_1_2)' },
+  { uaFullVersion: UA_VERSION, locale: 'en-GB', country: 'GB', timezoneId: 'Europe/London', timezoneOffsetMinutes: 0, viewportWidth: 1366, viewportHeight: 768, deviceScaleFactor: 1, platform: 'Win32', platformVersion: '15.0.0', isMobile: false, hasTouch: false, maxTouchPoints: 0, hardwareConcurrency: 8, deviceMemory: 16, webglVendor: 'Google Inc. (AMD)', webglRenderer: 'ANGLE (AMD, AMD Radeon RX 6600 Direct3D11 vs_5_0 ps_5_0)' },
+  { uaFullVersion: UA_VERSION, locale: 'en-GB', country: 'GB', timezoneId: 'Europe/London', timezoneOffsetMinutes: 0, viewportWidth: 1512, viewportHeight: 982, deviceScaleFactor: 2, platform: 'MacIntel', platformVersion: '15.0.0', isMobile: false, hasTouch: false, maxTouchPoints: 0, hardwareConcurrency: 8, deviceMemory: 16, webglVendor: 'Google Inc. (Apple)', webglRenderer: 'ANGLE (Apple, Apple M2 Metal vs_1_2 ps_1_2)' },
+  { uaFullVersion: UA_VERSION, locale: 'de-DE', country: 'DE', timezoneId: 'Europe/Berlin', timezoneOffsetMinutes: -60, viewportWidth: 1920, viewportHeight: 1080, deviceScaleFactor: 1, platform: 'Win32', platformVersion: '15.0.0', isMobile: false, hasTouch: false, maxTouchPoints: 0, hardwareConcurrency: 16, deviceMemory: 16, webglVendor: 'Google Inc. (NVIDIA)', webglRenderer: 'ANGLE (NVIDIA, NVIDIA GeForce GTX 1660 SUPER Direct3D11 vs_5_0 ps_5_0)' },
+  { uaFullVersion: UA_VERSION, locale: 'de-DE', country: 'DE', timezoneId: 'Europe/Berlin', timezoneOffsetMinutes: -60, viewportWidth: 1366, viewportHeight: 768, deviceScaleFactor: 1, platform: 'Linux x86_64', platformVersion: '6.5.0', isMobile: false, hasTouch: false, maxTouchPoints: 0, hardwareConcurrency: 8, deviceMemory: 16, webglVendor: 'Google Inc. (AMD)', webglRenderer: 'ANGLE (AMD, AMD Radeon RX 6700 XT OpenGL 4.6)' },
+  { uaFullVersion: UA_VERSION, locale: 'en-CA', country: 'CA', timezoneId: 'America/Toronto', timezoneOffsetMinutes: 300, viewportWidth: 1600, viewportHeight: 900, deviceScaleFactor: 1, platform: 'Win32', platformVersion: '15.0.0', isMobile: false, hasTouch: false, maxTouchPoints: 0, hardwareConcurrency: 12, deviceMemory: 16, webglVendor: 'Google Inc. (Intel)', webglRenderer: 'ANGLE (Intel, Intel UHD Graphics 770 Direct3D11 vs_5_0 ps_5_0)' },
+  { uaFullVersion: UA_VERSION, locale: 'en-AU', country: 'AU', timezoneId: 'Australia/Sydney', timezoneOffsetMinutes: -600, viewportWidth: 1920, viewportHeight: 1080, deviceScaleFactor: 1, platform: 'Win32', platformVersion: '15.0.0', isMobile: false, hasTouch: false, maxTouchPoints: 0, hardwareConcurrency: 16, deviceMemory: 32, webglVendor: 'Google Inc. (AMD)', webglRenderer: 'ANGLE (AMD, AMD Radeon RX 6800 XT Direct3D11 vs_5_0 ps_5_0)' },
+  { uaFullVersion: UA_VERSION, locale: 'en-IN', country: 'IN', timezoneId: 'Asia/Kolkata', timezoneOffsetMinutes: -330, viewportWidth: 1536, viewportHeight: 864, deviceScaleFactor: 1.25, platform: 'Win32', platformVersion: '15.0.0', isMobile: false, hasTouch: false, maxTouchPoints: 0, hardwareConcurrency: 8, deviceMemory: 8, webglVendor: 'Google Inc. (NVIDIA)', webglRenderer: 'ANGLE (NVIDIA, NVIDIA GeForce GTX 1650 Direct3D11 vs_5_0 ps_5_0)' },
+  { uaFullVersion: UA_VERSION, locale: 'en-IN', country: 'IN', timezoneId: 'Asia/Kolkata', timezoneOffsetMinutes: -330, viewportWidth: 1366, viewportHeight: 768, deviceScaleFactor: 1, platform: 'Linux x86_64', platformVersion: '6.5.0', isMobile: false, hasTouch: false, maxTouchPoints: 0, hardwareConcurrency: 4, deviceMemory: 8, webglVendor: 'Google Inc. (Intel)', webglRenderer: 'ANGLE (Intel, Mesa Intel(R) UHD Graphics 620 OpenGL 4.6)' },
+  { uaFullVersion: UA_VERSION, locale: 'en-US', country: 'US', timezoneId: 'America/Denver', timezoneOffsetMinutes: 420, viewportWidth: 1280, viewportHeight: 720, deviceScaleFactor: 1, platform: 'Win32', platformVersion: '15.0.0', isMobile: false, hasTouch: false, maxTouchPoints: 0, hardwareConcurrency: 8, deviceMemory: 16, webglVendor: 'Google Inc. (AMD)', webglRenderer: 'ANGLE (AMD, AMD Radeon 680M Direct3D11 vs_5_0 ps_5_0)' },
+];
+
+const profileByProxy = new Map<string, Profile>();
+
+function countryFromLabel(label?: string): string | null {
+  if (!label) return null;
+  const m = label.toUpperCase().match(/\b([A-Z]{2})\b/);
+  return m ? m[1] : null;
+}
+
+function pickProfile(proxyLabel?: string): Profile {
+  const key = proxyLabel ?? 'default';
+  const cached = profileByProxy.get(key);
+  if (cached) return cached;
+
+  const country = countryFromLabel(proxyLabel);
+  const matching = country ? PROFILES.filter((p) => p.country === country) : [];
+  const pool = matching.length > 0 ? matching : PROFILES;
+  const picked = pool[Math.floor(Math.random() * pool.length)];
+
+  profileByProxy.set(key, picked);
   return picked;
 }
 
-// Helper to add random delay to mimic human behavior
 function randomDelay(minMs: number, maxMs: number): Promise<void> {
   const delay = Math.floor(Math.random() * (maxMs - minMs + 1)) + minMs;
-  return new Promise(resolve => setTimeout(resolve, delay));
-}
-
-// Generate a unique canvas fingerprint noise
-function generateCanvasNoise(): string {
-  const canvas = document.createElement('canvas');
-  canvas.width = 16;
-  canvas.height = 16;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return '';
-
-  // Draw some noise
-  for (let i = 0; i < 100; i++) {
-    ctx.fillStyle = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, ${Math.random()})`;
-    ctx.fillRect(Math.random() * 16, Math.random() * 16, 1, 1);
-  }
-
-  return canvas.toDataURL();
+  return new Promise((resolve) => setTimeout(resolve, delay));
 }
 
 export interface TabManagerBrowserOptions {
@@ -362,7 +137,7 @@ const DEFAULT_BROWSER_OPTIONS: TabManagerBrowserOptions = {
 };
 
 export class TabManager extends EventEmitter {
-  private browser: Browser | null = null;
+  private browser: any = null;
   private tabs = new Map<string, ManagedTab>();
   private readonly maxTabs: number;
   private readonly proxyManager: ProxyManager;
@@ -370,16 +145,12 @@ export class TabManager extends EventEmitter {
   private readonly browserOptions: TabManagerBrowserOptions;
   private readonly forceIPv4: boolean;
   private readonly stealthMode: boolean;
-  // Resolved antidetection options, captured ONCE at construction so the hot
-  // createTab / dispatchTask paths stay fully synchronous — no per-task import,
-  // no per-task await. Off by default (every flag false), which is why the OFF
-  // runtime path is byte-identical to today: the gated branches simply don't run.
-  private readonly antidetection: ResolvedOptions;
   private isShuttingDown = false;
   private relaunchAttempts = 0;
   private static readonly MAX_RELAUNCH_ATTEMPTS = 5;
   private static readonly RELAUNCH_BACKOFF_BASE_MS = 2000;
   private onBrowserLaunched: (() => void) | null | undefined = null;
+  private launchVia: string | null = null;
 
   constructor(
     maxTabs = 20,
@@ -391,102 +162,150 @@ export class TabManager extends EventEmitter {
     super();
     this.maxTabs = maxTabs;
     this.proxyManager = proxyManager ?? new ProxyManager();
-    this.pluginManager = pluginManager ?? {
-      getHandler: () => undefined,
-      getAvailableTaskTypes: () => []
-    } as IPluginManager;
+    this.pluginManager =
+      pluginManager ?? ({ getHandler: () => undefined, getAvailableTaskTypes: () => [] } as IPluginManager);
     this.browserOptions = { ...DEFAULT_BROWSER_OPTIONS, ...browserOptions };
     this.onBrowserLaunched = onBrowserLaunched;
 
-    // Load anti-detection settings from config
     const browserConfig = configService.getBrowserConfig();
     this.forceIPv4 = browserConfig.forceIPv4 ?? true;
     this.stealthMode = browserConfig.stealthMode ?? true;
-    this.antidetection = resolveOptions(configService.getAntiDetectionConfig());
   }
 
   async init() {
     await this.launchBrowser();
   }
 
-  /** Launches Chromium and wires up crash detection. Reused both for the
-   *  initial launch and for auto-relaunch after an unexpected crash. */
-  private async launchBrowser(): Promise<void> {
-    // Build args dynamically based on config
+  private buildArgs(): string[] {
     const args = [
-      '--disable-blink-features=AutomationControlled',
       '--disable-dev-shm-usage',
       '--autoplay-policy=no-user-gesture-required',
-      // Forces WebRTC to only use the configured proxy's route for any
-      // media/ICE candidate gathering, instead of also gathering the
-      // machine's real local/public IP as a fallback candidate — this is
-      // the single most common way a "proxied" browser still leaks the
-      // real IP to a destination site via getUserMedia/RTCPeerConnection.
+      '--disable-background-timer-throttling',
+      '--disable-backgrounding-occluded-windows',
+      '--disable-renderer-backgrounding',
+      '--disable-ipc-flooding-protection',
       '--force-webrtc-ip-handling-policy=disable_non_proxied_udp',
       '--enforce-webrtc-ip-permission-check',
+      '--disable-features=TranslateUI,BlinkGenPropertyTrial,WebRtcHideLocalIpsWithMdns,AudioServiceOutOfProcess',
+      '--no-first-run',
+      '--no-default-browser-check',
+      '--no-service-autorun',
+      '--password-store=basic',
+      '--use-mock-keychain',
+      '--disable-session-crashed-bubble',
+      '--hide-crash-restore-bubble',
+      '--disable-component-extensions-with-background-pages',
+      '--exclude-switches=enable-automation',
     ];
 
-    // Add IPv6 blocking if enabled
-    if (this.forceIPv4) {
-      args.push('--disable-ipv6');
-      args.push('--disable-features=WebRtcHideLocalIpsWithMdns');
+    if (this.forceIPv4) args.push('--disable-ipv6');
+    if (this.stealthMode) args.push('--disable-infobars', '--disable-field-trial-config');
+
+    return args;
+  }
+
+  private async launchBrowser(): Promise<void> {
+    const args = this.buildArgs();
+
+    const attempts: Array<{ label: string; run: () => Promise<any> }> = [
+      {
+        label: 'patchright+channel:chrome',
+        run: () => stealthChromium.launch({ headless: this.browserOptions.headless, args, channel: 'chrome' }),
+      },
+      ...CHROME_CANDIDATES.filter(Boolean).map((executablePath) => ({
+        label: `patchright+${executablePath}`,
+        run: () => stealthChromium.launch({ headless: this.browserOptions.headless, args, executablePath }),
+      })),
+      {
+        label: 'patchright+bundled',
+        run: () => stealthChromium.launch({ headless: this.browserOptions.headless, args }),
+      },
+    ];
+
+    let lastError: unknown = null;
+    for (const attempt of attempts) {
+      try {
+        this.browser = await attempt.run();
+        this.launchVia = attempt.label;
+        break;
+      } catch (err) {
+        lastError = err;
+      }
     }
 
-    // Add stealth mode flags
-    if (this.stealthMode) {
-      args.push(
-        // Additional anti-detection flags
-        '--disable-blink-features=AutomationControlled',
-        '--disable-infobars',
-        '--disable-background-timer-throttling',
-        '--disable-backgrounding-occluded-windows',
-        '--disable-renderer-backgrounding',
-        '--disable-field-trial-config',
-        '--disable-back-forward-cache',
-        '--disable-ipc-flooding-protection',
-        '--no-first-run',
-        '--no-default-browser-check',
-        '--no-service-autorun',
-        '--password-store=basic',
-        '--use-mock-keychain',
-        // Randomized viewport to avoid detection
-        '--window-size=1920,1080',
-        '--start-maximized',
-        // Hide automation indicators
-        '--exclude-switches=enable-automation',
-        '--disable-extensions-except',
-        '--disable-extensions',
-        // Media/permissions
-        '--disable-features=TranslateUI,BlinkGenPropertyTrial',
-        '--disable-component-extensions-with-background-pages',
-      );
+    if (!this.browser) {
+      throw new Error(`Could not launch any browser: ${(lastError as Error)?.message ?? 'unknown'}`);
     }
 
-    this.browser = await chromium.launch({
-      headless: this.browserOptions.headless,
-      args,
-      // Use consistent executable path
-      executablePath: undefined, // Let Playwright find it
-    });
+    logger.info(`Browser launched via ${this.launchVia}`);
+    await this.assertCodecSupport();
 
     this.browser.on('disconnected', () => this.handleBrowserDisconnected());
+    this.onBrowserLaunched?.();
+  }
 
-    // Notify that the browser has been launched (used by BrowserController to set browserReadyAt)
-    if (this.onBrowserLaunched) {
-      this.onBrowserLaunched();
+  private async assertCodecSupport(): Promise<void> {
+    if (!this.browser) return;
+    let ctx: any = null;
+    try {
+      ctx = await this.browser.newContext();
+      const page = await ctx.newPage();
+
+      // EME needs a secure context; about:blank is not one.
+      await page
+        .goto('https://www.youtube.com/', { waitUntil: 'domcontentloaded', timeout: 25_000 })
+        .catch(() => {});
+
+      const caps = await page.evaluate(async () => {
+        const v = document.createElement('video');
+        let widevine = false;
+        try {
+          await navigator.requestMediaKeySystemAccess('com.widevine.alpha', [
+            { initDataTypes: ['cenc'], videoCapabilities: [{ contentType: 'video/mp4; codecs="avc1.42E01E"' }] },
+          ]);
+          widevine = true;
+        } catch {
+          /* unavailable */
+        }
+        return {
+          secure: window.isSecureContext,
+          h264: v.canPlayType('video/mp4; codecs="avc1.42E01E"'),
+          aac: v.canPlayType('audio/mp4; codecs="mp4a.40.2"'),
+          vp9: v.canPlayType('video/webm; codecs="vp9"'),
+          av1: v.canPlayType('video/mp4; codecs="av01.0.05M.08"'),
+          widevine,
+        };
+      });
+
+      logger.info(
+        `Codecs h264="${caps.h264}" aac="${caps.aac}" vp9="${caps.vp9}" av1="${caps.av1}" widevine=${caps.widevine}`
+      );
+
+      if (!caps.h264 || !caps.aac) {
+        this.emitEvent({
+          tabId: 'system',
+          kind: 'error',
+          data: 'Browser cannot decode H.264/AAC — install Google Chrome. YouTube returns player error 5 without it.',
+          timestamp: Date.now(),
+        });
+      }
+      if (!caps.widevine) {
+        logger.warn('Widevine unavailable — DRM-protected videos will fail. Non-DRM videos are unaffected.');
+      }
+    } catch (err) {
+      logger.warn('Codec probe failed', err);
+    } finally {
+      await ctx?.close().catch(() => {});
     }
   }
 
   private handleBrowserDisconnected(): void {
-    // shutdownAll() closes the browser itself as part of a normal app quit —
-    // that also fires 'disconnected', but it isn't a crash and shouldn't
-    // trigger a relaunch.
     if (this.isShuttingDown) {
       this.browser = null;
       return;
     }
 
-    logger.error('Browser process disconnected/crashed — clearing all tabs');
+    logger.error('Browser disconnected — clearing tabs');
     for (const [id, tab] of this.tabs) {
       if (tab.closed) continue;
       if (tab.loopTimer) clearInterval(tab.loopTimer);
@@ -504,15 +323,12 @@ export class TabManager extends EventEmitter {
 
   private async attemptRelaunch(): Promise<void> {
     if (this.isShuttingDown) return;
-
     if (this.relaunchAttempts >= TabManager.MAX_RELAUNCH_ATTEMPTS) {
-      logger.error(
-        `Browser crashed and failed to relaunch after ${TabManager.MAX_RELAUNCH_ATTEMPTS} attempts — giving up. Restart the app to recover.`
-      );
+      logger.error(`Browser failed to relaunch after ${TabManager.MAX_RELAUNCH_ATTEMPTS} attempts`);
       this.emitEvent({
         tabId: 'system',
         kind: 'error',
-        data: `Browser could not be restarted after ${TabManager.MAX_RELAUNCH_ATTEMPTS} attempts. Please restart the app.`,
+        data: `Browser could not be restarted after ${TabManager.MAX_RELAUNCH_ATTEMPTS} attempts. Restart the app.`,
         timestamp: Date.now(),
       });
       return;
@@ -520,19 +336,15 @@ export class TabManager extends EventEmitter {
 
     this.relaunchAttempts += 1;
     const attempt = this.relaunchAttempts;
-    const delayMs = TabManager.RELAUNCH_BACKOFF_BASE_MS * attempt;
-    logger.warn(`Attempting to relaunch browser (attempt ${attempt}/${TabManager.MAX_RELAUNCH_ATTEMPTS}) in ${delayMs}ms`);
-    await new Promise((resolve) => setTimeout(resolve, delayMs));
-
+    await new Promise((r) => setTimeout(r, TabManager.RELAUNCH_BACKOFF_BASE_MS * attempt));
     if (this.isShuttingDown) return;
 
     try {
       await this.launchBrowser();
-      logger.info('Browser relaunched successfully after crash.');
       this.relaunchAttempts = 0;
       this.emitEvent({ tabId: 'system', kind: 'status', data: 'Browser relaunched after crash', timestamp: Date.now() });
-    } catch (error) {
-      logger.error(`Relaunch attempt ${attempt} failed`, error);
+    } catch (err) {
+      logger.error(`Relaunch ${attempt} failed`, err);
       void this.attemptRelaunch();
     }
   }
@@ -549,15 +361,18 @@ export class TabManager extends EventEmitter {
     return this.proxyManager.getStatus();
   }
 
-  async createTab(label?: string, fingerprintParam?: BrowserContext): Promise<TabState> {
+  private storagePathFor(proxyLabel?: string): string {
+    const key = (proxyLabel ?? 'default').replace(/[^a-z0-9]+/gi, '_');
+    return path.join(process.cwd(), 'profiles', `${key}.json`);
+  }
+
+  async createTab(label?: string, _fp?: BrowserContext): Promise<TabState> {
     if (!this.browser) throw new Error('Browser not initialized');
-    if (this.tabs.size >= this.maxTabs) {
-      throw new Error(`Tab limit reached (${this.maxTabs})`);
-    }
+    if (this.tabs.size >= this.maxTabs) throw new Error(`Tab limit reached (${this.maxTabs})`);
 
     const id = randomUUID();
     const proxy = this.proxyManager.assign(id);
-    const fingerprint = pickFingerprint(id); // Pass tabId for fingerprint rotation
+    const profile = pickProfile(proxy?.label);
 
     const state: TabState = {
       id,
@@ -568,445 +383,76 @@ export class TabManager extends EventEmitter {
     };
     this.emitEvent({ tabId: id, kind: 'status', data: state, timestamp: Date.now() });
 
-    const context = await this.browser.newContext({
-      viewport: {
-        width: fingerprint.viewportWidth,
-        height: fingerprint.viewportHeight
-      },
-      userAgent: fingerprint.userAgent,
-      locale: fingerprint.locale,
-      timezoneId: fingerprint.timezoneId,
-      deviceScaleFactor: fingerprint.deviceScaleFactor,
-      isMobile: fingerprint.isMobile,
-      hasTouch: fingerprint.hasTouch,
+    // Restore the stored session for this proxy so the visitor identity survives
+    // app restarts. First run for a proxy has nothing to restore.
+    const statePath = this.storagePathFor(proxy?.label);
+    let restoredState: any = undefined;
+    try {
+      restoredState = JSON.parse(await fs.readFile(statePath, 'utf8'));
+    } catch {
+      /* first run */
+    }
+
+    // Explicit viewport: deviceScaleFactor is rejected with viewport: null.
+    const context: BrowserContext = await this.browser.newContext({
+      viewport: { width: profile.viewportWidth, height: profile.viewportHeight },
+      screen: { width: profile.viewportWidth, height: profile.viewportHeight },
+      userAgent: uaFor(profile.platform),
+      locale: profile.locale,
+      timezoneId: profile.timezoneId,
+      deviceScaleFactor: profile.deviceScaleFactor,
+      isMobile: profile.isMobile,
+      hasTouch: profile.hasTouch,
       bypassCSP: this.browserOptions.bypassCSP,
       ignoreHTTPSErrors: this.browserOptions.ignoreHTTPSErrors,
-      proxy: proxy
-        ? { server: proxy.server, username: proxy.username, password: proxy.password }
-        : undefined,
-      // Additional context options for better stealth
+      proxy: proxy ? { server: proxy.server, username: proxy.username, password: proxy.password } : undefined,
       colorScheme: 'light',
       reducedMotion: 'no-preference',
       forcedColors: 'none',
-      // Enhanced stealth: pass additional fingerprint properties
-      // Keep ONLY the anti-detection client hints and Accept-Language.
-      //
-      // We deliberately do NOT force Accept, Accept-Encoding, Upgrade-Insecure-Requests,
-      // or any Sec-Fetch-* header here. Those are document-navigation metadata that
-      // Chromium sets per-request to match the actual request type. When they're forced
-      // globally, the network stack rejects every *subresource* request (script/XHR/media)
-      // as ERR_INVALID_ARGUMENT because a `Sec-Fetch-Dest: document` header is invalid on
-      // a script or media fetch. That killed the YouTube player: the main frame loaded but
-      // its JS bundles never did, so no <video> element was ever created. Chromium handles
-      // all of those headers correctly on its own; forcing them buys nothing for stealth and
-      // breaks page loading entirely.
+      storageState: restoredState,
       extraHTTPHeaders: {
-        'Accept-Language': `${fingerprint.locale},${fingerprint.locale.split('-')[0]};q=0.9,en;q=0.8`,
-        'Sec-CH-UA': `"Not A(Brand";v="99", "Google Chrome";v="${fingerprint.userAgent.match(/Chrome\/(\d+)/)?.[1] || '129'}", "Chromium";v="${fingerprint.userAgent.match(/Chrome\/(\d+)/)?.[1] || '129'}"`,
-        'Sec-CH-UA-Mobile': fingerprint.isMobile ? '?1' : '?0',
-        'Sec-CH-UA-Platform': `"${fingerprint.platform.replace('Win32', 'Windows').replace('MacIntel', 'macOS').replace('Linux x86_64', 'Linux')}"`,
+        'Accept-Language': `${profile.locale},${profile.locale.split('-')[0]};q=0.9,en;q=0.8`,
       },
     });
 
-    
-    // Comprehensive anti-detection measures
-    await context.addInitScript((fp) => {
-      // 1. WebRTC leak prevention - force WebRTC through proxy, don't block completely
-      // This prevents IP leaks while allowing WebRTC for video streaming
-      if ('RTCPeerConnection' in globalThis) {
-        const originalRTCPeerConnection = globalThis.RTCPeerConnection;
-        const originalRTCPeerConnectionConstruct = (globalThis as any).RTCPeerConnection;
+    const seed = Math.floor(Math.random() * 0xffffffff);
+    const hardened: HardenedFingerprint = {
+      userAgent: uaFor(profile.platform),
+      uaFullVersion: profile.uaFullVersion,
+      locale: profile.locale,
+      timezoneId: profile.timezoneId,
+      timezoneOffsetMinutes: profile.timezoneOffsetMinutes,
+      viewportWidth: profile.viewportWidth,
+      viewportHeight: profile.viewportHeight,
+      deviceScaleFactor: profile.deviceScaleFactor,
+      platform: profile.platform,
+      platformVersion: profile.platformVersion,
+      isMobile: profile.isMobile,
+      hasTouch: profile.hasTouch,
+      maxTouchPoints: profile.maxTouchPoints,
+      hardwareConcurrency: profile.hardwareConcurrency,
+      deviceMemory: profile.deviceMemory,
+      webglVendor: profile.webglVendor,
+      webglRenderer: profile.webglRenderer,
+      audioSampleRate: 48000,
+      canvasSeed: seed,
+      seed,
+    };
 
-        // Override to ensure WebRTC uses the proxy's IP only
-        (globalThis as any).RTCPeerConnection = function (...args: any[]) {
-          // Force ICE candidate filtering to prevent local IP exposure
-          const pc = new originalRTCPeerConnection(...args);
-          // The --force-webrtc-ip-handling-policy=disable_non_proxied_udp flag
-          // handles this at the browser level, but we add a safety net
-          return pc;
-        };
-        (globalThis as any).RTCPeerConnection.prototype = originalRTCPeerConnection.prototype;
-        (globalThis as any).webkitRTCPeerConnection = (globalThis as any).RTCPeerConnection;
-        (globalThis as any).mozRTCPeerConnection = (globalThis as any).RTCPeerConnection;
-      }
+    await applyHardening(context as unknown as import('patchright').BrowserContext, hardened);
 
-      // 2. Override webdriver property - the most basic anti-detection
-      if ('navigator' in globalThis) {
-        Object.defineProperty(globalThis.navigator, 'webdriver', {
-          get: () => undefined,
-          configurable: true,
-        });
-      }
+    const page: Page = await context.newPage();
 
-      // 2.5. Scrub cdc_* glue objects - remove WebDriver fingerprints
-      // These properties are injected by ChromeDriver and used for detection
-      const cdcProperties = Object.getOwnPropertyNames(globalThis).filter(prop =>
-        prop.startsWith('cdc_') &&
-        prop.endsWith('_ado') ||
-        prop.endsWith('_asdo') ||
-        prop.endsWith('_csdo')
-      );
-      cdcProperties.forEach(prop => {
-        try {
-          delete (globalThis as any)[prop];
-        } catch (e) {
-          // Ignore errors if property is non-configurable
-        }
-      });
-
-      // 3. Override permissions API to avoid automation detection
-      const originalQuery = navigator.permissions?.query;
-      if (originalQuery) {
-        navigator.permissions.query = async (parameters) => {
-          if (parameters.name === 'notifications') {
-            return { state: 'denied', onchange: null } as any;
-          }
-          if (parameters.name === 'geolocation') {
-            return { state: 'denied', onchange: null } as any;
-          }
-          return originalQuery(parameters);
-        };
-      }
-
-      // 4. Fake chrome object to look more realistic
-      (window as any).chrome = {
-        runtime: {},
-        loadTimes: function() {},
-        csi: function() {},
-        app: { isInstalled: false },
-      };
-
-      // 5. Override plugins array to look realistic (Chrome-specific)
-      if (!navigator.userAgent.includes('Firefox')) {
-        Object.defineProperty(navigator, 'plugins', {
-          get: () => [
-            { name: 'Chrome PDF Plugin', filename: 'internal-pdf-viewer', description: 'Portable Document Format' },
-            { name: 'Chrome PDF Viewer', filename: 'mhjfbmdgcfjbbpaeojofohoefgiehjai', description: '' },
-            { name: 'Native Client', filename: 'internal-nacl-plugin', description: '' },
-          ],
-          configurable: true,
-        });
-      }
-
-      // 6. Override languages
-      Object.defineProperty(navigator, 'languages', {
-        get: () => [fp.locale, fp.locale.split('-')[0], 'en'],
-        configurable: true,
-      });
-      // 6.5. Override language (singular) for consistency
-      Object.defineProperty(navigator, 'language', {
-        get: () => fp.locale,
-        configurable: true,
-      });
-
-      // 7. Override platform
-      Object.defineProperty(navigator, 'platform', {
-        get: () => fp.platform,
-        configurable: true,
-      });
-
-      // 8. Override hardwareConcurrency - use realistic value from fingerprint
-      Object.defineProperty(navigator, 'hardwareConcurrency', {
-        get: () => fp.hardwareConcurrency,
-        configurable: true,
-      });
-
-      // 9. Override deviceMemory - use realistic value from fingerprint
-      Object.defineProperty(navigator, 'deviceMemory', {
-        get: () => fp.deviceMemory,
-        configurable: true,
-      });
-
-      // 10. Override cpuClass (IE/Edge legacy) if present
-      if (fp.cpuClass) {
-        Object.defineProperty(navigator, 'cpuClass', {
-          get: () => fp.cpuClass,
-          configurable: true,
-        });
-      }
-
-      // 11. Override maxTouchPoints
-      Object.defineProperty(navigator, 'maxTouchPoints', {
-        get: () => fp.maxTouchPoints ?? (fp.hasTouch ? 5 : 0),
-        configurable: true,
-      });
-
-      // 12. Battery API - return realistic values
-      if ('getBattery' in navigator) {
-        const originalGetBattery = (navigator as any).getBattery.bind(navigator);
-        (navigator as any).getBattery = async () => {
-          const battery = await originalGetBattery();
-          return {
-            ...battery,
-            charging: Math.random() > 0.5,
-            chargingTime: Math.random() > 0.5 ? 0 : Math.random() * 3600,
-            dischargingTime: Math.random() > 0.5 ? Infinity : Math.random() * 3600,
-            level: 0.3 + Math.random() * 0.7,
-          };
-        };
-      }
-
-      // 13. Canvas fingerprinting noise
-      const originalToDataURL = HTMLCanvasElement.prototype.toDataURL;
-      const originalGetImageData = CanvasRenderingContext2D.prototype.getImageData;
-      const noise = `${Math.random()}${Math.random()}${Date.now()}`;
-
-      HTMLCanvasElement.prototype.toDataURL = function(type, encoderOptions) {
-        const ctx = this.getContext('2d');
-        if (ctx && this.width > 16 && this.height > 16) {
-          // Add subtle noise
-          const imageData = ctx.getImageData(0, 0, this.width, this.height);
-          const data = imageData.data;
-          for (let i = 0; i < data.length; i += 4) {
-            // Very subtle noise - 1 in 1000 pixels
-            if (Math.random() < 0.001) {
-              data[i] = Math.min(255, data[i] + Math.floor(Math.random() * 3) - 1);
-              data[i+1] = Math.min(255, data[i+1] + Math.floor(Math.random() * 3) - 1);
-              data[i+2] = Math.min(255, data[i+2] + Math.floor(Math.random() * 3) - 1);
-            }
-          }
-          ctx.putImageData(imageData, 0, 0);
-        }
-        return originalToDataURL.call(this, type, encoderOptions);
-      };
-
-      CanvasRenderingContext2D.prototype.getImageData = function(sx, sy, sw, sh) {
-        const imageData = originalGetImageData.call(this, sx, sy, sw, sh);
-        const data = imageData.data;
-        for (let i = 0; i < data.length; i += 4) {
-          if (Math.random() < 0.001) {
-            data[i] = Math.min(255, data[i] + Math.floor(Math.random() * 3) - 1);
-            data[i+1] = Math.min(255, data[i+1] + Math.floor(Math.random() * 3) - 1);
-            data[i+2] = Math.min(255, data[i+2] + Math.floor(Math.random() * 3) - 1);
-          }
-        }
-        return imageData;
-      };
-
-      // 14. WebGL fingerprinting protection
-      const getParameter = WebGLRenderingContext.prototype.getParameter;
-      WebGLRenderingContext.prototype.getParameter = function(parameter) {
-        // Spoof vendor and renderer
-        if (parameter === 37245) { // UNMASKED_VENDOR_WEBGL
-          return fp.webglVendor;
-        }
-        if (parameter === 37246) { // UNMASKED_RENDERER_WEBGL
-          return fp.webglRenderer;
-        }
-        return getParameter.call(this, parameter);
-      };
-
-      // 15. WebGL2 fingerprinting protection
-      if (typeof WebGL2RenderingContext !== 'undefined') {
-        const getParameter2 = WebGL2RenderingContext.prototype.getParameter;
-        WebGL2RenderingContext.prototype.getParameter = function(parameter) {
-          if (parameter === 37245) return fp.webglVendor;
-          if (parameter === 37246) return fp.webglRenderer;
-          return getParameter2.call(this, parameter);
-        };
-      }
-
-      // 16. Screen properties
-      Object.defineProperty(screen, 'width', { get: () => fp.viewportWidth, configurable: true });
-      Object.defineProperty(screen, 'height', { get: () => fp.viewportHeight, configurable: true });
-      Object.defineProperty(screen, 'availWidth', { get: () => fp.viewportWidth, configurable: true });
-      Object.defineProperty(screen, 'availHeight', { get: () => fp.viewportHeight - 40, configurable: true });
-      Object.defineProperty(screen, 'colorDepth', { get: () => 24, configurable: true });
-      Object.defineProperty(screen, 'pixelDepth', { get: () => 24, configurable: true });
-
-      // 17. AudioContext fingerprinting protection
-      if (typeof AudioContext !== 'undefined') {
-        const originalCreateAnalyser = AudioContext.prototype.createAnalyser;
-        AudioContext.prototype.createAnalyser = function() {
-          const analyser = originalCreateAnalyser.call(this);
-          const originalGetFloatFrequencyData = analyser.getFloatFrequencyData;
-          analyser.getFloatFrequencyData = function(array) {
-            originalGetFloatFrequencyData.call(this, array);
-            // Add slight noise to prevent fingerprinting
-            for (let i = 0; i < array.length; i++) {
-              array[i] += (Math.random() - 0.5) * 1e-10;
-            }
-          };
-          return analyser;
-        };
-      }
-
-      // 18. Client Hints API spoofing (for newer Chrome versions)
-      if ('navigator' in globalThis && 'userAgentData' in navigator) {
-        const chromeVersion = fp.userAgent.match(/Chrome\/(\d+)/)?.[1] || '129';
-        Object.defineProperty(navigator, 'userAgentData', {
-          get: () => ({
-            brands: [
-              { brand: 'Not A(Brand', version: '99' },
-              { brand: 'Google Chrome', version: chromeVersion },
-              { brand: 'Chromium', version: chromeVersion },
-            ],
-            mobile: fp.isMobile,
-            platform: fp.platform,
-            platformVersion: fp.platform === 'MacIntel' ? '15.0.0' : fp.platform === 'Win32' ? '15.0.0' : '6.5.0',
-            architecture: 'x86',
-            bitness: '64',
-            model: '',
-            uaFullVersion: fp.userAgent.match(/Chrome\/(\d+\.\d+\.\d+\.\d+)/)?.[1] || `${chromeVersion}.0.0.0`,
-            getHighEntropyValues: async () => ({
-              platform: fp.platform,
-              platformVersion: fp.platform === 'MacIntel' ? '15.0.0' : fp.platform === 'Win32' ? '15.0.0' : '6.5.0',
-              architecture: 'x86',
-              bitness: '64',
-              model: '',
-              uaFullVersion: fp.userAgent.match(/Chrome\/(\d+\.\d+\.\d+\.\d+)/)?.[1] || `${chromeVersion}.0.0.0`,
-              brands: [
-                { brand: 'Not A(Brand', version: '99' },
-                { brand: 'Google Chrome', version: chromeVersion },
-                { brand: 'Chromium', version: chromeVersion },
-              ],
-              mobile: fp.isMobile,
-            }),
-          }),
-          configurable: true,
-        });
-      }
-
-      // 19. Override connection API to look realistic
-      if ('connection' in navigator) {
-        Object.defineProperty(navigator, 'connection', {
-          get: () => ({
-            effectiveType: '4g',
-            rtt: 50 + Math.random() * 100,
-            downlink: 10 + Math.random() * 50,
-            saveData: false,
-            type: 'wifi',
-          }),
-          configurable: true,
-        });
-      }
-
-      // 20. MediaDevices enumeration - return realistic device list but allow video output
-      if ('mediaDevices' in navigator) {
-        const originalEnumerateDevices = navigator.mediaDevices.enumerateDevices;
-        navigator.mediaDevices.enumerateDevices = async () => {
-          const devices = await originalEnumerateDevices.call(navigator.mediaDevices);
-          // Allow audio output and video output (for YouTube playback), filter camera/mic for privacy
-          // Use type assertion since we know the type but TypeScript doesn't recognize all possible values
-          return devices.filter((d: MediaDeviceInfo) => d.kind === 'audiooutput' || (d as any).kind === 'videooutput');
-        };
-      }
-
-      // 21. Override webdriver navigator property (newer Chrome)
-      Object.defineProperty(navigator, 'webdriver', {
-        get: () => undefined,
-        configurable: true,
-      });
-
-      // 22. Override appVersion and vendor
-      Object.defineProperty(navigator, 'appVersion', {
-        get: () => fp.userAgent.replace('Mozilla/', ''),
-        configurable: true,
-      });
-
-      Object.defineProperty(navigator, 'vendor', {
-        get: () => 'Google Inc.',
-        configurable: true,
-      });
-
-      // 23. Override product
-      Object.defineProperty(navigator, 'product', {
-        get: () => 'Gecko',
-        configurable: true,
-      });
-
-      // 24. Override cookieEnabled
-      Object.defineProperty(navigator, 'cookieEnabled', {
-        get: () => true,
-        configurable: true,
-      });
-
-      // 25. Override onLine
-      Object.defineProperty(navigator, 'onLine', {
-        get: () => true,
-        configurable: true,
-      });
-
-      // 26. Override doNotTrack
-      Object.defineProperty(navigator, 'doNotTrack', {
-        get: () => null,
-        configurable: true,
-      });
-
-    }, fingerprint);
-
-    // Antidetection layer: a SECOND, minimal init script registered AFTER the
-    // existing one. addInitScript runs scripts in registration order, so this
-    // overrides only the few properties the spec calls out:
-    //   - navigator.webdriver === false  (real non-automated Chrome reports
-    //     `false`; the existing script sets `undefined`). Acceptance Criteria 2.
-    //   - scrub ChromeDriver cdc_* glue objects off window/document.
-    // Worker UA, plugins, and languages are already aligned by the existing
-    // script, so this one stays minimal and localized. Only runs when enabled.
-    if (this.antidetection.enabled) {
-      await context.addInitScript(() => {
-        try {
-          if ('navigator' in globalThis) {
-            Object.defineProperty(globalThis.navigator, 'webdriver', {
-              get: () => false,
-              configurable: true,
-            });
-          }
-        } catch {
-          /* property may be non-configurable on some builds; ignore */
-        }
-        try {
-          const w = globalThis as unknown as Record<string, unknown>;
-          for (const key of Object.keys(w)) {
-            if (key.startsWith('cdc_') && typeof w[key] !== 'function') {
-              try { delete w[key]; } catch { /* not deletable */ }
-            }
-          }
-        } catch {
-          /* enumeration is best-effort */
-        }
-      });
-    }
-
-    // Apply advanced anti-detection protections based on configuration
-    if (this.antidetection.enableFontProtection) {
-      await applyFontProtection(context);
-    }
-    if (this.antidetection.enableAudioVideoProtection) {
-      await applyAudioVideoProtection(context);
-    }
-    if (this.antidetection.enableNetworkProtection) {
-      await applyNetworkProtection(context);
-    }
-    if (this.antidetection.enablePlaywrightEvasion) {
-      await applyPlaywrightEvasion(context);
-    }
-    if (this.antidetection.enableEnvironmentalConsistency) {
-      await applyEnvironmentalConsistency(context);
-    }
-    if (this.antidetection.enableAdvancedCanvasWebGL) {
-      await applyAdvancedCanvasWebGL(context);
-    }
-    if (this.antidetection.enableHeaderRandomization) {
-      await applyHeaderRandomization(context);
-    }
-    if (this.antidetection.enableBehavioralBiometrics) {
-      await applyBehavioralBiometrics(context);
-    }
-    if (this.antidetection.enableSensorSpoofing) {
-      await applySensorSpoofing(context);
-    }
-    if (this.antidetection.enableContentAwareEngagement) {
-      await applyContentAwareEngagement(context);
-    }
-    if (this.antidetection.enableAdvancedSessionLifecycle) {
-      await applyAdvancedSessionLifecycle(context);
-    }
-
-    const page = await context.newPage();
-
-    const managed: ManagedTab = { state: state, context, page, closed: false };
+    const managed: ManagedTab = { state, context, page, closed: false };
     this.tabs.set(id, managed);
+
+    try {
+      const cdp = await context.newCDPSession(page);
+      await cdp.send('Emulation.setFocusEmulationEnabled', { enabled: true });
+      await cdp.send('Page.setWebLifecycleState', { state: 'active' });
+    } catch {
+      /* non-Chromium */
+    }
 
     page.on('console', (msg) => {
       if (managed.closed) return;
@@ -1017,26 +463,24 @@ export class TabManager extends EventEmitter {
 
     page.on('framenavigated', (frame) => {
       if (managed.closed || frame !== page.mainFrame()) return;
-      this.emitEvent({
-        tabId: id,
-        kind: 'log',
-        data: `[nav] frame navigated to ${frame.url()}`,
-        timestamp: Date.now(),
-      });
+      this.emitEvent({ tabId: id, kind: 'log', data: `[nav] ${frame.url()}`, timestamp: Date.now() });
     });
 
     page.on('crash', () => this.markError(id, 'Page crashed'));
     page.on('close', () => this.handleTabGone(id));
     context.on('close', () => this.handleTabGone(id));
 
-    // Add a small random delay before marking as idle to simulate human interaction
     setTimeout(() => {
-      if (!this.tabs.get(id)?.closed) {
-        this.markStatus(id, 'idle');
-      }
+      if (!this.tabs.get(id)?.closed) this.markStatus(id, 'idle');
     }, 500 + Math.random() * 1000);
 
     return this.tabs.get(id)!.state;
+  }
+
+  async fingerprintReport(id: string) {
+    const tab = this.tabs.get(id);
+    if (!tab) throw new Error(`Tab ${id} not found`);
+    return readFingerprintReport(tab.page as unknown as import('patchright').Page);
   }
 
   private handleTabGone(id: string) {
@@ -1054,15 +498,22 @@ export class TabManager extends EventEmitter {
     const tab = this.tabs.get(id);
     if (!tab || tab.closed) return;
     if (tab.loopTimer) clearInterval(tab.loopTimer);
+
+    try {
+      const target = this.storagePathFor(tab.state.proxyLabel);
+      await fs.mkdir(path.dirname(target), { recursive: true });
+      await fs.writeFile(target, JSON.stringify(await tab.context.storageState()), 'utf8');
+    } catch (e) {
+      logger.warn('storageState save failed', e);
+    }
+
     await tab.context.close().catch((e) => logger.warn('closeTab error', e));
     this.handleTabGone(id);
   }
 
   async runTask(id: string, task: TabTask): Promise<unknown> {
     const tab = this.tabs.get(id);
-    if (!tab || tab.closed) {
-      throw new Error(`Tab ${id} is no longer available (closed or crashed)`);
-    }
+    if (!tab || tab.closed) throw new Error(`Tab ${id} is no longer available (closed or crashed)`);
 
     this.markStatus(id, 'running');
     try {
@@ -1076,12 +527,13 @@ export class TabManager extends EventEmitter {
     }
   }
 
-  async runBroadcastTask(task: Omit<TabTask, 'id'>, tabIds?: string[]): Promise<Array<{ id: string; result: unknown }>> {
-    const targets = tabIds ?? [...this.tabs.keys()].filter(id => !this.tabs.get(id)?.closed);
+  async runBroadcastTask(
+    task: Omit<TabTask, 'id'>,
+    tabIds?: string[]
+  ): Promise<Array<{ id: string; result: unknown }>> {
+    const targets = tabIds ?? [...this.tabs.keys()].filter((id) => !this.tabs.get(id)?.closed);
     const results: Array<{ id: string; result: unknown }> = [];
 
-    // Stagger tab start times to avoid all tabs starting simultaneously
-    // This makes the behavior look more like natural staggered user traffic
     for (let i = 0; i < targets.length; i++) {
       const id = targets[i];
       const tab = this.tabs.get(id);
@@ -1089,21 +541,9 @@ export class TabManager extends EventEmitter {
         results.push({ id, result: new Error(`Tab ${id} is no longer available`) });
         continue;
       }
-
-      // Add staggered delay: 0ms for first tab, then random delay for subsequent tabs
-      // First tab starts immediately, others have increasing delays
-      if (i > 0) {
-        // Stagger delay: 1000-3000ms base + 500ms per additional tab
-        const staggerDelay = 1000 + Math.floor(Math.random() * 2000) + (i * 500);
-        await new Promise(resolve => setTimeout(resolve, staggerDelay));
-      }
-
+      if (i > 0) await new Promise((r) => setTimeout(r, 3000 + Math.floor(Math.random() * 6000) + i * 900));
       try {
-        // We'll run the task on each tab, but we need to mark the tab as running?
-        // For broadcast, we don't change the tab status individually to avoid flickering.
-        // Instead, we just execute the task.
-        const result = await this.dispatchTask(tab, { ...task, id }); // Note: we add id to make it a TabTask
-        results.push({ id, result });
+        results.push({ id, result: await this.dispatchTask(tab, { ...task, id }) });
       } catch (err: any) {
         results.push({ id, result: err });
       }
@@ -1113,138 +553,73 @@ export class TabManager extends EventEmitter {
   }
 
   private async dispatchTask(tab: ManagedTab, task: TabTask): Promise<unknown> {
-    // Add human-like delay before executing task
     await randomDelay(100, 500);
 
-    // Create execution context for plugins
     const executionContext: TaskExecutionContext = {
       isTabValid: () => !tab.closed && this.tabs.has(tab.state.id),
-      emitEvent: (kind: 'status' | 'log' | 'result' | 'error', data: unknown) => {
+      emitEvent: (kind, data) => {
         this.emitEvent({ tabId: tab.state.id, kind, data, timestamp: Date.now() });
       },
       randomDelay,
       simulateHumanInteraction: async (page: any) => {
         try {
-          // Random mouse movement
+          const size = page.viewportSize?.() ?? { width: 1280, height: 720 };
           await page.mouse.move(
-            Math.random() * 500 + 100,
-            Math.random() * 500 + 100,
-            { steps: 5 }
+            Math.random() * size.width * 0.7 + size.width * 0.15,
+            Math.random() * size.height * 0.7 + size.height * 0.15,
+            { steps: 5 + Math.floor(Math.random() * 10) }
           );
-
-          // Random scroll
-          await page.evaluate(() => {
-            window.scrollBy(0, Math.random() * 200 - 100);
-          });
+          if (Math.random() < 0.3) await page.evaluate(() => window.scrollBy(0, Math.random() * 120 - 40));
         } catch {
-          // Ignore errors in human simulation
+          /* ignore */
         }
       },
       handleYouTubeConsent: async (page: any) => {
-        await page.evaluate(() => {
-          // Handle YouTube consent/age gate buttons - updated for current YouTube UI (2024+)
-// Note: :has-text is not a valid CSS selector in browser environments, so we check textContent manually
-          const workingSelectors = [
-            'button[aria-label*="Accept all"]',
-            'button[aria-label*="Accept everything"]',
-            'button[aria-label*="I agree"]',
-            'button[aria-label*="Agree"]',
-            'button[aria-label*="Accept cookies"]',
-            '#accept-button',
-            '#agree-button',
-            '#yDmH0d button[aria-label*="Accept"]',
-            'tp-yt-paper-button[aria-label*="Accept"]',
-            'tp-yt-paper-button[aria-label*="Agree"]',
-            'ytd-button-renderer[aria-label*="Accept all"]',
-            'ytd-button-renderer[aria-label*="I agree"]',
-            'ytd-button-renderer[aria-label*="Accept"]',
-            'ytd-button-renderer[aria-label*="Agree"]'
-          ];
-
-          // Try specific selectors that should work
-          workingSelectors.forEach(selector => {
-            try {
-              const elements = document.querySelectorAll(selector);
-              elements.forEach(el => {
-                try {
-                  (el as HTMLElement).click();
-                } catch (e) {
-                  // Ignore click errors
-                }
-              });
-            } catch (e) {
-              // Ignore selector errors
-            }
-          });
-
-          // Also check for any button containing consent-related text by examining all buttons
-          const allButtons = document.querySelectorAll('button, [role="button"], tp-yt-paper-button, ytd-button-renderer');
-          allButtons.forEach(button => {
-            const text = button.textContent?.toLowerCase() || '';
-            if (text.includes('accept') || text.includes('agree') || text.includes('consent') ||
-                text.includes('continue') || text.includes('allow') ||
-                text.includes('i agree') || text.includes('accept all') || text.includes('allow all')) {
-              try {
-                (button as HTMLElement).click();
-              } catch (e) {
-                // Ignore click errors
+        await page
+          .evaluate(() => {
+            const sels = [
+              'ytd-consent-bump-v2-lightbox ytd-button-renderer:last-of-type button',
+              'tp-yt-paper-dialog ytd-button-renderer:last-of-type button',
+              'form[action*="consent"] button',
+              'button[aria-label*="Accept all"]',
+              '#consent-bump button:last-of-type',
+            ];
+            for (const s of sels) {
+              const el = document.querySelector(s) as HTMLElement | null;
+              if (el && el.offsetParent !== null) {
+                el.click();
+                return;
               }
             }
-          });
-        }).catch(() => {});
-
-        // Wait a bit for consent to be processed
-        await new Promise(resolve => setTimeout(resolve, 1500));
+          })
+          .catch(() => {});
+        await new Promise((r) => setTimeout(r, 800));
       },
       clearSessionData: async (page: any) => {
-        // Clear cookies for this context
-        await page.context().clearCookies();
-
-        // Clear localStorage and sessionStorage
-        await page.evaluate(() => {
-          try {
-            localStorage.clear();
-            sessionStorage.clear();
-          } catch {}
-        });
-
-        // Also clear IndexedDB if present
-        await page.evaluate(async () => {
-          try {
-            if ('indexedDB' in window) {
-              const dbs = await indexedDB.databases();
-              for (const db of dbs) {
-                if (db.name) {
-                  await indexedDB.deleteDatabase(db.name);
-                }
-              }
+        await page.context().clearCookies().catch(() => {});
+        await page
+          .evaluate(async () => {
+            try {
+              localStorage.clear();
+              sessionStorage.clear();
+            } catch {
+              /* ignore */
             }
-          } catch {}
-        });
-
-        // Clear Cache Storage
-        await page.evaluate(async () => {
-          try {
-            if ('caches' in window) {
-              const names = await caches.keys();
-              for (const name of names) {
-                await caches.delete(name);
+            try {
+              if ('indexedDB' in window) {
+                const dbs = await indexedDB.databases();
+                for (const db of dbs) if (db.name) indexedDB.deleteDatabase(db.name);
               }
+            } catch {
+              /* ignore */
             }
-          } catch {}
-        });
-
-        // Clear SharedWorker and ServiceWorker
-        await page.evaluate(async () => {
-          try {
-            if ('serviceWorker' in navigator) {
-              const registrations = await navigator.serviceWorker.getRegistrations();
-              for (const reg of registrations) {
-                await reg.unregister();
-              }
+            try {
+              if ('caches' in window) for (const n of await caches.keys()) await caches.delete(n);
+            } catch {
+              /* ignore */
             }
-          } catch {}
-        });
+          })
+          .catch(() => {});
       },
       setVideoQuality: async (page: any, quality: string) => {
         await setPersistentVideoQuality(page, quality);
@@ -1252,27 +627,11 @@ export class TabManager extends EventEmitter {
       markProxyFailed: (reason: string) => {
         this.proxyManager.markProxyFailed(tab.state.id, reason);
       },
-      // Antidetection features (conditionally added)
-      ...(this.antidetection.trustedInput ? {
-        trustedClick: async (page: import('playwright').Page, selector: string, opts: TrustedClickOptions) => {
-          return trustedClick(page, selector, opts);
-        },
-        trustedConsentClick: async (page: import('playwright').Page, selectors: string[], opts: TrustedClickOptions) => {
-          return trustedConsentClick(page, selectors, opts);
-        },
-        resetSession: async (page: import('playwright').Page, opts?: ResetSessionOptions) => {
-          await resetSession(page, opts);
-        },
-      } : {}),
     };
 
-    // First try to delegate to plugin handlers
-    const pluginHandler = this.pluginManager.getHandler(task.type);
-    if (pluginHandler) {
-      return await pluginHandler.execute(tab, task, executionContext);
-    }
+    const handler = this.pluginManager.getHandler(task.type);
+    if (handler) return await handler.execute(tab, task, executionContext);
 
-    // If no plugin handler found, throw an error
     throw new Error(`Unknown task type: ${task.type}`);
   }
 
@@ -1287,7 +646,7 @@ export class TabManager extends EventEmitter {
     try {
       tab.state.currentUrl = tab.page.url();
     } catch {
-      // page may be mid-teardown
+      /* mid-teardown */
     }
     this.emitEvent({ tabId: id, kind: 'status', data: { ...tab.state }, timestamp: Date.now() });
   }
@@ -1306,11 +665,9 @@ export class TabManager extends EventEmitter {
 
   async shutdownAll() {
     this.isShuttingDown = true;
-    for (const tab of this.tabs.values()) {
-      if (tab.loopTimer) clearInterval(tab.loopTimer);
-    }
+    for (const tab of this.tabs.values()) if (tab.loopTimer) clearInterval(tab.loopTimer);
     await Promise.allSettled([...this.tabs.keys()].map((id) => this.closeTab(id)));
-    await this.browser?.close().catch(() => { });
+    await this.browser?.close().catch(() => {});
     this.browser = null;
   }
 }
